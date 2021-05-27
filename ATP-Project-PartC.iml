@@ -11,7 +11,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../נושאים מתקדמים/ATP-Project-PartB/out/artifacts/ATPProjectJAR_jar/ATPProjectJAR.jar!/" />
+          <root url="jar://$MODULE_DIR$/out/artifacts/ATPProjectJAR_jar/ATPProjectJAR.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
