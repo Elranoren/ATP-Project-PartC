@@ -14,7 +14,7 @@ import javafx.scene.paint.Color;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class MazeDisplayer extends Canvas {
+public class MazeDisplayer extends Canvas  {
     private int[][] maze;
     private Solution s;
     private Position startP;
