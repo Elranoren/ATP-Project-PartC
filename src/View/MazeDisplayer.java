@@ -1,5 +1,8 @@
 package View;
 
+import algorithms.mazeGenerators.Position;
+import algorithms.search.MazeState;
+import algorithms.search.Solution;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -13,14 +16,37 @@ import java.io.FileNotFoundException;
 
 public class MazeDisplayer extends Canvas {
     private int[][] maze;
-    // player position:
-    private int playerRow = 0;
-    private int playerCol = 0;
+    private Solution s;
+    private Position startP;
+    private Position endP;
+    private int playerRow;
+    private int playerCol;
     // wall and player images:
     StringProperty imageFileNameWall = new SimpleStringProperty();
     StringProperty imageFileNamePlayer = new SimpleStringProperty();
 
+    public Position getStartP() {
+        return startP;
+    }
 
+    public void setStartP(Position startP) {
+        this.startP = startP;
+    }
+
+    public Position getEndP() {
+        return endP;
+    }
+
+    public void setEndP(Position endP) {
+        this.endP = endP;
+    }
+    public Solution getS() {
+        return s;
+    }
+
+    public void setS(Solution s) {
+        this.s = s;
+    }
     public int getPlayerRow() {
         return playerRow;
     }
@@ -79,6 +105,10 @@ public class MazeDisplayer extends Canvas {
             graphicsContext.clearRect(0, 0, canvasWidth, canvasHeight);
 
             drawMazeWalls(graphicsContext, cellHeight, cellWidth, rows, cols);
+            drawSolution(graphicsContext, cellHeight, cellWidth,s);
+            graphicsContext.setFill(Color.BLACK);
+            graphicsContext.fillRect( this.startP.getColumnIndex()*cellWidth,this.startP.getRowIndex()*cellHeight, cellWidth, cellHeight);
+            graphicsContext.fillRect( this.endP.getColumnIndex()*cellWidth,this.endP.getRowIndex()*cellHeight, cellWidth, cellHeight);
             drawPlayer(graphicsContext, cellHeight, cellWidth);
         }
     }
@@ -123,5 +153,25 @@ public class MazeDisplayer extends Canvas {
             graphicsContext.fillRect(x, y, cellWidth, cellHeight);
         else
             graphicsContext.drawImage(playerImage, x, y, cellWidth, cellHeight);
+    }
+
+    public void drawS(Solution s) {
+        this.s = s;
+        draw();
+    }
+
+    private void drawSolution(GraphicsContext graphicsContext, double cellHeight, double cellWidth,Solution s) {
+        if(this.s!=null){
+            graphicsContext.setFill(Color.PINK);
+            for (int i = 0; i < s.getSolutionPath().size(); i++) {
+                MazeState mazeState = (MazeState)s.getSolutionPath().get(i);
+                int r = mazeState.getMazeP().getRowIndex();
+                int c = mazeState.getMazeP().getColumnIndex();
+                double x = c * cellWidth;
+                double y = r * cellHeight;
+                graphicsContext.fillRect(x, y, cellWidth, cellHeight);
+        }
+
+        }
     }
 }

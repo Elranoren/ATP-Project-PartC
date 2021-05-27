@@ -1,6 +1,8 @@
 package View;
-import algorithms.mazeGenerators.IMazeGenerator;
+
+import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
+import algorithms.search.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -16,10 +18,9 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import algorithms.mazeGenerators.Maze;
 
 public class MyViewController implements Initializable {
-    public Maze generator;
+    public Maze maze;
     public TextField textField_mazeRows;
     public TextField textField_mazeColumns;
     public MazeDisplayer mazeDisplayer;
@@ -52,22 +53,41 @@ public class MyViewController implements Initializable {
     }
 
     public void generateMaze(ActionEvent actionEvent) {
-            try {
-                generator = new MyMazeGenerator().generate(Integer.valueOf(textField_mazeRows.getText()),Integer.valueOf(textField_mazeColumns.getText()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-        mazeDisplayer.drawMaze(generator.getMaze());
-        setPlayerPosition(0, 0);
+        try {
+            maze = new MyMazeGenerator().generate(Integer.valueOf(textField_mazeRows.getText()), Integer.valueOf(textField_mazeColumns.getText()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mazeDisplayer.setS(null);
+        mazeDisplayer.setStartP(maze.getStartPosition());
+        mazeDisplayer.setEndP(maze.getGoalPosition());
+        mazeDisplayer.drawMaze(maze.getMaze());
+        setPlayerPosition(maze.getStartPosition().getRowIndex(), maze.getStartPosition().getColumnIndex());
     }
 
     public void solveMaze(ActionEvent actionEvent) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("Solving maze...");
-        alert.show();
+        if (maze == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Maze didn't generate yet , please press first on 'Generate Maze'");
+            alert.show();
+        } else {
+            Solution s = null;
+            ISearchable searchable = new SearchableMaze(maze);
+            ISearchingAlgorithm searchingAlgorithm = new BestFirstSearch();
+            try {
+                s = searchingAlgorithm.solve(searchable);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            mazeDisplayer.drawS(s);
+
+        }
+
+//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//        alert.setContentText("Solving maze...");
+//        alert.show();
     }
+
 
     public void openFile(ActionEvent actionEvent) {
         FileChooser fc = new FileChooser();
@@ -83,17 +103,73 @@ public class MyViewController implements Initializable {
         int col = mazeDisplayer.getPlayerCol();
 
         switch (keyEvent.getCode()) {
-            case UP -> row -= 1;
-            case DOWN -> row += 1;
-            case RIGHT -> col += 1;
-            case LEFT -> col -= 1;
+            case UP:
+                if (!(row == 0 || maze.getMaze()[row - 1][col] == 1))
+                    row -= 1;
+                break;
+            case DOWN:
+                if (!(row == maze.getRows() - 1 || maze.getMaze()[row + 1][col] == 1))
+                    row += 1;
+                break;
+            case RIGHT:
+                if (!(col == maze.getColumns() - 1 || maze.getMaze()[row][col + 1] == 1))
+                    col += 1;
+                break;
+            case LEFT:
+                if (!(col == 0 || maze.getMaze()[row][col - 1] == 1))
+                    col -= 1;
+                break;
+            case NUMPAD8:
+                if (!(row == 0 || maze.getMaze()[row - 1][col] == 1))
+                    row -= 1;
+                break;
+            case NUMPAD2:
+                if (!(row == maze.getRows() - 1 || maze.getMaze()[row + 1][col] == 1))
+                    row += 1;
+                break;
+            case NUMPAD6:
+                if (!(col == maze.getColumns() - 1 || maze.getMaze()[row][col + 1] == 1))
+                    col += 1;
+                break;
+            case NUMPAD4:
+                if (!(col == 0 || maze.getMaze()[row][col - 1] == 1))
+                    col -= 1;
+                break;
+            case NUMPAD9:
+                if (!(row == 0 || col == maze.getColumns() - 1 || maze.getMaze()[row - 1][col + 1] == 1)) {
+                    row -= 1;
+                    col += 1;
+                }
+                break;
+            case NUMPAD7:
+                if (!(row == 0 || col == 0 || maze.getMaze()[row - 1][col - 1] == 1)) {
+                    row -= 1;
+                    col -= 1;
+                }
+                break;
+            case NUMPAD1:
+                if (!(row == maze.getRows() - 1 || col == 0 || maze.getMaze()[row + 1][col - 1] == 1)) {
+                    row += 1;
+                    col -= 1;
+                }
+                break;
+            case NUMPAD3:
+                if (!(row == maze.getRows() - 1 || col == maze.getColumns() - 1 || maze.getMaze()[row + 1][col + 1] == 1)) {
+                    row += 1;
+                    col += 1;
+                }
+                break;
+//            case UP -> row -= 1;
+//            case DOWN -> row += 1;
+//            case RIGHT -> col += 1;
+//            case LEFT -> col -= 1;
         }
         setPlayerPosition(row, col);
 
         keyEvent.consume();
     }
 
-    public void setPlayerPosition(int row, int col){
+    public void setPlayerPosition(int row, int col) {
         mazeDisplayer.setPlayerPosition(row, col);
         setUpdatePlayerRow(row);
         setUpdatePlayerCol(col);
