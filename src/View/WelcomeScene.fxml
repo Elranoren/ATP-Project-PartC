@@ -7,11 +7,14 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.WelcomeSceneController">
    <children>
-      <Button layoutX="259.0" layoutY="313.0" mnemonicParsing="false" text="Let's Start">
+      <Button onAction="#openMyView"  layoutX="245.0" layoutY="304.0" mnemonicParsing="false" text="Let's Start">
          <font>
             <Font name="Berlin Sans FB Demi Bold" size="14.0" />
          </font>
       </Button>
-      <ImageView fitHeight="268.0" fitWidth="336.0" layoutX="132.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="267.0" fitWidth="394.0" layoutX="89.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/startPic.jpg" />
+         </image></ImageView>
    </children>
 </AnchorPane>
