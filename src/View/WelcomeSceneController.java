@@ -17,6 +17,8 @@ import java.util.ResourceBundle;
 
 public class WelcomeSceneController implements Initializable {
     public  javafx.scene.control.Button startButton;
+    public  javafx.scene.control.Button settingsButton;
+
     public  javafx.scene.layout.AnchorPane myPane;
     public  javafx.scene.image.ImageView marko;
     private DoubleProperty tSize = new SimpleDoubleProperty();
@@ -56,6 +58,8 @@ public class WelcomeSceneController implements Initializable {
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
                 startButton.setLayoutX(myPane.getWidth()/3);
                 startButton.setFont(new Font(startButton.getFont().getName(),tSize.doubleValue()));
+                settingsButton.setLayoutX(myPane.getWidth()/3);
+                settingsButton.setFont(new Font(settingsButton.getFont().getName(),tSize.doubleValue()));
             }
         });
         scene.heightProperty().addListener(new ChangeListener<Number>() {
@@ -63,6 +67,8 @@ public class WelcomeSceneController implements Initializable {
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
                 startButton.setLayoutY(myPane.getHeight()/10);
                 startButton.setFont(new Font(startButton.getFont().getName(),tSize.doubleValue()));
+                settingsButton.setLayoutY(myPane.getHeight()/10);
+                settingsButton.setFont(new Font(settingsButton.getFont().getName(),tSize.doubleValue()));
             }
         });
 //        startButton.prefWidthProperty().bind(myPane.widthProperty());
@@ -78,6 +84,7 @@ public class WelcomeSceneController implements Initializable {
         startButton.prefHeightProperty().bind(myPane.heightProperty().divide(10));
         startButton.prefWidthProperty().bind(myPane.widthProperty().divide(3));
         tSize.bind(startButton.heightProperty().divide(2));
+
     }
 
     public void openSettingsView(ActionEvent actionEvent) {
