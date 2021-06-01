@@ -1,9 +1,10 @@
 package Model;
 
 import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 
-public class MyModel implements IModel{
+import java.util.Observable;
+
+public class MyModel extends Observable implements IModel{
     @Override
     public void generateMaze(int row, int column) {
 
