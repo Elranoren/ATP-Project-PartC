@@ -13,11 +13,20 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
         this.mainStage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("WelcomeScene.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeScene.fxml"));
+        Parent root = fxmlLoader.load();
+        WelcomeSceneController view = fxmlLoader.getController();
+        Scene scene = new Scene(root, 500, 500);
         mainStage.setTitle("3000 Leagues In Search Of Mother Maze Game");
-        mainStage.setScene(new Scene(root, 600, 400));
+        mainStage.setScene(scene);
+        view.setSizeOfScene(scene);
         mainStage.show();
+        /////////////
+//        MyModel model = new MyModel();
+//        MyViewModel viewModel = new MyViewModel(model);
+//        model.addObserver(viewModel);
         /*
         MyModel model = new MyModel();
         MyViewModel myViewModel = new MyViewModel(model);

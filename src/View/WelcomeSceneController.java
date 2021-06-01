@@ -1,17 +1,29 @@
 package View;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class WelcomeSceneController {
-    public void openMyView(ActionEvent actionEvent) {
+public class WelcomeSceneController implements Initializable {
+    public  javafx.scene.control.Button startButton;
+    public  javafx.scene.layout.AnchorPane myPane;
+    public  javafx.scene.image.ImageView marko;
+    private DoubleProperty tSize = new SimpleDoubleProperty();
+    public  void openMyView(ActionEvent actionEvent) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MyView.fxml"));
             Parent root = (Parent) fxmlLoader.load();
@@ -39,5 +51,35 @@ public class WelcomeSceneController {
         }
         */
 
+    }
+
+    public void setSizeOfScene(Scene scene) {
+        scene.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+                startButton.setLayoutX(myPane.getWidth()/3);
+                startButton.setFont(new Font(startButton.getFont().getName(),tSize.doubleValue()));
+            }
+        });
+        scene.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+                startButton.setLayoutY(myPane.getHeight()/10);
+                startButton.setFont(new Font(startButton.getFont().getName(),tSize.doubleValue()));
+            }
+        });
+//        startButton.prefWidthProperty().bind(myPane.widthProperty());
+//        startButton.prefHeightProperty().bind(myPane.heightProperty());
+//        startButton.setLayoutX(myPane.getWidth()/3);
+//        startButton.setFont(new Font(startButton.getFont().getName(),tSize.doubleValue()));
+//        startButton.setLayoutY(myPane.getHeight()/10);
+//        startButton.setFont(new Font(startButton.getFont().getName(),tSize.doubleValue()));
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        startButton.prefHeightProperty().bind(myPane.heightProperty().divide(10));
+        startButton.prefWidthProperty().bind(myPane.widthProperty().divide(3));
+        tSize.bind(startButton.heightProperty().divide(2));
     }
 }
