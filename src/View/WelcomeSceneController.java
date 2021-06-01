@@ -7,14 +7,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -81,5 +78,20 @@ public class WelcomeSceneController implements Initializable {
         startButton.prefHeightProperty().bind(myPane.heightProperty().divide(10));
         startButton.prefWidthProperty().bind(myPane.widthProperty().divide(3));
         tSize.bind(startButton.heightProperty().divide(2));
+    }
+
+    public void openSettingsView(ActionEvent actionEvent) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SettingsScene.fxml"));
+            Parent root = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Settings");
+            stage.show();
+            Stage cStage = (Stage) startButton.getScene().getWindow();
+            cStage.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }
