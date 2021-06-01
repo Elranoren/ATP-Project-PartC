@@ -14,14 +14,18 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SettingsSceneController implements Initializable {
-    public  javafx.scene.control.Button saveButton;
+    public javafx.scene.control.Button saveButton;
     public javafx.scene.control.RadioButton BFS;
     public javafx.scene.control.RadioButton DFS;
     public javafx.scene.control.RadioButton BEST;
+    public javafx.scene.control.RadioButton myGenerate;
+    public javafx.scene.control.RadioButton simpleGenerate;
     private ToggleGroup searchAlgorithmGroug;
+    private ToggleGroup generateMazeGroup;
 
     public SettingsSceneController() {
         this.searchAlgorithmGroug = new ToggleGroup();
+        this.generateMazeGroup = new ToggleGroup();
     }
 
     public void saveSettings(ActionEvent actionEvent) {
@@ -35,7 +39,7 @@ public class SettingsSceneController implements Initializable {
             currentStage.close();
             stage.show();
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -48,10 +52,15 @@ public class SettingsSceneController implements Initializable {
         BEST.setUserData("BestFirstSearch");
         DFS.setToggleGroup(searchAlgorithmGroug);
         DFS.setUserData("DepthFirstSearch");
-        String currentAlgorithm = MyViewModel.getConfigurationSolvingAlgorithmName();
-        for (Toggle rb: solvingAlgorithmGroup.getToggles()) {
-            if(rb.getUserData().toString().equals(currSearchingAlgorithm))
-                rb.setSelected(true);
+
+        myGenerate.setToggleGroup(generateMazeGroup);
+        myGenerate.setUserData("MyMazeGenerator");
+        simpleGenerate.setToggleGroup(generateMazeGroup);
+        simpleGenerate.setUserData("SimpleMazeGenerator");
+
+        //if (generateMazeGroup.getSelectedToggle())
+
+
         }
-    }
 }
+
