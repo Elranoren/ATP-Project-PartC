@@ -1,4 +1,6 @@
+
 .root {
+    -fx-font-size: 26px;
     -fx-background-color: bisque;
 }
 
