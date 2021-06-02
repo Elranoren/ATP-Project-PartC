@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SettingsSceneController implements Initializable {
+public class PropertiesController implements Initializable {
     public javafx.scene.control.Button saveButton;
     public javafx.scene.control.Button cancelButton;
     public javafx.scene.control.RadioButton BFS;
@@ -28,7 +28,7 @@ public class SettingsSceneController implements Initializable {
     private ToggleGroup searchAlgorithmGroug;
     private ToggleGroup generateMazeGroup;
     private static boolean firstIn=false;
-    public SettingsSceneController() {
+    public PropertiesController() {
         this.searchAlgorithmGroug = new ToggleGroup();
         this.generateMazeGroup = new ToggleGroup();
     }

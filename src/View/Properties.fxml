@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.SettingsSceneController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.PropertiesController">
    <children>
       <Button fx:id="saveButton" layoutX="141.0" layoutY="335.0" mnemonicParsing="false" onAction="#saveSettings" prefHeight="35.0" prefWidth="87.0" text="save" />
       <Label layoutX="27.0" layoutY="200.0" prefHeight="17.0" prefWidth="154.0" text="ThreadNum" />

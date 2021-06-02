@@ -8,7 +8,10 @@ import algorithms.mazeGenerators.IMazeGenerator;
 public interface IModel {
     void generateMaze(int row , int column);
     void solveMaze();
-
+    int getRowIndexOfPlayer();
+    int getColIndexOfPlayer();
+    void setRowIndexOfPlayer(int row);
+    void setColIndexOfPlayer(int col);
     static String getThreadsNumConfig(){
         return Configurations.getThreadsNumConfig();
     }

@@ -1,7 +1,9 @@
 package View;
 
+import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
+import algorithms.mazeGenerators.SimpleMazeGenerator;
 import algorithms.search.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -48,15 +50,31 @@ public class MyViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        if(MyViewModel.getThreadsNumConfig()==null)
+            MyViewModel.setThreadsNumConfig("10");
         playerRow.textProperty().bind(updatePlayerRow);
         playerCol.textProperty().bind(updatePlayerCol);
     }
 
     public void generateMaze(ActionEvent actionEvent) {
-        try {
-            maze = new MyMazeGenerator().generate(Integer.valueOf(textField_mazeRows.getText()), Integer.valueOf(textField_mazeColumns.getText()));
-        } catch (Exception e) {
-            e.printStackTrace();
+        System.out.println();
+        String generateMethod = MyViewModel.getGeneratingAlgorithmConfig();
+        if (generateMethod == null) {
+            try {
+                maze = new MyMazeGenerator().generate(Integer.valueOf(textField_mazeRows.getText()), Integer.valueOf(textField_mazeColumns.getText()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                generateMethod = MyViewModel.getGeneratingAlgorithmConfig();
+                if (generateMethod.equals("MyMazeGenerator"))
+                    maze = new MyMazeGenerator().generate(Integer.valueOf(textField_mazeRows.getText()), Integer.valueOf(textField_mazeColumns.getText()));
+                else
+                    maze = new SimpleMazeGenerator().generate(Integer.valueOf(textField_mazeRows.getText()), Integer.valueOf(textField_mazeColumns.getText()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         mazeDisplayer.setS(null);
         mazeDisplayer.setStartP(maze.getStartPosition());
@@ -71,9 +89,18 @@ public class MyViewController implements Initializable {
             alert.setContentText("Maze didn't generate yet , please press first on 'Generate Maze'");
             alert.show();
         } else {
+            ISearchingAlgorithm searchingAlgorithm = null;
             Solution s = null;
             ISearchable searchable = new SearchableMaze(maze);
-            ISearchingAlgorithm searchingAlgorithm = new BestFirstSearch();
+            String solvingMethod = MyViewModel.getSearchAlgorithmConfig();
+            if (solvingMethod == null)
+                searchingAlgorithm = new BreadthFirstSearch();
+            else if (solvingMethod.equals("BreadthFirstSearch"))
+                searchingAlgorithm = new BreadthFirstSearch();
+            else if (solvingMethod.equals("BestFirstSearch"))
+                searchingAlgorithm = new BestFirstSearch();
+            else
+                searchingAlgorithm = new DepthFirstSearch();
             try {
                 s = searchingAlgorithm.solve(searchable);
             } catch (Exception e) {
@@ -159,10 +186,6 @@ public class MyViewController implements Initializable {
                     col += 1;
                 }
                 break;
-//            case UP -> row -= 1;
-//            case DOWN -> row += 1;
-//            case RIGHT -> col += 1;
-//            case LEFT -> col -= 1;
         }
         setPlayerPosition(row, col);
 

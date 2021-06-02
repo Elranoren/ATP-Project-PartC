@@ -19,11 +19,26 @@ public class MazeDisplayer extends Canvas  {
     private Solution s;
     private Position startP;
     private Position endP;
+    private static boolean rightMovment;
     private int playerRow;
     private int playerCol;
     // wall and player images:
     StringProperty imageFileNameWall = new SimpleStringProperty();
     StringProperty imageFileNamePlayer = new SimpleStringProperty();
+
+    public static boolean isRightMovment() {
+        return rightMovment;
+    }
+
+    public static void setRightMovment(boolean rightMovment) {
+        MazeDisplayer.rightMovment = rightMovment;
+    }
+
+
+
+    public MazeDisplayer() {
+        rightMovment = true;
+    }
 
     public Position getStartP() {
         return startP;

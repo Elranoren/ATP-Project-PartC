@@ -1,6 +1,7 @@
 package View;
 
 import Model.MyModel;
+import Server.Configurations;
 import ViewModel.MyViewModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +14,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
         this.mainStage = primaryStage;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeScene.fxml"));
         Parent root = fxmlLoader.load();

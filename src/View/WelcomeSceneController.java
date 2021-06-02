@@ -1,5 +1,7 @@
 package View;
 
+import Model.MyModel;
+import ViewModel.MyViewModel;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
@@ -10,7 +12,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -31,6 +32,9 @@ public class WelcomeSceneController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Game");
+            MyModel myModel = new MyModel();
+            MyViewModel myViewModel = new MyViewModel(myModel);
+            myModel.addObserver(myViewModel);
             stage.show();
             Main.mainStage.close();
         } catch(Exception e) {
@@ -93,7 +97,7 @@ public class WelcomeSceneController implements Initializable {
 
     public void openSettingsView(ActionEvent actionEvent) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SettingsScene.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Properties.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
