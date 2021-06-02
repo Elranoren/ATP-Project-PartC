@@ -9,6 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -18,9 +20,9 @@ import java.util.ResourceBundle;
 public class WelcomeSceneController implements Initializable {
     public  javafx.scene.control.Button startButton;
     public  javafx.scene.control.Button settingsButton;
-
+    public  javafx.scene.image.ImageView marcoImage;
     public  javafx.scene.layout.AnchorPane myPane;
-    public  javafx.scene.image.ImageView marko;
+
     private DoubleProperty tSize = new SimpleDoubleProperty();
     public  void openMyView(ActionEvent actionEvent) {
         try {
@@ -84,6 +86,8 @@ public class WelcomeSceneController implements Initializable {
         startButton.prefHeightProperty().bind(myPane.heightProperty().divide(10));
         startButton.prefWidthProperty().bind(myPane.widthProperty().divide(3));
         tSize.bind(startButton.heightProperty().divide(2));
+        Image image = new Image(getClass().getResourceAsStream("/images/startPic.jpg"));
+        marcoImage.setImage(image);
 
     }
 
