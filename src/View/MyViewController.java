@@ -32,6 +32,9 @@ public class MyViewController implements Observer,IView,Initializable {
     public Label playerRow;
     public Label playerCol;
 
+    public javafx.scene.control.MenuItem menuItemNew;
+    public javafx.scene.control.MenuItem menuItemSave;
+    public javafx.scene.control.MenuItem menuItemLoad;
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
 
@@ -60,7 +63,7 @@ public class MyViewController implements Observer,IView,Initializable {
     }
 
     public void generateMaze(ActionEvent actionEvent) {
-        System.out.println();
+        menuItemSave.setDisable(false);
         String generateMethod = MyViewModel.getGeneratingAlgorithmConfig();
         if (generateMethod == null) {
             try {
@@ -219,6 +222,12 @@ public class MyViewController implements Observer,IView,Initializable {
         this.myViewModel=myViewModel;
         playerRow.textProperty().bind(myViewModel.getStringRowIndexOfPlayer());
         playerCol.textProperty().bind(myViewModel.getStringColIndexOfPlayer());
+    }
+
+    public void saveFile(ActionEvent actionEvent) {
+    }
+
+    public void loadFile(ActionEvent actionEvent) {
     }
 }
 

@@ -62,8 +62,9 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
                             <items>
-                                <MenuItem mnemonicParsing="false" onAction="#openFile" text="Open" />
-                                <MenuItem mnemonicParsing="false" text="Close" />
+                                <MenuItem fx:id="menuItemNew" mnemonicParsing="false" onAction="#generateMaze" text="New" />
+                                <MenuItem fx:id="menuItemSave" mnemonicParsing="false" onAction="#saveFile" disable="true" text="Save" />
+                                <MenuItem fx:id="menuItemLoad" mnemonicParsing="false" onAction="#loadFile" text="Load" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Edit">
