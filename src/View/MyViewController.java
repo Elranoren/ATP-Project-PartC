@@ -3,20 +3,29 @@ package View;
 import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
+import algorithms.mazeGenerators.Position;
 import algorithms.mazeGenerators.SimpleMazeGenerator;
 import algorithms.search.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
@@ -35,6 +44,7 @@ public class MyViewController implements Observer,IView,Initializable {
     public javafx.scene.control.MenuItem menuItemNew;
     public javafx.scene.control.MenuItem menuItemSave;
     public javafx.scene.control.MenuItem menuItemLoad;
+    public javafx.scene.control.MenuItem menuAbout;
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
 
@@ -91,9 +101,8 @@ public class MyViewController implements Observer,IView,Initializable {
 
     public void solveMaze(ActionEvent actionEvent) {
         if (maze == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Maze didn't generate yet , please press first on 'Generate Maze'");
-            alert.show();
+            errorAlert("Maze didn't generate yet , please press first on 'Generate Maze'");
+
         } else {
             ISearchingAlgorithm searchingAlgorithm = null;
             Solution s = null;
@@ -119,6 +128,12 @@ public class MyViewController implements Observer,IView,Initializable {
 //        Alert alert = new Alert(Alert.AlertType.INFORMATION);
 //        alert.setContentText("Solving maze...");
 //        alert.show();
+    }
+
+    private void errorAlert(String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText(content);
+        alert.show();
     }
 
 
@@ -225,11 +240,50 @@ public class MyViewController implements Observer,IView,Initializable {
     }
 
     public void saveFile(ActionEvent actionEvent) {
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Save maze");
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze files (*.maze)", "*.maze"));
+        //fc.setInitialDirectory(new File("./resources"));
+        File saveFile = fc.showSaveDialog(null);
+        if(saveFile!=null)
+        {
+            File newFile = new File(saveFile.getPath());
+            ObjectOutputStream objectOutputStream = null;
+            try {
+                objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFile));
+                Object[] objects = new Object[2];
+                objects[0] = myViewModel.getMaze();
+                objects[1] = new Position(myViewModel.getRowIndexOfPlayer(),myViewModel.getColIndexOfPlayer());
+                objectOutputStream.writeObject(objects);
+                objectOutputStream.flush();
+                objectOutputStream.close();
+            } catch (IOException e) {
+                errorAlert("Save failed");
+                e.printStackTrace();
+            }
+        }
+        else
+            errorAlert("Save failed");
 
     }
 
     public void loadFile(ActionEvent actionEvent) {
 
+    }
+
+    public void aboutMenu(ActionEvent actionEvent) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AboutMenu.fxml"));
+            Parent root = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("About");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

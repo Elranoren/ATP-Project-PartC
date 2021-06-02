@@ -111,5 +111,25 @@ public class MyViewModel extends Observable implements Observer {
             notifyObservers(arg);
         }
     }
+
+    public int getColIndexOfPlayer() {
+        return colIndexOfPlayer;
+    }
+
+    public void setColIndexOfPlayer(int colIndexOfPlayer) {
+        this.colIndexOfPlayer = colIndexOfPlayer;
+    }
+
+    public int getRowIndexOfPlayer() {
+        return rowIndexOfPlayer;
+    }
+
+    public void setRowIndexOfPlayer(int rowIndexOfPlayer) {
+        this.rowIndexOfPlayer = rowIndexOfPlayer;
+    }
+
+    public Maze getMaze() {
+        return model.getMaze();
+    }
 }
 

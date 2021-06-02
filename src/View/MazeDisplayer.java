@@ -26,6 +26,34 @@ public class MazeDisplayer extends Canvas  {
     StringProperty imageFileNameWall = new SimpleStringProperty();
     StringProperty imageFileNamePlayer = new SimpleStringProperty();
 
+    public String getImageFileNameSea() {
+        return imageFileNameSea.get();
+    }
+
+    public StringProperty imageFileNameSeaProperty() {
+        return imageFileNameSea;
+    }
+
+    public void setImageFileNameSea(String imageFileNameSea) {
+        this.imageFileNameSea.set(imageFileNameSea);
+    }
+
+    StringProperty imageFileNameSea =  new SimpleStringProperty();
+
+    public String getImageFileNameMother() {
+        return imageFileNameMother.get();
+    }
+
+    public StringProperty imageFileNameMotherProperty() {
+        return imageFileNameMother;
+    }
+
+    public void setImageFileNameMother(String imageFileNameMother) {
+        this.imageFileNameMother.set(imageFileNameMother);
+    }
+
+    StringProperty imageFileNameMother =  new SimpleStringProperty();
+
     public static boolean isRightMovment() {
         return rightMovment;
     }
@@ -99,6 +127,9 @@ public class MazeDisplayer extends Canvas  {
     public void setImageFileNamePlayer(String imageFileNamePlayer) {
         this.imageFileNamePlayer.set(imageFileNamePlayer);
     }
+ //   public void setImageFileNameSea(String imageFileNameSea) {
+//        this.imageFileNameSea.set(imageFileNameSea);
+//    }
 
     public void drawMaze(int[][] maze) {
         this.maze = maze;
@@ -123,9 +154,27 @@ public class MazeDisplayer extends Canvas  {
             drawSolution(graphicsContext, cellHeight, cellWidth,s);
             graphicsContext.setFill(Color.BLACK);
             graphicsContext.fillRect( this.startP.getColumnIndex()*cellWidth,this.startP.getRowIndex()*cellHeight, cellWidth, cellHeight);
-            graphicsContext.fillRect( this.endP.getColumnIndex()*cellWidth,this.endP.getRowIndex()*cellHeight, cellWidth, cellHeight);
+            //graphicsContext.fillRect( this.endP.getColumnIndex()*cellWidth,this.endP.getRowIndex()*cellHeight, cellWidth, cellHeight);
+            drawEndPosition (graphicsContext, cellHeight, cellWidth);
             drawPlayer(graphicsContext, cellHeight, cellWidth);
         }
+    }
+
+    private void drawEndPosition(GraphicsContext graphicsContext, double cellHeight, double cellWidth) {
+        double x = this.endP.getColumnIndex() * cellWidth;
+        double y = this.endP.getRowIndex() * cellHeight;
+        graphicsContext.setFill(Color.BLACK);
+
+        Image motherImage = null;
+        try {
+            motherImage = new Image(new FileInputStream(getImageFileNameMother()));
+        } catch (FileNotFoundException e) {
+            System.out.println("There is no player image file");
+        }
+        if(motherImage == null)
+            graphicsContext.fillRect(x, y, cellWidth, cellHeight);
+        else
+            graphicsContext.drawImage(motherImage, x, y, cellWidth, cellHeight);
     }
 
     private void drawMazeWalls(GraphicsContext graphicsContext, double cellHeight, double cellWidth, int rows, int cols) {
@@ -137,6 +186,13 @@ public class MazeDisplayer extends Canvas  {
         } catch (FileNotFoundException e) {
             System.out.println("There is no wall image file");
         }
+        Image seaImage = null;
+        try{
+            seaImage = new Image(new FileInputStream(getImageFileNameSea()));
+        } catch (FileNotFoundException e) {
+            System.out.println("There is no sea image file");
+        }
+
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -149,9 +205,21 @@ public class MazeDisplayer extends Canvas  {
                     else
                         graphicsContext.drawImage(wallImage, x, y, cellWidth, cellHeight);
                 }
+                else{
+                    double x = j * cellWidth;
+                    double y = i * cellHeight;
+                    if(seaImage == null)
+                        graphicsContext.fillRect(x, y, cellWidth, cellHeight);
+                    else
+                        graphicsContext.drawImage(seaImage, x, y, cellWidth, cellHeight);
+                }
             }
         }
     }
+
+//    private String getImageFileNameSea() {
+//        return imageFileNameSea.get();
+//    }
 
     private void drawPlayer(GraphicsContext graphicsContext, double cellHeight, double cellWidth) {
         double x = getPlayerCol() * cellWidth;

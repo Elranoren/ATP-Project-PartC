@@ -1,5 +1,6 @@
 package Model;
 
+import algorithms.mazeGenerators.Maze;
 import javafx.beans.InvalidationListener;
 
 import java.util.Observable;
@@ -7,10 +8,12 @@ import java.util.Observable;
 public class MyModel extends Observable implements IModel {
     private int rowIndexOfPlayer;
     private int colIndexOfPlayer;
+    private Maze maze;
 
     public MyModel() {
         this.rowIndexOfPlayer = 1;
         this.colIndexOfPlayer = 1;
+        this.maze=null;
     }
     @Override
     public int getRowIndexOfPlayer() {
@@ -32,6 +35,11 @@ public class MyModel extends Observable implements IModel {
     public void setColIndexOfPlayer(int col) {
         this.colIndexOfPlayer = col;
 
+    }
+
+    @Override
+    public Maze getMaze() {
+        return maze ;
     }
 
 

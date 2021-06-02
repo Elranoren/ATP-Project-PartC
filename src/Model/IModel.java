@@ -3,6 +3,7 @@ package Model;
 import Server.Configurations;
 import Server.Server;
 import algorithms.mazeGenerators.IMazeGenerator;
+import algorithms.mazeGenerators.Maze;
 
 
 public interface IModel {
@@ -36,4 +37,5 @@ public interface IModel {
         Configurations.setSearchAlgorithmConfig(searchAlgo);
     }
 
+    Maze getMaze();
 }
