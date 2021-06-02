@@ -225,9 +225,11 @@ public class MyViewController implements Observer,IView,Initializable {
     }
 
     public void saveFile(ActionEvent actionEvent) {
+
     }
 
     public void loadFile(ActionEvent actionEvent) {
+
     }
 }
 
