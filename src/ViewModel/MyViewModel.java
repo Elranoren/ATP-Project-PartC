@@ -22,6 +22,31 @@ public class MyViewModel extends Observable implements Observer {
     private int rowIndexOfPlayer;
     private StringProperty stringRowIndexOfPlayer;
     private StringProperty stringColIndexOfPlayer;
+
+    public StringProperty getStringRowIndexOfPlayer() {
+        return stringRowIndexOfPlayer;
+    }
+
+    public StringProperty stringRowIndexOfPlayerProperty() {
+        return stringRowIndexOfPlayer;
+    }
+
+    public void setStringRowIndexOfPlayer(String stringRowIndexOfPlayer) {
+        this.stringRowIndexOfPlayer.set(stringRowIndexOfPlayer);
+    }
+
+    public StringProperty getStringColIndexOfPlayer() {
+        return stringColIndexOfPlayer;
+    }
+
+    public StringProperty stringColIndexOfPlayerProperty() {
+        return stringColIndexOfPlayer;
+    }
+
+    public void setStringColIndexOfPlayer(String stringColIndexOfPlayer) {
+        this.stringColIndexOfPlayer.set(stringColIndexOfPlayer);
+    }
+
     public MyViewModel(IModel model) {
         this.model = model;
     }

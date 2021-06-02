@@ -18,10 +18,13 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 
 
-public class MyViewController implements Initializable {
+public class MyViewController implements Observer,IView,Initializable {
+    private MyViewModel myViewModel;
     public Maze maze;
     public TextField textField_mazeRows;
     public TextField textField_mazeColumns;
@@ -200,6 +203,22 @@ public class MyViewController implements Initializable {
 
     public void mouseClicked(MouseEvent mouseEvent) {
         mazeDisplayer.requestFocus();
+    }
+
+    @Override
+    public void displayMaze(Maze maze) {
+
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
+
+    public void setMyViewModel(MyViewModel myViewModel) {
+        this.myViewModel=myViewModel;
+        playerRow.textProperty().bind(myViewModel.getStringRowIndexOfPlayer());
+        playerCol.textProperty().bind(myViewModel.getStringColIndexOfPlayer());
     }
 }
 

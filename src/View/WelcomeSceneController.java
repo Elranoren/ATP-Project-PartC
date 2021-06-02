@@ -35,6 +35,9 @@ public class WelcomeSceneController implements Initializable {
             MyModel myModel = new MyModel();
             MyViewModel myViewModel = new MyViewModel(myModel);
             myModel.addObserver(myViewModel);
+            MyViewController myViewController = fxmlLoader.getController();
+            //myViewController.setMyViewModel(myViewModel);
+            myViewModel.addObserver(myViewController);
             stage.show();
             Main.mainStage.close();
         } catch(Exception e) {
