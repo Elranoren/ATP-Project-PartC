@@ -4,6 +4,7 @@ import Server.Configurations;
 import Server.Server;
 import algorithms.mazeGenerators.IMazeGenerator;
 import algorithms.mazeGenerators.Maze;
+import javafx.scene.input.KeyEvent;
 
 
 public interface IModel {
@@ -38,4 +39,8 @@ public interface IModel {
     }
 
     Maze getMaze();
+
+    void updatePlayerPosition(MovementDirection direction);
+
+    void stopServer();
 }

@@ -89,6 +89,7 @@ public class MazeDisplayer extends Canvas  {
 
     public void setS(Solution s) {
         this.s = s;
+        drawS(s);
     }
     public int getPlayerRow() {
         return playerRow;
@@ -151,9 +152,9 @@ public class MazeDisplayer extends Canvas  {
             graphicsContext.clearRect(0, 0, canvasWidth, canvasHeight);
 
             drawMazeWalls(graphicsContext, cellHeight, cellWidth, rows, cols);
-            drawSolution(graphicsContext, cellHeight, cellWidth,s);
-            graphicsContext.setFill(Color.BLACK);
-            graphicsContext.fillRect( this.startP.getColumnIndex()*cellWidth,this.startP.getRowIndex()*cellHeight, cellWidth, cellHeight);
+            drawSolution(graphicsContext, cellHeight, cellWidth);
+            //graphicsContext.setFill(Color.BLACK);
+            //graphicsContext.fillRect( this.startP.getColumnIndex()*cellWidth,this.startP.getRowIndex()*cellHeight, cellWidth, cellHeight);
             //graphicsContext.fillRect( this.endP.getColumnIndex()*cellWidth,this.endP.getRowIndex()*cellHeight, cellWidth, cellHeight);
             drawEndPosition (graphicsContext, cellHeight, cellWidth);
             drawPlayer(graphicsContext, cellHeight, cellWidth);
@@ -243,7 +244,7 @@ public class MazeDisplayer extends Canvas  {
         draw();
     }
 
-    private void drawSolution(GraphicsContext graphicsContext, double cellHeight, double cellWidth,Solution s) {
+    private void drawSolution(GraphicsContext graphicsContext, double cellHeight, double cellWidth) {
         if(this.s!=null){
             graphicsContext.setFill(Color.PINK);
             for (int i = 0; i < s.getSolutionPath().size(); i++) {
