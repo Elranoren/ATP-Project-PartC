@@ -18,6 +18,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -50,6 +53,9 @@ public class MyViewController implements Observer, IView, Initializable {
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
     private boolean startDrag;
+    private MediaPlayer marcoSong;
+    private Thread marcoThread;
+    private boolean stopMarcoSong = false;
 
     public String getUpdatePlayerRow() {
         return updatePlayerRow.get();
@@ -95,25 +101,31 @@ public class MyViewController implements Observer, IView, Initializable {
 
         this.myViewModel.generateMaze(rows, cols);
         menuItemSave.setDisable(false);
-//        String generateMethod = MyViewModel.getGeneratingAlgorithmConfig();
-//        if (generateMethod == null) {
-//            try {
-//                maze = new MyMazeGenerator().generate(Integer.valueOf(textField_mazeRows.getText()), Integer.valueOf(textField_mazeColumns.getText()));
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        } else {
-//            try {
-//                generateMethod = MyViewModel.getGeneratingAlgorithmConfig();
-//                if (generateMethod.equals("MyMazeGenerator"))
-//                    maze = new MyMazeGenerator().generate(Integer.valueOf(textField_mazeRows.getText()), Integer.valueOf(textField_mazeColumns.getText()));
-//                else
-//                    maze = new SimpleMazeGenerator().generate(Integer.valueOf(textField_mazeRows.getText()), Integer.valueOf(textField_mazeColumns.getText()));
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
+        if(marcoThread!=null&&marcoThread.isAlive()){
+            stopMarcoSong = true;
+            marcoSong.stop();
+        }
+        playMusic();
 
+    }
+
+    private void playMusic() {
+        this.stopMarcoSong = false;
+        marcoThread = new Thread(()->{
+            try{
+                while(!this.stopMarcoSong){
+                    Media song = new Media(this.getClass().getResource("/music/primeSong.mp3").toString());
+                    this.marcoSong = new MediaPlayer(song);
+                    marcoSong.play();
+                    Thread.sleep(156000);
+                }
+
+            }
+            catch (Exception e ){
+                System.out.println(e);
+            }
+        });
+        marcoThread.start();
     }
 
     public void solveMaze(ActionEvent actionEvent) {
@@ -281,6 +293,15 @@ public class MyViewController implements Observer, IView, Initializable {
         this.mousePosX = mouseEvent.getX();
         this.mousePosY = mouseEvent.getY();
         mouseEvent.consume();
+    }
+
+    public void scroll(ScrollEvent scrollEvent) {
+        if(scrollEvent.isControlDown()){
+            if(scrollEvent.getDeltaY()>=0)
+                mazeDisplayer.zoomIn();
+            else
+                mazeDisplayer.zoomOut();
+        }
     }
 }
 

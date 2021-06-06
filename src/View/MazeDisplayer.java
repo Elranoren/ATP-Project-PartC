@@ -27,7 +27,22 @@ public class MazeDisplayer extends Canvas  {
     StringProperty imageFileNamePlayer = new SimpleStringProperty();
     private double cellHeight;
     private double cellWidth;
+    private Object zoomLock;
+    private double canvasHeight;
+    private double canvasWidth;
+    private double zoomVal;
+    private double delta;
+    private Object changeMazeSize;
 
+    public MazeDisplayer() {
+        this.cellHeight = 0;
+        this.cellWidth = 0;
+        this.zoomLock = new Object();
+        this.changeMazeSize = new Object();
+        this.zoomVal = 0;
+        this.delta = 5;
+
+    }
     public String getImageFileNameSea() {
         return imageFileNameSea.get();
     }
@@ -81,9 +96,6 @@ public class MazeDisplayer extends Canvas  {
         this.cellWidth = cellWidth;
     }
 
-    public MazeDisplayer() {
-        rightMovment = true;
-    }
 
     public Position getStartP() {
         return startP;
@@ -151,18 +163,21 @@ public class MazeDisplayer extends Canvas  {
 
     public void drawMaze(int[][] maze) {
         this.maze = maze;
+        this.canvasHeight = getHeight();
+        this.canvasWidth = getWidth();
         draw();
     }
 
     private void draw() {
         if(maze != null){
-            double canvasHeight = getHeight();
-            double canvasWidth = getWidth();
             int rows = maze.length;
             int cols = maze[0].length;
-
-             this.cellHeight = canvasHeight / rows;
-             this.cellWidth = canvasWidth / cols;
+            synchronized (this.changeMazeSize){
+                synchronized (this.zoomLock){
+                    this.cellHeight = (canvasHeight + zoomVal) / rows;
+                    this.cellWidth = (canvasWidth + zoomVal) / cols;
+                }
+            }
 
             GraphicsContext graphicsContext = getGraphicsContext2D();
             //clear the canvas:
@@ -274,5 +289,20 @@ public class MazeDisplayer extends Canvas  {
         }
 
         }
+    }
+
+    public void zoomIn() {
+        synchronized (this.zoomLock){
+                zoomVal+=this.delta;
+        }
+        drawMaze(maze);
+    }
+
+    public void zoomOut() {
+        synchronized (this.zoomLock){
+            if(((canvasHeight+this.zoomVal)/this.maze.length>=1)&&(canvasWidth+this.zoomVal)/this.maze[0].length>=1)
+                zoomVal-=this.delta;
+        }
+        drawMaze(maze);
     }
 }
