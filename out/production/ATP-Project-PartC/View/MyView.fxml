@@ -72,13 +72,13 @@
                                 <MenuItem mnemonicParsing="false" text="Properties" />
                             </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="Help">
+                        <Menu mnemonicParsing="false" text="About">
                         <items>
                             <MenuItem fx:id="menuAbout" onAction="#aboutMenu" mnemonicParsing="false"  text="About" />
                         </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Exit" />
-
+                        <Menu mnemonicParsing="false" text="Help" />
                     </menus>
                 </MenuBar>
             </children>
