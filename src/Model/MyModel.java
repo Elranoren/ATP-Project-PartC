@@ -13,6 +13,7 @@ import algorithms.search.*;
 import javafx.beans.InvalidationListener;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -219,5 +220,31 @@ public class MyModel extends Observable implements IModel {
     public void stopServer() {
         this.generateMazeServer.stop();
         this.solveMazeServer.stop();
+    }
+
+    @Override
+    public void movePlayer(MouseEvent mouseEvent, double mousePosX, double mousePosY) {
+        if(maze!=null){
+            if(!mouseEvent.isControlDown()){
+                if(mouseEvent.getX()>mousePosX){
+                    if (!(colIndexOfPlayer == maze.getColumns() - 1 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer + 1] == 1))
+                        colIndexOfPlayer += 1;
+                }
+                else if(mouseEvent.getX()<mousePosX){
+                    if (!(colIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer - 1] == 1))
+                        colIndexOfPlayer -= 1;
+                }
+                else if(mouseEvent.getY()>mousePosY ){
+                    if (!(rowIndexOfPlayer == maze.getRows()-1 || maze.getMaze()[rowIndexOfPlayer+1][colIndexOfPlayer ] == 1))
+                        rowIndexOfPlayer += 1;
+                }
+                else if(mouseEvent.getY()<mousePosY ){
+                    if (!(rowIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer-1][colIndexOfPlayer ] == 1))
+                        rowIndexOfPlayer -= 1;
+                }
+            }
+        }
+        setChanged();
+        notifyObservers(new Position(rowIndexOfPlayer,colIndexOfPlayer));
     }
 }

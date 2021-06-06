@@ -33,13 +33,15 @@ import java.util.Observer;
 import java.util.ResourceBundle;
 
 
-public class MyViewController implements Observer,IView,Initializable {
+public class MyViewController implements Observer, IView, Initializable {
     private MyViewModel myViewModel;
     public TextField textField_mazeRows;
     public TextField textField_mazeColumns;
     public MazeDisplayer mazeDisplayer;
     public Label playerRow;
     public Label playerCol;
+    public double mousePosX;
+    public double mousePosY;
 
     public javafx.scene.control.MenuItem menuItemNew;
     public javafx.scene.control.MenuItem menuItemSave;
@@ -47,6 +49,7 @@ public class MyViewController implements Observer,IView,Initializable {
     public javafx.scene.control.MenuItem menuAbout;
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
+    private boolean startDrag;
 
     public String getUpdatePlayerRow() {
         return updatePlayerRow.get();
@@ -66,7 +69,8 @@ public class MyViewController implements Observer,IView,Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if(MyViewModel.getThreadsNumConfig()==null)
+        startDrag = false;
+        if (MyViewModel.getThreadsNumConfig() == null)
             MyViewModel.setThreadsNumConfig("10");
         playerRow.textProperty().bind(updatePlayerRow);
         playerCol.textProperty().bind(updatePlayerCol);
@@ -76,16 +80,15 @@ public class MyViewController implements Observer,IView,Initializable {
         mazeDisplayer.setS(null);
         int rows = -1;
         int cols = -1;
-        try{
-             rows = Integer.valueOf(textField_mazeRows.getText());
-             cols = Integer.valueOf(textField_mazeColumns.getText());
+        try {
+            rows = Integer.valueOf(textField_mazeRows.getText());
+            cols = Integer.valueOf(textField_mazeColumns.getText());
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             errorAlert("Please enter valid numbers of rows/columns");
             return;
         }
-        if(rows<2 || cols<2){
+        if (rows < 2 || cols < 2) {
             errorAlert("Please enter rows and columns larger than 2 ");
             return;
         }
@@ -114,10 +117,9 @@ public class MyViewController implements Observer,IView,Initializable {
     }
 
     public void solveMaze(ActionEvent actionEvent) {
-        if(this.myViewModel.getMaze()==null){
+        if (this.myViewModel.getMaze() == null) {
             errorAlert("Maze didn't generate yet , please press first on 'Generate Maze'");
-        }
-        else {
+        } else {
             this.myViewModel.solveMaze();
         }
 
@@ -165,11 +167,11 @@ public class MyViewController implements Observer,IView,Initializable {
     @Override
     public void update(Observable o, Object arg) {
 
-        if(arg instanceof Maze)
-            mazeGenerated((Maze)arg);
-        else if(arg instanceof Position)
-            playerMoved((Position)arg);
-        else if(arg instanceof Solution)
+        if (arg instanceof Maze)
+            mazeGenerated((Maze) arg);
+        else if (arg instanceof Position)
+            playerMoved((Position) arg);
+        else if (arg instanceof Solution)
             mazeSolved((Solution) arg);
 
     }
@@ -191,7 +193,7 @@ public class MyViewController implements Observer,IView,Initializable {
     }
 
     public void setMyViewModel(MyViewModel myViewModel) {
-        this.myViewModel=myViewModel;
+        this.myViewModel = myViewModel;
         playerRow.textProperty().bind(myViewModel.getStringRowIndexOfPlayer());
         playerCol.textProperty().bind(myViewModel.getStringColIndexOfPlayer());
     }
@@ -202,15 +204,14 @@ public class MyViewController implements Observer,IView,Initializable {
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze files (*.maze)", "*.maze"));
         //fc.setInitialDirectory(new File("./resources"));
         File saveFile = fc.showSaveDialog(null);
-        if(saveFile!=null)
-        {
+        if (saveFile != null) {
             File newFile = new File(saveFile.getPath());
             ObjectOutputStream objectOutputStream = null;
             try {
                 objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFile));
                 Object[] objects = new Object[2];
                 objects[0] = myViewModel.getMaze();
-                objects[1] = new Position(myViewModel.getRowIndexOfPlayer(),myViewModel.getColIndexOfPlayer());
+                objects[1] = new Position(myViewModel.getRowIndexOfPlayer(), myViewModel.getColIndexOfPlayer());
                 objectOutputStream.writeObject(objects);
                 objectOutputStream.flush();
                 objectOutputStream.close();
@@ -218,8 +219,7 @@ public class MyViewController implements Observer,IView,Initializable {
                 errorAlert("Save failed");
                 e.printStackTrace();
             }
-        }
-        else
+        } else
             errorAlert("Save failed");
 
     }
@@ -238,7 +238,7 @@ public class MyViewController implements Observer,IView,Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -246,6 +246,41 @@ public class MyViewController implements Observer,IView,Initializable {
     public void setViewModel(MyViewModel myViewModel) {
         this.myViewModel = myViewModel;
         this.myViewModel.addObserver(this);
+    }
+
+    public void mouseDragged(MouseEvent mouseEvent) {
+
+            if (this.startDrag) {
+                if (Math.abs(mouseEvent.getX() - mousePosX) >= mazeDisplayer.getCellWidth() || Math.abs(mouseEvent.getY() - mousePosY) >= mazeDisplayer.getCellHeight()) {
+                    myViewModel.movePlayer(mouseEvent, mousePosX, mousePosY);
+                    mousePosX = mouseEvent.getX();
+                    mousePosY = mouseEvent.getY();
+                }
+
+            }
+
+        }
+
+
+
+    public void dragDetected(MouseEvent mouseEvent) {
+
+            this.mousePosX = mouseEvent.getX();
+            this.mousePosY = mouseEvent.getY();
+            this.startDrag = true;
+        }
+
+
+    public void mousePressed(MouseEvent mouseEvent) {
+        this.mousePosX = mouseEvent.getX();
+        this.mousePosY = mouseEvent.getY();
+    }
+
+    public void mouseReleased(MouseEvent mouseEvent) {
+        this.startDrag = false;
+        this.mousePosX = mouseEvent.getX();
+        this.mousePosY = mouseEvent.getY();
+        mouseEvent.consume();
     }
 }
 

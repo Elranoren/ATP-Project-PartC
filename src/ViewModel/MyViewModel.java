@@ -13,6 +13,7 @@ import algorithms.search.Solution;
 import javafx.beans.property.StringProperty;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -167,6 +168,10 @@ public class MyViewModel extends Observable implements Observer {
 
     public void solveMaze() {
         model.solveMaze();
+    }
+
+    public void movePlayer(MouseEvent mouseEvent, double mousePosX, double mousePosY) {
+        model. movePlayer( mouseEvent,mousePosX, mousePosY);
     }
 }
 

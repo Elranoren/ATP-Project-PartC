@@ -25,6 +25,8 @@ public class MazeDisplayer extends Canvas  {
     // wall and player images:
     StringProperty imageFileNameWall = new SimpleStringProperty();
     StringProperty imageFileNamePlayer = new SimpleStringProperty();
+    private double cellHeight;
+    private double cellWidth;
 
     public String getImageFileNameSea() {
         return imageFileNameSea.get();
@@ -63,6 +65,21 @@ public class MazeDisplayer extends Canvas  {
     }
 
 
+    public double getCellHeight() {
+        return cellHeight;
+    }
+
+    public void setCellHeight(double cellHeight) {
+        this.cellHeight = cellHeight;
+    }
+
+    public double getCellWidth() {
+        return cellWidth;
+    }
+
+    public void setCellWidth(double cellWidth) {
+        this.cellWidth = cellWidth;
+    }
 
     public MazeDisplayer() {
         rightMovment = true;
@@ -144,8 +161,8 @@ public class MazeDisplayer extends Canvas  {
             int rows = maze.length;
             int cols = maze[0].length;
 
-            double cellHeight = canvasHeight / rows;
-            double cellWidth = canvasWidth / cols;
+             this.cellHeight = canvasHeight / rows;
+             this.cellWidth = canvasWidth / cols;
 
             GraphicsContext graphicsContext = getGraphicsContext2D();
             //clear the canvas:
