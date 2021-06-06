@@ -1,0 +1,5 @@
+package Model;
+
+public enum MovementDirection {
+    UP, DOWN, LEFT, RIGHT,NUMPAD1,NUMPAD2,NUMPAD3,NUMPAD4,NUMPAD6,NUMPAD7,NUMPAD8,NUMPAD9
+}

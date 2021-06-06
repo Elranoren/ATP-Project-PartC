@@ -18,6 +18,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -27,19 +30,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
 
 
-public class MyViewController implements Observer,IView,Initializable {
+public class MyViewController implements Observer, IView, Initializable {
     private MyViewModel myViewModel;
-    public Maze maze;
     public TextField textField_mazeRows;
     public TextField textField_mazeColumns;
     public MazeDisplayer mazeDisplayer;
     public Label playerRow;
     public Label playerCol;
+    public double mousePosX;
+    public double mousePosY;
 
     public javafx.scene.control.MenuItem menuItemNew;
     public javafx.scene.control.MenuItem menuItemSave;
@@ -47,6 +52,10 @@ public class MyViewController implements Observer,IView,Initializable {
     public javafx.scene.control.MenuItem menuAbout;
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
+    private boolean startDrag;
+    private MediaPlayer marcoSong;
+    private Thread marcoThread;
+    private boolean stopMarcoSong = false;
 
     public String getUpdatePlayerRow() {
         return updatePlayerRow.get();
@@ -66,63 +75,64 @@ public class MyViewController implements Observer,IView,Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if(MyViewModel.getThreadsNumConfig()==null)
+        startDrag = false;
+        if (MyViewModel.getThreadsNumConfig() == null)
             MyViewModel.setThreadsNumConfig("10");
         playerRow.textProperty().bind(updatePlayerRow);
         playerCol.textProperty().bind(updatePlayerCol);
     }
 
     public void generateMaze(ActionEvent actionEvent) {
-        menuItemSave.setDisable(false);
-        String generateMethod = MyViewModel.getGeneratingAlgorithmConfig();
-        if (generateMethod == null) {
-            try {
-                maze = new MyMazeGenerator().generate(Integer.valueOf(textField_mazeRows.getText()), Integer.valueOf(textField_mazeColumns.getText()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                generateMethod = MyViewModel.getGeneratingAlgorithmConfig();
-                if (generateMethod.equals("MyMazeGenerator"))
-                    maze = new MyMazeGenerator().generate(Integer.valueOf(textField_mazeRows.getText()), Integer.valueOf(textField_mazeColumns.getText()));
-                else
-                    maze = new SimpleMazeGenerator().generate(Integer.valueOf(textField_mazeRows.getText()), Integer.valueOf(textField_mazeColumns.getText()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         mazeDisplayer.setS(null);
-        mazeDisplayer.setStartP(maze.getStartPosition());
-        mazeDisplayer.setEndP(maze.getGoalPosition());
-        mazeDisplayer.drawMaze(maze.getMaze());
-        setPlayerPosition(maze.getStartPosition().getRowIndex(), maze.getStartPosition().getColumnIndex());
+        int rows = -1;
+        int cols = -1;
+        try {
+            rows = Integer.valueOf(textField_mazeRows.getText());
+            cols = Integer.valueOf(textField_mazeColumns.getText());
+
+        } catch (Exception e) {
+            errorAlert("Please enter valid numbers of rows/columns");
+            return;
+        }
+        if (rows < 2 || cols < 2) {
+            errorAlert("Please enter rows and columns larger than 2 ");
+            return;
+        }
+
+        this.myViewModel.generateMaze(rows, cols);
+        menuItemSave.setDisable(false);
+        if(marcoThread!=null&&marcoThread.isAlive()){
+            stopMarcoSong = true;
+            marcoSong.stop();
+        }
+        playMusic();
+
+    }
+
+    private void playMusic() {
+        this.stopMarcoSong = false;
+        marcoThread = new Thread(()->{
+            try{
+                while(!this.stopMarcoSong){
+                    Media song = new Media(this.getClass().getResource("/music/primeSong.mp3").toString());
+                    this.marcoSong = new MediaPlayer(song);
+                    marcoSong.play();
+                    Thread.sleep(156000);
+                }
+
+            }
+            catch (Exception e ){
+                System.out.println(e);
+            }
+        });
+        marcoThread.start();
     }
 
     public void solveMaze(ActionEvent actionEvent) {
-        if (maze == null) {
+        if (this.myViewModel.getMaze() == null) {
             errorAlert("Maze didn't generate yet , please press first on 'Generate Maze'");
-
         } else {
-            ISearchingAlgorithm searchingAlgorithm = null;
-            Solution s = null;
-            ISearchable searchable = new SearchableMaze(maze);
-            String solvingMethod = MyViewModel.getSearchAlgorithmConfig();
-            if (solvingMethod == null)
-                searchingAlgorithm = new BreadthFirstSearch();
-            else if (solvingMethod.equals("BreadthFirstSearch"))
-                searchingAlgorithm = new BreadthFirstSearch();
-            else if (solvingMethod.equals("BestFirstSearch"))
-                searchingAlgorithm = new BestFirstSearch();
-            else
-                searchingAlgorithm = new DepthFirstSearch();
-            try {
-                s = searchingAlgorithm.solve(searchable);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            mazeDisplayer.drawS(s);
-
+            this.myViewModel.solveMaze();
         }
 
 //        Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -147,69 +157,7 @@ public class MyViewController implements Observer,IView,Initializable {
     }
 
     public void keyPressed(KeyEvent keyEvent) {
-        int row = mazeDisplayer.getPlayerRow();
-        int col = mazeDisplayer.getPlayerCol();
-
-        switch (keyEvent.getCode()) {
-            case UP:
-                if (!(row == 0 || maze.getMaze()[row - 1][col] == 1))
-                    row -= 1;
-                break;
-            case DOWN:
-                if (!(row == maze.getRows() - 1 || maze.getMaze()[row + 1][col] == 1))
-                    row += 1;
-                break;
-            case RIGHT:
-                if (!(col == maze.getColumns() - 1 || maze.getMaze()[row][col + 1] == 1))
-                    col += 1;
-                break;
-            case LEFT:
-                if (!(col == 0 || maze.getMaze()[row][col - 1] == 1))
-                    col -= 1;
-                break;
-            case NUMPAD8:
-                if (!(row == 0 || maze.getMaze()[row - 1][col] == 1))
-                    row -= 1;
-                break;
-            case NUMPAD2:
-                if (!(row == maze.getRows() - 1 || maze.getMaze()[row + 1][col] == 1))
-                    row += 1;
-                break;
-            case NUMPAD6:
-                if (!(col == maze.getColumns() - 1 || maze.getMaze()[row][col + 1] == 1))
-                    col += 1;
-                break;
-            case NUMPAD4:
-                if (!(col == 0 || maze.getMaze()[row][col - 1] == 1))
-                    col -= 1;
-                break;
-            case NUMPAD9:
-                if (!(row == 0 || col == maze.getColumns() - 1 || maze.getMaze()[row - 1][col + 1] == 1)) {
-                    row -= 1;
-                    col += 1;
-                }
-                break;
-            case NUMPAD7:
-                if (!(row == 0 || col == 0 || maze.getMaze()[row - 1][col - 1] == 1)) {
-                    row -= 1;
-                    col -= 1;
-                }
-                break;
-            case NUMPAD1:
-                if (!(row == maze.getRows() - 1 || col == 0 || maze.getMaze()[row + 1][col - 1] == 1)) {
-                    row += 1;
-                    col -= 1;
-                }
-                break;
-            case NUMPAD3:
-                if (!(row == maze.getRows() - 1 || col == maze.getColumns() - 1 || maze.getMaze()[row + 1][col + 1] == 1)) {
-                    row += 1;
-                    col += 1;
-                }
-                break;
-        }
-        setPlayerPosition(row, col);
-
+        this.myViewModel.movePlayer(keyEvent);
         keyEvent.consume();
     }
 
@@ -231,10 +179,33 @@ public class MyViewController implements Observer,IView,Initializable {
     @Override
     public void update(Observable o, Object arg) {
 
+        if (arg instanceof Maze)
+            mazeGenerated((Maze) arg);
+        else if (arg instanceof Position)
+            playerMoved((Position) arg);
+        else if (arg instanceof Solution)
+            mazeSolved((Solution) arg);
+
+    }
+
+    private void mazeSolved(Solution s) {
+        mazeDisplayer.setS(s);
+
+
+    }
+
+    private void playerMoved(Position arg) {
+        setPlayerPosition(arg.getRowIndex(), arg.getColumnIndex());
+    }
+
+    private void mazeGenerated(Maze arg) {
+        mazeDisplayer.setStartP(arg.getStartPosition());
+        mazeDisplayer.setEndP(arg.getGoalPosition());
+        mazeDisplayer.drawMaze(arg.getMaze());
     }
 
     public void setMyViewModel(MyViewModel myViewModel) {
-        this.myViewModel=myViewModel;
+        this.myViewModel = myViewModel;
         playerRow.textProperty().bind(myViewModel.getStringRowIndexOfPlayer());
         playerCol.textProperty().bind(myViewModel.getStringColIndexOfPlayer());
     }
@@ -245,15 +216,14 @@ public class MyViewController implements Observer,IView,Initializable {
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze files (*.maze)", "*.maze"));
         //fc.setInitialDirectory(new File("./resources"));
         File saveFile = fc.showSaveDialog(null);
-        if(saveFile!=null)
-        {
+        if (saveFile != null) {
             File newFile = new File(saveFile.getPath());
             ObjectOutputStream objectOutputStream = null;
             try {
                 objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFile));
                 Object[] objects = new Object[2];
                 objects[0] = myViewModel.getMaze();
-                objects[1] = new Position(myViewModel.getRowIndexOfPlayer(),myViewModel.getColIndexOfPlayer());
+                objects[1] = new Position(myViewModel.getRowIndexOfPlayer(), myViewModel.getColIndexOfPlayer());
                 objectOutputStream.writeObject(objects);
                 objectOutputStream.flush();
                 objectOutputStream.close();
@@ -261,8 +231,7 @@ public class MyViewController implements Observer,IView,Initializable {
                 errorAlert("Save failed");
                 e.printStackTrace();
             }
-        }
-        else
+        } else
             errorAlert("Save failed");
 
     }
@@ -281,8 +250,57 @@ public class MyViewController implements Observer,IView,Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setViewModel(MyViewModel myViewModel) {
+        this.myViewModel = myViewModel;
+        this.myViewModel.addObserver(this);
+    }
+
+    public void mouseDragged(MouseEvent mouseEvent) {
+
+            if (this.startDrag) {
+                if (Math.abs(mouseEvent.getX() - mousePosX) >= mazeDisplayer.getCellWidth() || Math.abs(mouseEvent.getY() - mousePosY) >= mazeDisplayer.getCellHeight()) {
+                    myViewModel.movePlayer(mouseEvent, mousePosX, mousePosY);
+                    mousePosX = mouseEvent.getX();
+                    mousePosY = mouseEvent.getY();
+                }
+
+            }
+
+        }
+
+
+
+    public void dragDetected(MouseEvent mouseEvent) {
+
+            this.mousePosX = mouseEvent.getX();
+            this.mousePosY = mouseEvent.getY();
+            this.startDrag = true;
+        }
+
+
+    public void mousePressed(MouseEvent mouseEvent) {
+        this.mousePosX = mouseEvent.getX();
+        this.mousePosY = mouseEvent.getY();
+    }
+
+    public void mouseReleased(MouseEvent mouseEvent) {
+        this.startDrag = false;
+        this.mousePosX = mouseEvent.getX();
+        this.mousePosY = mouseEvent.getY();
+        mouseEvent.consume();
+    }
+
+    public void scroll(ScrollEvent scrollEvent) {
+        if(scrollEvent.isControlDown()){
+            if(scrollEvent.getDeltaY()>=0)
+                mazeDisplayer.zoomIn();
+            else
+                mazeDisplayer.zoomOut();
         }
     }
 }

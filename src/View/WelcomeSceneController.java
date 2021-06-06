@@ -1,5 +1,6 @@
 package View;
 
+import Model.IModel;
 import Model.MyModel;
 import ViewModel.MyViewModel;
 import javafx.beans.property.DoubleProperty;
@@ -33,10 +34,12 @@ public class WelcomeSceneController implements Initializable {
             stage.setScene(new Scene(root));
             stage.setTitle("Game");
             MyModel myModel = new MyModel();
+            myModel.startServer();
             MyViewModel myViewModel = new MyViewModel(myModel);
-            myModel.addObserver(myViewModel);
             MyViewController myViewController = fxmlLoader.getController();
-            //myViewController.setMyViewModel(myViewModel);
+            /////////
+            myViewController.setViewModel(myViewModel);
+            myModel.addObserver(myViewModel);
             myViewModel.addObserver(myViewController);
             stage.show();
             Main.mainStage.close();
@@ -112,4 +115,5 @@ public class WelcomeSceneController implements Initializable {
             e.printStackTrace();
         }
     }
+
 }

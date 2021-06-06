@@ -1,5 +1,6 @@
 package View;
 
+import Model.IModel;
 import Model.MyModel;
 import Server.Configurations;
 import ViewModel.MyViewModel;
@@ -17,16 +18,15 @@ public class Main extends Application {
         this.mainStage = primaryStage;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeScene.fxml"));
         Parent root = fxmlLoader.load();
-        WelcomeSceneController view = fxmlLoader.getController();
+
         Scene scene = new Scene(root, 500, 500);
         mainStage.setTitle("3000 Leagues In Search Of Mother Maze Game");
         mainStage.setScene(scene);
-        view.setSizeOfScene(scene);
         mainStage.show();
         /////////////
-//        MyModel model = new MyModel();
-//        MyViewModel viewModel = new MyViewModel(model);
-//        model.addObserver(viewModel);
+        WelcomeSceneController view = fxmlLoader.getController();
+        view.setSizeOfScene(scene);
+
         /*
         MyModel model = new MyModel();
         MyViewModel myViewModel = new MyViewModel(model);
