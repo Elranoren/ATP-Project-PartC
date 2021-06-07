@@ -8,15 +8,20 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class WelcomeSceneController implements Initializable {
@@ -41,6 +46,7 @@ public class WelcomeSceneController implements Initializable {
             myViewController.setViewModel(myViewModel);
             myModel.addObserver(myViewModel);
             myViewModel.addObserver(myViewController);
+            onCloseAppAction(stage,myViewController); // close the application (the stage and the servers)
             stage.show();
             Main.mainStage.close();
         } catch(Exception e) {
@@ -62,6 +68,22 @@ public class WelcomeSceneController implements Initializable {
         }
         */
 
+    }
+
+    private void onCloseAppAction(Stage stage, MyViewController myViewController) {
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent windowEvent) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setContentText("Are you sure you want to exit the app?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() != ButtonType.OK)
+                    windowEvent.consume();
+                 else {
+                    myViewController.exitMenu(null);
+                    System.exit(0);
+                 }
+            }
+        });
     }
 
     public void setSizeOfScene(Scene scene) {
