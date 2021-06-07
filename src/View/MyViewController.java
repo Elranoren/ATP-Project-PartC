@@ -50,6 +50,7 @@ public class MyViewController implements Observer, IView, Initializable {
     public javafx.scene.control.MenuItem menuItemSave;
     public javafx.scene.control.MenuItem menuItemLoad;
     public javafx.scene.control.MenuItem menuAbout;
+    public javafx.scene.control.Button generateButton;
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
     private boolean startDrag;
@@ -302,6 +303,13 @@ public class MyViewController implements Observer, IView, Initializable {
             else
                 mazeDisplayer.zoomOut();
         }
+    }
+
+    public void exitMenu(ActionEvent actionEvent) {
+        Stage cStage = (Stage) generateButton.getScene().getWindow();
+        cStage.close();
+        myViewModel.stopServers();
+        System.exit(0);
     }
 }
 
