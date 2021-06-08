@@ -26,6 +26,8 @@ public class MyViewModel extends Observable implements Observer {
     private int rowIndexOfPlayer;
     private StringProperty stringRowIndexOfPlayer;
     private StringProperty stringColIndexOfPlayer;
+    private int rowIndexOfPipito;
+    private int colIndexOfPipito;
 
     public StringProperty getStringRowIndexOfPlayer() {
         return stringRowIndexOfPlayer;
@@ -83,8 +85,8 @@ public class MyViewModel extends Observable implements Observer {
     public void update(Observable o, Object arg) {
         if(arg instanceof Maze)
             mazeGenerated((Maze)arg);
-        else if(arg instanceof Position)
-            playerMoved((Position)arg);
+        else if(arg instanceof Position[])
+            playerMoved((Position[]) arg);
         else if(arg instanceof Solution)
             mazeSolved((Solution) arg);
 
@@ -98,11 +100,11 @@ public class MyViewModel extends Observable implements Observer {
         notifyObservers(sol);
     }
 
-    private void playerMoved(Position arg) {
-        this.rowIndexOfPlayer = arg.getRowIndex();
-        //setStringRowIndexOfPlayer(this.rowIndexOfPlayer+"");
-        this.colIndexOfPlayer = arg.getColumnIndex();
-        //setStringColIndexOfPlayer(this.colIndexOfPlayer+"");
+    private void playerMoved(Position[] arg) {
+        this.rowIndexOfPlayer = arg[0].getRowIndex();
+        this.rowIndexOfPipito = arg[1].getRowIndex();
+        this.colIndexOfPlayer = arg[0].getColumnIndex();
+        this.colIndexOfPipito = arg[1].getColumnIndex();
 
     }
 
@@ -176,6 +178,22 @@ public class MyViewModel extends Observable implements Observer {
 
     public void loadFile(Maze maze, Position playerPos) {
         model.loadFile(maze,playerPos);
+    }
+
+    public int getRowIndexOfPipito() {
+        return rowIndexOfPipito;
+    }
+
+    public void setRowIndexOfPipito(int rowIndexOfPipito) {
+        this.rowIndexOfPipito = rowIndexOfPipito;
+    }
+
+    public int getColIndexOfPipito() {
+        return colIndexOfPipito;
+    }
+
+    public void setColIndexOfPipito(int colIndexOfPipito) {
+        this.colIndexOfPipito = colIndexOfPipito;
     }
 }
 

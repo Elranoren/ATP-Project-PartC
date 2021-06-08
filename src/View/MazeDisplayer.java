@@ -15,6 +15,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class MazeDisplayer extends Canvas  {
+    private int pipitoRow;
+    private int pipitoCol;
+
     public int[][] getMaze() {
         return maze;
     }
@@ -31,6 +34,7 @@ public class MazeDisplayer extends Canvas  {
     private int playerRow;
     private int playerCol;
     // wall and player images:
+    StringProperty imageFileNamePipito = new SimpleStringProperty();
     StringProperty imageFileNameWall = new SimpleStringProperty();
     StringProperty imageFileNamePlayer = new SimpleStringProperty();
     StringProperty imageFileNameseaDown = new SimpleStringProperty();
@@ -87,6 +91,34 @@ public class MazeDisplayer extends Canvas  {
 
     public void setImageFileNameseaDown(String imageFileNameseaDown) {
         this.imageFileNameseaDown.set(imageFileNameseaDown);
+    }
+
+    public int getPipitoRow() {
+        return pipitoRow;
+    }
+
+    public void setPipitoRow(int pipitoRow) {
+        this.pipitoRow = pipitoRow;
+    }
+
+    public int getPipitoCol() {
+        return pipitoCol;
+    }
+
+    public void setPipitoCol(int pipitoCol) {
+        this.pipitoCol = pipitoCol;
+    }
+
+    public String getImageFileNamePipito() {
+        return imageFileNamePipito.get();
+    }
+
+    public StringProperty imageFileNamePipitoProperty() {
+        return imageFileNamePipito;
+    }
+
+    public void setImageFileNamePipito(String imageFileNamePipito) {
+        this.imageFileNamePipito.set(imageFileNamePipito);
     }
 
     public MazeDisplayer() {
@@ -184,9 +216,11 @@ public class MazeDisplayer extends Canvas  {
         return playerCol;
     }
 
-    public void setPlayerPosition(int row, int col) {
-        this.playerRow = row;
-        this.playerCol = col;
+    public void setPlayerPosition(Position[] arg ) {
+        this.playerRow = arg[0].getRowIndex();
+        this.playerCol = arg[0].getColumnIndex();
+        this.pipitoRow = arg[1].getRowIndex();
+        this.pipitoCol = arg[1].getColumnIndex();
         draw();
     }
 
@@ -246,8 +280,27 @@ public class MazeDisplayer extends Canvas  {
             //graphicsContext.fillRect( this.endP.getColumnIndex()*cellWidth,this.endP.getRowIndex()*cellHeight, cellWidth, cellHeight);
             drawEndPosition (graphicsContext, cellHeight, cellWidth);
             drawPlayer(graphicsContext, cellHeight, cellWidth);
+            drawPipito(graphicsContext, cellHeight, cellWidth);
         }
     }
+
+    private void drawPipito(GraphicsContext graphicsContext, double cellHeight, double cellWidth) {
+        if(!(getPipitoCol()==getPlayerCol() && getPlayerRow() == getPipitoRow())){
+        double x = getPipitoCol() * cellWidth+startX;
+        double y = getPipitoRow() * cellHeight+startY;
+        graphicsContext.setFill(Color.GREEN);
+
+        Image playerImage = null;
+        try {
+            playerImage = new Image(new FileInputStream(getImageFileNamePipito()));
+        } catch (FileNotFoundException e) {
+            System.out.println("There is no player image file");
+        }
+        if(playerImage == null)
+            graphicsContext.fillRect(x, y, cellWidth, cellHeight);
+        else
+            graphicsContext.drawImage(playerImage, x, y, cellWidth, cellHeight);
+    }}
 
     private void drawEndPosition(GraphicsContext graphicsContext, double cellHeight, double cellWidth) {
         double x = this.endP.getColumnIndex() * cellWidth+startX;
@@ -382,4 +435,5 @@ public class MazeDisplayer extends Canvas  {
             drawMaze(maze);
         }
     }
+
 }

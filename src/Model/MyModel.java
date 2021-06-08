@@ -22,6 +22,8 @@ import java.util.Observable;
 
 public class MyModel extends Observable implements IModel {
     private Solution sol;
+    private int rowIndexOfPipito;
+    private int colIndexOfPipito;
     private int rowIndexOfPlayer;
     private int colIndexOfPlayer;
     private Maze maze;
@@ -65,38 +67,49 @@ public class MyModel extends Observable implements IModel {
 
     @Override
     public void updatePlayerPosition(MovementDirection direction) {
+        rowIndexOfPipito = rowIndexOfPlayer;
+        colIndexOfPipito = colIndexOfPlayer;
         switch (direction){
             case UP:
-                if (!(rowIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer - 1][colIndexOfPlayer] == 1))
+                if (!(rowIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer - 1][colIndexOfPlayer] == 1)) {
                     rowIndexOfPlayer -= 1;
+                }
                 break;
             case DOWN:
-                if (!(rowIndexOfPlayer == maze.getRows() - 1 || maze.getMaze()[rowIndexOfPlayer + 1][colIndexOfPlayer] == 1))
+                if (!(rowIndexOfPlayer == maze.getRows() - 1 || maze.getMaze()[rowIndexOfPlayer + 1][colIndexOfPlayer] == 1)) {
                     rowIndexOfPlayer += 1;
+                }
                 break;
             case RIGHT:
-                if (!(colIndexOfPlayer == maze.getColumns() - 1 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer + 1] == 1))
+                if (!(colIndexOfPlayer == maze.getColumns() - 1 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer + 1] == 1)) {
                     colIndexOfPlayer += 1;
+                }
                 break;
             case LEFT:
-                if (!(colIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer - 1] == 1))
+                if (!(colIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer - 1] == 1)) {
                     colIndexOfPlayer -= 1;
+                }
                 break;
             case NUMPAD8:
-                if (!(rowIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer - 1][colIndexOfPlayer] == 1))
+                if (!(rowIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer - 1][colIndexOfPlayer] == 1)) {
                     rowIndexOfPlayer -= 1;
+                }
                 break;
             case NUMPAD2:
-                if (!(rowIndexOfPlayer == maze.getRows() - 1 || maze.getMaze()[rowIndexOfPlayer + 1][colIndexOfPlayer] == 1))
+                if (!(rowIndexOfPlayer == maze.getRows() - 1 || maze.getMaze()[rowIndexOfPlayer + 1][colIndexOfPlayer] == 1)){
                     rowIndexOfPlayer += 1;
+                }
+
                 break;
             case NUMPAD6:
-                if (!(colIndexOfPlayer == maze.getColumns() - 1 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer + 1] == 1))
+                if (!(colIndexOfPlayer == maze.getColumns() - 1 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer + 1] == 1)) {
                     colIndexOfPlayer += 1;
+                }
                 break;
             case NUMPAD4:
-                if (!(colIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer - 1] == 1))
+                if (!(colIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer - 1] == 1)) {
                     colIndexOfPlayer -= 1;
+                }
                 break;
             case NUMPAD9:
                 if (!(rowIndexOfPlayer == 0 || colIndexOfPlayer == maze.getColumns() - 1 || maze.getMaze()[rowIndexOfPlayer - 1][colIndexOfPlayer + 1] == 1)) {
@@ -124,8 +137,12 @@ public class MyModel extends Observable implements IModel {
                 break;
         }
 
+
+        Position[] toSend = new Position[2];
+        toSend[0] = new Position(rowIndexOfPlayer,colIndexOfPlayer);
+        toSend[1] = new Position(rowIndexOfPipito,colIndexOfPipito);
         setChanged();
-        notifyObservers(new Position(rowIndexOfPlayer,colIndexOfPlayer));
+        notifyObservers(toSend);
 
     }
 
@@ -170,8 +187,13 @@ public class MyModel extends Observable implements IModel {
     private void setPlayerPos(Position pos) {
         this.rowIndexOfPlayer = pos.getRowIndex();
         this.colIndexOfPlayer = pos.getColumnIndex();
+        this.colIndexOfPipito = pos.getColumnIndex();
+        this.rowIndexOfPipito = pos.getRowIndex();
+        Position[] toSend = new Position[2];
+        toSend[0] = new Position(rowIndexOfPlayer,colIndexOfPlayer);
+        toSend[1] = new Position(rowIndexOfPipito,colIndexOfPipito);
         setChanged();
-        notifyObservers(pos);
+        notifyObservers(toSend);
     }
 
     private void setMaze(Maze maze) {

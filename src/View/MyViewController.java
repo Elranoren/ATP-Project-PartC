@@ -163,10 +163,10 @@ public class MyViewController implements Observer, IView, Initializable {
         keyEvent.consume();
     }
 
-    public void setPlayerPosition(int row, int col) {
-        mazeDisplayer.setPlayerPosition(row, col);
-        setUpdatePlayerRow(row);
-        setUpdatePlayerCol(col);
+    public void setPlayerPosition(Position[] arg) {
+        mazeDisplayer.setPlayerPosition(arg);
+        setUpdatePlayerRow(arg[0].getRowIndex());
+        setUpdatePlayerCol(arg[0].getColumnIndex());
     }
 
     public void mouseClicked(MouseEvent mouseEvent) {
@@ -183,8 +183,8 @@ public class MyViewController implements Observer, IView, Initializable {
 
         if (arg instanceof Maze)
             mazeGenerated((Maze) arg);
-        else if (arg instanceof Position)
-            playerMoved((Position) arg);
+        else if (arg instanceof Position[])
+            playerMoved((Position[]) arg);
         else if (arg instanceof Solution)
             mazeSolved((Solution) arg);
 
@@ -196,8 +196,8 @@ public class MyViewController implements Observer, IView, Initializable {
 
     }
 
-    private void playerMoved(Position arg) {
-        setPlayerPosition(arg.getRowIndex(), arg.getColumnIndex());
+    private void playerMoved(Position[] arg) {
+        setPlayerPosition(arg);
     }
 
     private void mazeGenerated(Maze arg) {
