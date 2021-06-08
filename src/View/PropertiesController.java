@@ -112,6 +112,11 @@ public class PropertiesController implements Initializable {
         threadNumText.prefWidthProperty().bind(propPane.widthProperty().divide(3));
         myGenerate.prefHeightProperty().bind(simpleGenerate.prefHeightProperty());
         myGenerate.prefWidthProperty().bind(simpleGenerate.prefWidthProperty());
+        tSize1.bind(saveButton.heightProperty().divide(2.5));
+
+       // tSize2.bind(cancelButton.heightProperty().divide(4));
+        saveButton.prefHeightProperty().bind(cancelButton.heightProperty());
+        saveButton.prefWidthProperty().bind(cancelButton.widthProperty());
         BFS.setToggleGroup(searchAlgorithmGroug);
         BFS.setUserData("BreadthFirstSearch");
         BEST.setToggleGroup(searchAlgorithmGroug);
@@ -137,19 +142,19 @@ public class PropertiesController implements Initializable {
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-                saveButton.setLayoutX(propPane.getWidth()/2);
+                saveButton.setLayoutX(propPane.getWidth()/10);
                 saveButton.setFont(new Font(saveButton.getFont().getName(),tSize1.doubleValue()));
-                cancelButton.setLayoutX(propPane.getWidth()/10);
-                cancelButton.setFont(new Font(cancelButton.getFont().getName(),tSize2.doubleValue()));
-                BFS.setLayoutX(propPane.getWidth()/2);
-                DFS.setLayoutX(propPane.getWidth()/3);
-                BEST.setLayoutX(propPane.getWidth()/5);
-                myGenerate.setLayoutX(propPane.getWidth()/5);
-                simpleGenerate.setLayoutX(propPane.getWidth()/3);
-                generateLabel.setLayoutX(propPane.getWidth()/6);
-                threadNumLabel.setLayoutX(propPane.getWidth()/6);
-                threadNumText.setLayoutX(propPane.getWidth()/6);
-                searchLabel.setLayoutX(propPane.getWidth()/6);
+                cancelButton.setLayoutX(propPane.getWidth()/2);
+                cancelButton.setFont(new Font(cancelButton.getFont().getName(),tSize1.doubleValue()));
+                BFS.setLayoutX(propPane.getWidth()/10);
+                DFS.setLayoutX(propPane.getWidth()/3.5);
+                BEST.setLayoutX(propPane.getWidth()/2);
+                myGenerate.setLayoutX(propPane.getWidth()/10);
+                simpleGenerate.setLayoutX(propPane.getWidth()/2);
+                generateLabel.setLayoutX(propPane.getWidth()/10);
+                threadNumLabel.setLayoutX(propPane.getWidth()/10);
+                threadNumText.setLayoutX(propPane.getWidth()/10);
+                searchLabel.setLayoutX(propPane.getWidth()/10);
             }
         });
         scene.heightProperty().addListener(new ChangeListener<Number>() {
@@ -158,7 +163,7 @@ public class PropertiesController implements Initializable {
                 saveButton.setLayoutY(propPane.getHeight()/1.5);
                 saveButton.setFont(new Font(saveButton.getFont().getName(),tSize1.doubleValue()));
                 cancelButton.setLayoutY(propPane.getHeight()/1.5);
-                cancelButton.setFont(new Font(cancelButton.getFont().getName(),tSize2.doubleValue()));
+                cancelButton.setFont(new Font(cancelButton.getFont().getName(),tSize1.doubleValue()));
                 BFS.setLayoutY(propPane.getHeight()/4);
                 DFS.setLayoutY(propPane.getHeight()/4);
                 BEST.setLayoutY(propPane.getHeight()/4);

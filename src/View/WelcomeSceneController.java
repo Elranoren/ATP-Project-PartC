@@ -117,8 +117,8 @@ public class WelcomeSceneController implements Initializable {
         marcoImage.fitWidthProperty().bind(myPane.widthProperty());
         marcoImage.fitHeightProperty().bind(myPane.heightProperty());
 
-        startButton.prefHeightProperty().bind(settingsButton.prefHeightProperty());
-        startButton.prefWidthProperty().bind(settingsButton.prefWidthProperty());
+      //  startButton.prefHeightProperty().bind(settingsButton.prefHeightProperty());
+      //  startButton.prefWidthProperty().bind(settingsButton.prefWidthProperty());
         //settingsButton.prefHeightProperty().bind(startButton.prefHeightProperty());
         //settingsButton.prefWidthProperty().bind(startButton.prefWidthProperty());
         textSize.bind(startButton.heightProperty().divide(2));
