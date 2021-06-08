@@ -22,7 +22,7 @@ public class MazeDisplayer extends Canvas  {
     public void setMaze(int[][] maze) {
         this.maze = maze;
     }
-
+    private boolean changeSea = false;
     private int[][] maze;
     private Solution s;
     private Position startP;
@@ -33,6 +33,7 @@ public class MazeDisplayer extends Canvas  {
     // wall and player images:
     StringProperty imageFileNameWall = new SimpleStringProperty();
     StringProperty imageFileNamePlayer = new SimpleStringProperty();
+    StringProperty imageFileNameseaDown = new SimpleStringProperty();
     private double cellHeight;
     private double cellWidth;
     private Object zoomLock;
@@ -74,6 +75,18 @@ public class MazeDisplayer extends Canvas  {
 
     public void setStartX(double startX) {
         this.startX = startX;
+    }
+
+    public String getImageFileNameseaDown() {
+        return imageFileNameseaDown.get();
+    }
+
+    public StringProperty imageFileNameseaDownProperty() {
+        return imageFileNameseaDown;
+    }
+
+    public void setImageFileNameseaDown(String imageFileNameseaDown) {
+        this.imageFileNameseaDown.set(imageFileNameseaDown);
     }
 
     public MazeDisplayer() {
@@ -264,7 +277,14 @@ public class MazeDisplayer extends Canvas  {
         }
         Image seaImage = null;
         try{
-            seaImage = new Image(new FileInputStream(getImageFileNameSea()));
+            if(changeSea){
+                seaImage = new Image(new FileInputStream(getImageFileNameSea()));
+                changeSea = false;
+            }
+            else {
+                seaImage = new Image(new FileInputStream(getImageFileNameseaDown()));
+                changeSea = true;
+            }
         } catch (FileNotFoundException e) {
             System.out.println("There is no sea image file");
         }
