@@ -90,10 +90,11 @@ public class WelcomeSceneController implements Initializable {
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-                startButton.setLayoutX(myPane.getWidth()/3);
+                startButton.setLayoutX(myPane.getWidth()/10);
                 startButton.setFont(new Font(startButton.getFont().getName(),tSize.doubleValue()));
-                settingsButton.setLayoutX(myPane.getWidth()/3);
+                settingsButton.setLayoutX(myPane.getWidth()/10);
                 settingsButton.setFont(new Font(settingsButton.getFont().getName(),tSize.doubleValue()));
+
             }
         });
         scene.heightProperty().addListener(new ChangeListener<Number>() {
@@ -101,22 +102,26 @@ public class WelcomeSceneController implements Initializable {
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
                 startButton.setLayoutY(myPane.getHeight()/10);
                 startButton.setFont(new Font(startButton.getFont().getName(),tSize.doubleValue()));
-                settingsButton.setLayoutY(myPane.getHeight()/10);
+                settingsButton.setLayoutY(myPane.getHeight()/4);
                 settingsButton.setFont(new Font(settingsButton.getFont().getName(),tSize.doubleValue()));
             }
         });
-//        startButton.prefWidthProperty().bind(myPane.widthProperty());
-//        startButton.prefHeightProperty().bind(myPane.heightProperty());
-//        startButton.setLayoutX(myPane.getWidth()/3);
-//        startButton.setFont(new Font(startButton.getFont().getName(),tSize.doubleValue()));
-//        startButton.setLayoutY(myPane.getHeight()/10);
-//        startButton.setFont(new Font(startButton.getFont().getName(),tSize.doubleValue()));
+
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         startButton.prefHeightProperty().bind(myPane.heightProperty().divide(10));
         startButton.prefWidthProperty().bind(myPane.widthProperty().divide(3));
+        settingsButton.prefHeightProperty().bind(myPane.heightProperty().divide(10));
+        settingsButton.prefWidthProperty().bind(myPane.widthProperty().divide(3));
+        marcoImage.fitWidthProperty().bind(myPane.widthProperty());
+        marcoImage.fitHeightProperty().bind(myPane.heightProperty());
+
+        startButton.prefHeightProperty().bind(settingsButton.prefHeightProperty());
+        startButton.prefWidthProperty().bind(settingsButton.prefWidthProperty());
+        //settingsButton.prefHeightProperty().bind(startButton.prefHeightProperty());
+        //settingsButton.prefWidthProperty().bind(startButton.prefWidthProperty());
         tSize.bind(startButton.heightProperty().divide(2));
         Image image = new Image(getClass().getResourceAsStream("/images/startPic.jpg"));
         marcoImage.setImage(image);

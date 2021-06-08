@@ -19,7 +19,7 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeScene.fxml"));
         Parent root = fxmlLoader.load();
 
-        Scene scene = new Scene(root, 500, 500);
+        Scene scene = new Scene(root, 600, 335);
         mainStage.setTitle("3000 Leagues In Search Of Mother Maze Game");
         mainStage.setScene(scene);
         mainStage.show();
