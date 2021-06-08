@@ -2,6 +2,10 @@ package View;
 
 import ViewModel.*;
 import algorithms.mazeGenerators.IMazeGenerator;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,6 +22,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class PropertiesController implements Initializable {
+    public javafx.scene.control.Label threadNumLabel;
+    public javafx.scene.control.Label generateLabel;
+    public javafx.scene.control.Label searchLabel;
     public javafx.scene.control.Button saveButton;
     public javafx.scene.control.Button cancelButton;
     public javafx.scene.control.RadioButton BFS;
@@ -28,6 +36,10 @@ public class PropertiesController implements Initializable {
     private ToggleGroup searchAlgorithmGroug;
     private ToggleGroup generateMazeGroup;
     private static boolean firstIn=false;
+    public  javafx.scene.layout.AnchorPane propPane;
+    private DoubleProperty tSize1 = new SimpleDoubleProperty();
+    private DoubleProperty tSize2 = new SimpleDoubleProperty();
+
     public PropertiesController() {
         this.searchAlgorithmGroug = new ToggleGroup();
         this.generateMazeGroup = new ToggleGroup();
@@ -76,6 +88,30 @@ public class PropertiesController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        BFS.prefHeightProperty().bind(propPane.heightProperty().divide(10));
+        BFS.prefWidthProperty().bind(propPane.widthProperty().divide(3));
+        DFS.prefHeightProperty().bind(propPane.heightProperty().divide(10));
+        DFS.prefWidthProperty().bind(propPane.widthProperty().divide(3));
+        BEST.prefHeightProperty().bind(propPane.heightProperty().divide(10));
+        BEST.prefWidthProperty().bind(propPane.widthProperty().divide(3));
+        simpleGenerate.prefHeightProperty().bind(propPane.heightProperty().divide(10));
+        simpleGenerate.prefWidthProperty().bind(propPane.widthProperty().divide(3));
+        myGenerate.prefHeightProperty().bind(propPane.heightProperty().divide(10));
+        myGenerate.prefWidthProperty().bind(propPane.widthProperty().divide(3));
+        saveButton.prefHeightProperty().bind(propPane.heightProperty().divide(10));
+        saveButton.prefWidthProperty().bind(propPane.widthProperty().divide(3));
+        cancelButton.prefHeightProperty().bind(propPane.heightProperty().divide(10));
+        cancelButton.prefWidthProperty().bind(propPane.widthProperty().divide(3));
+        threadNumLabel.prefHeightProperty().bind(propPane.heightProperty().divide(10));
+        threadNumLabel.prefWidthProperty().bind(propPane.widthProperty().divide(3));
+        generateLabel.prefHeightProperty().bind(propPane.heightProperty().divide(10));
+        generateLabel.prefWidthProperty().bind(propPane.widthProperty().divide(3));
+        searchLabel.prefHeightProperty().bind(propPane.heightProperty().divide(10));
+        searchLabel.prefWidthProperty().bind(propPane.widthProperty().divide(3));
+        threadNumText.prefHeightProperty().bind(propPane.heightProperty().divide(10));
+        threadNumText.prefWidthProperty().bind(propPane.widthProperty().divide(3));
+        myGenerate.prefHeightProperty().bind(simpleGenerate.prefHeightProperty());
+        myGenerate.prefWidthProperty().bind(simpleGenerate.prefWidthProperty());
         BFS.setToggleGroup(searchAlgorithmGroug);
         BFS.setUserData("BreadthFirstSearch");
         BEST.setToggleGroup(searchAlgorithmGroug);
@@ -95,8 +131,45 @@ public class PropertiesController implements Initializable {
         }
         setControlsAsConfigFile();
 
+    }
 
-
+    public void setSizeOfScene(Scene scene) {
+        scene.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+                saveButton.setLayoutX(propPane.getWidth()/2);
+                saveButton.setFont(new Font(saveButton.getFont().getName(),tSize1.doubleValue()));
+                cancelButton.setLayoutX(propPane.getWidth()/10);
+                cancelButton.setFont(new Font(cancelButton.getFont().getName(),tSize2.doubleValue()));
+                BFS.setLayoutX(propPane.getWidth()/2);
+                DFS.setLayoutX(propPane.getWidth()/3);
+                BEST.setLayoutX(propPane.getWidth()/5);
+                myGenerate.setLayoutX(propPane.getWidth()/5);
+                simpleGenerate.setLayoutX(propPane.getWidth()/3);
+                generateLabel.setLayoutX(propPane.getWidth()/6);
+                threadNumLabel.setLayoutX(propPane.getWidth()/6);
+                threadNumText.setLayoutX(propPane.getWidth()/6);
+                searchLabel.setLayoutX(propPane.getWidth()/6);
+            }
+        });
+        scene.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+                saveButton.setLayoutY(propPane.getHeight()/1.5);
+                saveButton.setFont(new Font(saveButton.getFont().getName(),tSize1.doubleValue()));
+                cancelButton.setLayoutY(propPane.getHeight()/1.5);
+                cancelButton.setFont(new Font(cancelButton.getFont().getName(),tSize2.doubleValue()));
+                BFS.setLayoutY(propPane.getHeight()/4);
+                DFS.setLayoutY(propPane.getHeight()/4);
+                BEST.setLayoutY(propPane.getHeight()/4);
+                myGenerate.setLayoutY(propPane.getHeight()/3);
+                simpleGenerate.setLayoutY(propPane.getHeight()/3);
+                searchLabel.setLayoutY(propPane.getHeight()/5.5);
+                generateLabel.setLayoutY(propPane.getHeight()/3.5);
+                threadNumLabel.setLayoutY(propPane.getHeight()/2.5);
+                threadNumText.setLayoutY(propPane.getHeight()/2);
+            }
+        });
 
     }
 
