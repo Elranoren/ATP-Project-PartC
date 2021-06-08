@@ -247,4 +247,16 @@ public class MyModel extends Observable implements IModel {
         setChanged();
         notifyObservers(new Position(rowIndexOfPlayer,colIndexOfPlayer));
     }
+
+    @Override
+    public void loadFile(Maze maze, Position playerPos) {
+
+        this.sol = null;
+        this.maze=maze;
+        setChanged();
+        notifyObservers(this.maze);
+        setPlayerPos(playerPos);
+        setChanged();
+        notifyObservers(playerPos);
+    }
 }

@@ -173,5 +173,9 @@ public class MyViewModel extends Observable implements Observer {
     public void movePlayer(MouseEvent mouseEvent, double mousePosX, double mousePosY) {
         model. movePlayer( mouseEvent,mousePosX, mousePosY);
     }
+
+    public void loadFile(Maze maze, Position playerPos) {
+        model.loadFile(maze,playerPos);
+    }
 }
 

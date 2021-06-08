@@ -11,6 +11,7 @@ import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -25,10 +26,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -222,10 +220,10 @@ public class MyViewController implements Observer, IView, Initializable {
             ObjectOutputStream objectOutputStream = null;
             try {
                 objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFile));
-                Object[] objects = new Object[2];
-                objects[0] = myViewModel.getMaze();
-                objects[1] = new Position(myViewModel.getRowIndexOfPlayer(), myViewModel.getColIndexOfPlayer());
-                objectOutputStream.writeObject(objects);
+                Object[] gameObjects = new Object[2]; //maze & player position
+                gameObjects[0] = myViewModel.getMaze();
+                gameObjects[1] = new Position(myViewModel.getRowIndexOfPlayer(), myViewModel.getColIndexOfPlayer());
+                objectOutputStream.writeObject(gameObjects);
                 objectOutputStream.flush();
                 objectOutputStream.close();
             } catch (IOException e) {
@@ -238,7 +236,27 @@ public class MyViewController implements Observer, IView, Initializable {
     }
 
     public void loadFile(ActionEvent actionEvent) {
+        try {
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Load maze");
+            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze files (*.maze)", "*.maze"));
+            File loadFile = fc.showOpenDialog(null);
+            if (loadFile != null) {
+                File loadF = new File(loadFile.getPath());
+                FileInputStream fileInputStream = new FileInputStream(loadF);
+                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+                Object[] inputStreamObj = (Object[]) objectInputStream.readObject();
+                Maze maze = (Maze) inputStreamObj[0];
+                Position playerPos = (Position) inputStreamObj[1];
 
+                myViewModel.loadFile(maze,playerPos);
+                objectInputStream.close();
+                fileInputStream.close();
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void aboutMenu(ActionEvent actionEvent) {
@@ -310,6 +328,21 @@ public class MyViewController implements Observer, IView, Initializable {
         cStage.close();
         myViewModel.stopServers();
         System.exit(0);
+    }
+
+    public void propertiesMenu(ActionEvent actionEvent) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Properties.fxml"));
+            Parent root = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Settings");
+            stage.show();
+            Stage cStage = (Stage) generateButton.getScene().getWindow();
+            cStage.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
