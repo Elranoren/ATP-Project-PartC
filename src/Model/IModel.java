@@ -4,6 +4,7 @@ import Server.Configurations;
 import Server.Server;
 import algorithms.mazeGenerators.IMazeGenerator;
 import algorithms.mazeGenerators.Maze;
+import algorithms.mazeGenerators.Position;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
@@ -46,4 +47,6 @@ public interface IModel {
     void stopServer();
 
     void movePlayer(MouseEvent mouseEvent, double mousePosX, double mousePosY);
+
+    void loadFile(Maze maze, Position playerPos);
 }

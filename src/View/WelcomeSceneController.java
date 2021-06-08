@@ -78,10 +78,10 @@ public class WelcomeSceneController implements Initializable {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() != ButtonType.OK)
                     windowEvent.consume();
-                 else {
-                    myViewController.exitMenu(null);
-                    System.exit(0);
-                 }
+                else {
+                   myViewController.exitMenu(null);
+                   System.exit(0);
+                }
             }
         });
     }
