@@ -15,6 +15,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class MazeDisplayer extends Canvas  {
+    public int[][] getMaze() {
+        return maze;
+    }
+
+    public void setMaze(int[][] maze) {
+        this.maze = maze;
+    }
+
     private int[][] maze;
     private Solution s;
     private Position startP;
@@ -33,6 +41,40 @@ public class MazeDisplayer extends Canvas  {
     private double zoomVal;
     private double delta;
     private Object changeMazeSize;
+    private double startY;
+    private double startX;
+
+    public double getZoomVal() {
+        return zoomVal;
+    }
+
+    public void setZoomVal(double zoomVal) {
+        this.zoomVal = zoomVal;
+    }
+
+    public double getDelta() {
+        return delta;
+    }
+
+    public void setDelta(double delta) {
+        this.delta = delta;
+    }
+
+    public double getStartY() {
+        return startY;
+    }
+
+    public void setStartY(double startY) {
+        this.startY = startY;
+    }
+
+    public double getStartX() {
+        return startX;
+    }
+
+    public void setStartX(double startX) {
+        this.startX = startX;
+    }
 
     public MazeDisplayer() {
         this.cellHeight = 0;
@@ -41,7 +83,8 @@ public class MazeDisplayer extends Canvas  {
         this.changeMazeSize = new Object();
         this.zoomVal = 0;
         this.delta = 5;
-
+        this.startY=0;
+        this.startX=0;
     }
     public String getImageFileNameSea() {
         return imageFileNameSea.get();
@@ -157,7 +200,7 @@ public class MazeDisplayer extends Canvas  {
     public void setImageFileNamePlayer(String imageFileNamePlayer) {
         this.imageFileNamePlayer.set(imageFileNamePlayer);
     }
- //   public void setImageFileNameSea(String imageFileNameSea) {
+    //   public void setImageFileNameSea(String imageFileNameSea) {
 //        this.imageFileNameSea.set(imageFileNameSea);
 //    }
 
@@ -194,8 +237,8 @@ public class MazeDisplayer extends Canvas  {
     }
 
     private void drawEndPosition(GraphicsContext graphicsContext, double cellHeight, double cellWidth) {
-        double x = this.endP.getColumnIndex() * cellWidth;
-        double y = this.endP.getRowIndex() * cellHeight;
+        double x = this.endP.getColumnIndex() * cellWidth+startX;
+        double y = this.endP.getRowIndex() * cellHeight+startY;
         graphicsContext.setFill(Color.BLACK);
 
         Image motherImage = null;
@@ -231,16 +274,16 @@ public class MazeDisplayer extends Canvas  {
             for (int j = 0; j < cols; j++) {
                 if(maze[i][j] == 1){
                     //if it is a wall:
-                    double x = j * cellWidth;
-                    double y = i * cellHeight;
+                    double x = j * cellWidth+startX;
+                    double y = i * cellHeight+startY;
                     if(wallImage == null)
                         graphicsContext.fillRect(x, y, cellWidth, cellHeight);
                     else
                         graphicsContext.drawImage(wallImage, x, y, cellWidth, cellHeight);
                 }
                 else{
-                    double x = j * cellWidth;
-                    double y = i * cellHeight;
+                    double x = j * cellWidth+startX;
+                    double y = i * cellHeight+startY;
                     if(seaImage == null)
                         graphicsContext.fillRect(x, y, cellWidth, cellHeight);
                     else
@@ -255,8 +298,8 @@ public class MazeDisplayer extends Canvas  {
 //    }
 
     private void drawPlayer(GraphicsContext graphicsContext, double cellHeight, double cellWidth) {
-        double x = getPlayerCol() * cellWidth;
-        double y = getPlayerRow() * cellHeight;
+        double x = getPlayerCol() * cellWidth+startX;
+        double y = getPlayerRow() * cellHeight+startY;
         graphicsContext.setFill(Color.GREEN);
 
         Image playerImage = null;
@@ -283,17 +326,17 @@ public class MazeDisplayer extends Canvas  {
                 MazeState mazeState = (MazeState)s.getSolutionPath().get(i);
                 int r = mazeState.getMazeP().getRowIndex();
                 int c = mazeState.getMazeP().getColumnIndex();
-                double x = c * cellWidth;
-                double y = r * cellHeight;
+                double x = c * cellWidth+startX;
+                double y = r * cellHeight+startY;
                 graphicsContext.fillRect(x, y, cellWidth, cellHeight);
-        }
+            }
 
         }
     }
 
     public void zoomIn() {
         synchronized (this.zoomLock){
-                zoomVal+=this.delta;
+            zoomVal+=this.delta;
         }
         drawMaze(maze);
     }
@@ -304,5 +347,19 @@ public class MazeDisplayer extends Canvas  {
                 zoomVal-=this.delta;
         }
         drawMaze(maze);
+    }
+
+    public void changeMazePosition(double Vx, double Vy) {
+        if(maze != null) {
+            double addToX = (cellWidth * maze[0].length) / canvasWidth;
+            double addToY = (cellHeight * maze.length) / canvasHeight;
+            if (Vx < 0)
+                addToX = -addToX;
+            if (Vy < 0)
+                addToY = -addToY;
+            this.startX += Vx + addToX;
+            this.startY += Vy + addToY;
+            drawMaze(maze);
+        }
     }
 }

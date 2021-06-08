@@ -51,7 +51,10 @@ public class MyViewController implements Observer, IView, Initializable {
     public javafx.scene.control.Button generateButton;
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
+    private boolean startDragwithctrl = false;
     private boolean startDrag;
+    private  double beforDragX = 0;
+    private  double beforDragY = 0;
     private MediaPlayer marcoSong;
     private Thread marcoThread;
     private boolean stopMarcoSong = false;
@@ -149,7 +152,7 @@ public class MyViewController implements Observer, IView, Initializable {
     public void openFile(ActionEvent actionEvent) {
         FileChooser fc = new FileChooser();
         fc.setTitle("Open maze");
-        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Maze files (*.maze)", "*.maze"));
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Maze files (.maze)", ".maze"));
         fc.setInitialDirectory(new File("./resources"));
         File chosen = fc.showOpenDialog(null);
         //...
@@ -201,6 +204,11 @@ public class MyViewController implements Observer, IView, Initializable {
         mazeDisplayer.setStartP(arg.getStartPosition());
         mazeDisplayer.setEndP(arg.getGoalPosition());
         mazeDisplayer.drawMaze(arg.getMaze());
+        mazeDisplayer.setDelta(5);
+        mazeDisplayer.setStartX(0);
+        mazeDisplayer.setStartY(0);
+        mazeDisplayer.setZoomVal(0);
+        mazeDisplayer.drawMaze(mazeDisplayer.getMaze());
     }
 
     public void setMyViewModel(MyViewModel myViewModel) {
@@ -212,7 +220,7 @@ public class MyViewController implements Observer, IView, Initializable {
     public void saveFile(ActionEvent actionEvent) {
         FileChooser fc = new FileChooser();
         fc.setTitle("Save maze");
-        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze files (*.maze)", "*.maze"));
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze files (.maze)", ".maze"));
         //fc.setInitialDirectory(new File("./resources"));
         File saveFile = fc.showSaveDialog(null);
         if (saveFile != null) {
@@ -239,7 +247,7 @@ public class MyViewController implements Observer, IView, Initializable {
         try {
             FileChooser fc = new FileChooser();
             fc.setTitle("Load maze");
-            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze files (*.maze)", "*.maze"));
+            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze files (.maze)", ".maze"));
             File loadFile = fc.showOpenDialog(null);
             if (loadFile != null) {
                 File loadF = new File(loadFile.getPath());
@@ -280,7 +288,13 @@ public class MyViewController implements Observer, IView, Initializable {
     }
 
     public void mouseDragged(MouseEvent mouseEvent) {
-
+        if (mouseEvent.isControlDown()) {
+            if (startDragwithctrl) {
+                mazeDisplayer.changeMazePosition((mouseEvent.getX() - beforDragX) / beforDragX, (mouseEvent.getY() - beforDragY) / beforDragY);
+                beforDragX = mouseEvent.getX();
+                beforDragY = mouseEvent.getY();
+            }
+        } else {
             if (this.startDrag) {
                 if (Math.abs(mouseEvent.getX() - mousePosX) >= mazeDisplayer.getCellWidth() || Math.abs(mouseEvent.getY() - mousePosY) >= mazeDisplayer.getCellHeight()) {
                     myViewModel.movePlayer(mouseEvent, mousePosX, mousePosY);
@@ -291,15 +305,19 @@ public class MyViewController implements Observer, IView, Initializable {
             }
 
         }
-
+    }
 
 
     public void dragDetected(MouseEvent mouseEvent) {
-
-            this.mousePosX = mouseEvent.getX();
-            this.mousePosY = mouseEvent.getY();
-            this.startDrag = true;
+        if(mouseEvent.isControlDown()){
+            beforDragX = mouseEvent.getX();
+            beforDragY = mouseEvent.getY();
+            this.startDragwithctrl = true;
         }
+        this.mousePosX = mouseEvent.getX();
+        this.mousePosY = mouseEvent.getY();
+        this.startDrag = true;
+    }
 
 
     public void mousePressed(MouseEvent mouseEvent) {
@@ -308,9 +326,12 @@ public class MyViewController implements Observer, IView, Initializable {
     }
 
     public void mouseReleased(MouseEvent mouseEvent) {
+        this.startDragwithctrl = false;
         this.startDrag = false;
         this.mousePosX = mouseEvent.getX();
         this.mousePosY = mouseEvent.getY();
+        beforDragX = mouseEvent.getX();
+        beforDragY = mouseEvent.getY();
         mouseEvent.consume();
     }
 
@@ -345,4 +366,3 @@ public class MyViewController implements Observer, IView, Initializable {
         }
     }
 }
-

@@ -134,31 +134,31 @@ public class MyModel extends Observable implements IModel {
     public void generateMaze(int row, int column) {
         try {
             Client client = new Client(InetAddress.getLocalHost(), 5400, new IClientStrategy() {
-                        @Override
-                        public void clientStrategy(InputStream inFromServer, OutputStream outToServer) {
-                            try {
-                                ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
-                                ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
-                                toServer.flush();
-                                int[] mazeDimensions = new int[]{row, column};
-                                toServer.writeObject(mazeDimensions);
-                                toServer.flush();
-                                byte[] compressedMaze = (byte[]) fromServer.readObject();
-                                InputStream is = new MyDecompressorInputStream(new ByteArrayInputStream(compressedMaze));
-                                byte[] decompressedMaze = new byte[row*column+30];
-                                is.read(decompressedMaze);
-                                Maze maze = new Maze(decompressedMaze);
-                                setMaze(maze);
-                                setPlayerPos(maze.getStartPosition());
+                @Override
+                public void clientStrategy(InputStream inFromServer, OutputStream outToServer) {
+                    try {
+                        ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
+                        ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
+                        toServer.flush();
+                        int[] mazeDimensions = new int[]{row, column};
+                        toServer.writeObject(mazeDimensions);
+                        toServer.flush();
+                        byte[] compressedMaze = (byte[]) fromServer.readObject();
+                        InputStream is = new MyDecompressorInputStream(new ByteArrayInputStream(compressedMaze));
+                        byte[] decompressedMaze = new byte[row*column+30];
+                        is.read(decompressedMaze);
+                        Maze maze = new Maze(decompressedMaze);
+                        setMaze(maze);
+                        setPlayerPos(maze.getStartPosition());
 
 
 
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-                        }
-                    });
+                }
+            });
             client.communicateWithServer();
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -226,22 +226,23 @@ public class MyModel extends Observable implements IModel {
     public void movePlayer(MouseEvent mouseEvent, double mousePosX, double mousePosY) {
         if(maze!=null){
             if(!mouseEvent.isControlDown()){
-                if(mouseEvent.getX()>mousePosX){
-                    if (!(colIndexOfPlayer == maze.getColumns() - 1 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer + 1] == 1))
-                        colIndexOfPlayer += 1;
-                }
-                else if(mouseEvent.getX()<mousePosX){
-                    if (!(colIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer - 1] == 1))
-                        colIndexOfPlayer -= 1;
-                }
-                else if(mouseEvent.getY()>mousePosY ){
+                if(mouseEvent.getY()>mousePosY && (Math.abs(mouseEvent.getY() - mousePosY) > 15)){
                     if (!(rowIndexOfPlayer == maze.getRows()-1 || maze.getMaze()[rowIndexOfPlayer+1][colIndexOfPlayer ] == 1))
                         rowIndexOfPlayer += 1;
                 }
-                else if(mouseEvent.getY()<mousePosY ){
+                else if(mouseEvent.getY()<mousePosY && (Math.abs(mouseEvent.getY() - mousePosY) > 15)){
                     if (!(rowIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer-1][colIndexOfPlayer ] == 1))
                         rowIndexOfPlayer -= 1;
                 }
+                else if(mouseEvent.getX()>mousePosX){
+                    if (!(colIndexOfPlayer == maze.getColumns() - 1 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer + 1] == 1))
+                        colIndexOfPlayer += 1;
+                }
+                else if(mouseEvent.getX()<mousePosX ){
+                    if (!(colIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer - 1] == 1))
+                        colIndexOfPlayer -= 1;
+                }
+
             }
         }
         setChanged();

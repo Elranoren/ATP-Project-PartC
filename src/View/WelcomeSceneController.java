@@ -1,6 +1,5 @@
 package View;
 
-import Model.IModel;
 import Model.MyModel;
 import ViewModel.MyViewModel;
 import javafx.beans.property.DoubleProperty;
@@ -30,7 +29,7 @@ public class WelcomeSceneController implements Initializable {
     public  javafx.scene.image.ImageView marcoImage;
     public  javafx.scene.layout.AnchorPane myPane;
 
-    private DoubleProperty tSize = new SimpleDoubleProperty();
+    private DoubleProperty textSize = new SimpleDoubleProperty();
     public  void openMyView(ActionEvent actionEvent) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MyView.fxml"));
@@ -91,9 +90,9 @@ public class WelcomeSceneController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
                 startButton.setLayoutX(myPane.getWidth()/10);
-                startButton.setFont(new Font(startButton.getFont().getName(),tSize.doubleValue()));
+                startButton.setFont(new Font(startButton.getFont().getName(), textSize.doubleValue()));
                 settingsButton.setLayoutX(myPane.getWidth()/10);
-                settingsButton.setFont(new Font(settingsButton.getFont().getName(),tSize.doubleValue()));
+                settingsButton.setFont(new Font(settingsButton.getFont().getName(), textSize.doubleValue()));
 
             }
         });
@@ -101,9 +100,9 @@ public class WelcomeSceneController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
                 startButton.setLayoutY(myPane.getHeight()/10);
-                startButton.setFont(new Font(startButton.getFont().getName(),tSize.doubleValue()));
+                startButton.setFont(new Font(startButton.getFont().getName(), textSize.doubleValue()));
                 settingsButton.setLayoutY(myPane.getHeight()/4);
-                settingsButton.setFont(new Font(settingsButton.getFont().getName(),tSize.doubleValue()));
+                settingsButton.setFont(new Font(settingsButton.getFont().getName(), textSize.doubleValue()));
             }
         });
 
@@ -122,7 +121,7 @@ public class WelcomeSceneController implements Initializable {
         startButton.prefWidthProperty().bind(settingsButton.prefWidthProperty());
         //settingsButton.prefHeightProperty().bind(startButton.prefHeightProperty());
         //settingsButton.prefWidthProperty().bind(startButton.prefWidthProperty());
-        tSize.bind(startButton.heightProperty().divide(2));
+        textSize.bind(startButton.heightProperty().divide(2));
         Image image = new Image(getClass().getResourceAsStream("/images/startPic.jpg"));
         marcoImage.setImage(image);
 
@@ -133,7 +132,13 @@ public class WelcomeSceneController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Properties.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
-            stage.setScene(new Scene(root));
+
+            Scene scene = new Scene(root,600,400);
+            PropertiesController propertiesControllerController = fxmlLoader.getController();
+            propertiesControllerController.setSizeOfScene(scene);
+            stage.setScene(scene);
+
+
             stage.setTitle("Settings");
             stage.show();
             Stage cStage = (Stage) startButton.getScene().getWindow();
