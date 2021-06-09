@@ -1,4 +1,5 @@
 package Model;
+
 import Client.Client;
 import Client.IClientStrategy;
 import IO.MyDecompressorInputStream;
@@ -31,13 +32,14 @@ public class MyModel extends Observable implements IModel {
     private Server solveMazeServer;
 
     public MyModel() {
-        this.generateMazeServer = new Server(5400,1000, new ServerStrategyGenerateMaze());
-        this.solveMazeServer = new Server(5401,1000, new ServerStrategySolveSearchProblem());
+        this.generateMazeServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
+        this.solveMazeServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
         this.rowIndexOfPlayer = 1;
         this.colIndexOfPlayer = 1;
-        this.maze=null;
-        this.sol=null;
+        this.maze = null;
+        this.sol = null;
     }
+
     @Override
     public int getRowIndexOfPlayer() {
         return rowIndexOfPlayer;
@@ -62,75 +64,72 @@ public class MyModel extends Observable implements IModel {
 
     @Override
     public Maze getMaze() {
-        return maze ;
+        return maze;
     }
 
     @Override
     public void updatePlayerPosition(MovementDirection direction) {
-        rowIndexOfPipito = rowIndexOfPlayer;
-        colIndexOfPipito = colIndexOfPlayer;
-        switch (direction){
+        switch (direction) {
             case UP:
+            case NUMPAD8:
                 if (!(rowIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer - 1][colIndexOfPlayer] == 1)) {
+                    rowIndexOfPipito = rowIndexOfPlayer;
+                    colIndexOfPipito = colIndexOfPlayer;
                     rowIndexOfPlayer -= 1;
                 }
                 break;
             case DOWN:
+            case NUMPAD2:
                 if (!(rowIndexOfPlayer == maze.getRows() - 1 || maze.getMaze()[rowIndexOfPlayer + 1][colIndexOfPlayer] == 1)) {
+                    rowIndexOfPipito = rowIndexOfPlayer;
+                    colIndexOfPipito = colIndexOfPlayer;
                     rowIndexOfPlayer += 1;
                 }
                 break;
             case RIGHT:
+            case NUMPAD6:
                 if (!(colIndexOfPlayer == maze.getColumns() - 1 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer + 1] == 1)) {
+                    rowIndexOfPipito = rowIndexOfPlayer;
+                    colIndexOfPipito = colIndexOfPlayer;
                     colIndexOfPlayer += 1;
                 }
                 break;
             case LEFT:
-                if (!(colIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer - 1] == 1)) {
-                    colIndexOfPlayer -= 1;
-                }
-                break;
-            case NUMPAD8:
-                if (!(rowIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer - 1][colIndexOfPlayer] == 1)) {
-                    rowIndexOfPlayer -= 1;
-                }
-                break;
-            case NUMPAD2:
-                if (!(rowIndexOfPlayer == maze.getRows() - 1 || maze.getMaze()[rowIndexOfPlayer + 1][colIndexOfPlayer] == 1)){
-                    rowIndexOfPlayer += 1;
-                }
-
-                break;
-            case NUMPAD6:
-                if (!(colIndexOfPlayer == maze.getColumns() - 1 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer + 1] == 1)) {
-                    colIndexOfPlayer += 1;
-                }
-                break;
             case NUMPAD4:
                 if (!(colIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer - 1] == 1)) {
+                    rowIndexOfPipito = rowIndexOfPlayer;
+                    colIndexOfPipito = colIndexOfPlayer;
                     colIndexOfPlayer -= 1;
                 }
                 break;
             case NUMPAD9:
                 if (!(rowIndexOfPlayer == 0 || colIndexOfPlayer == maze.getColumns() - 1 || maze.getMaze()[rowIndexOfPlayer - 1][colIndexOfPlayer + 1] == 1)) {
+                    rowIndexOfPipito = rowIndexOfPlayer;
+                    colIndexOfPipito = colIndexOfPlayer;
                     rowIndexOfPlayer -= 1;
                     colIndexOfPlayer += 1;
                 }
                 break;
             case NUMPAD7:
                 if (!(rowIndexOfPlayer == 0 || colIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer - 1][colIndexOfPlayer - 1] == 1)) {
+                    rowIndexOfPipito = rowIndexOfPlayer;
+                    colIndexOfPipito = colIndexOfPlayer;
                     rowIndexOfPlayer -= 1;
                     colIndexOfPlayer -= 1;
                 }
                 break;
             case NUMPAD1:
                 if (!(rowIndexOfPlayer == maze.getRows() - 1 || colIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer + 1][colIndexOfPlayer - 1] == 1)) {
+                    rowIndexOfPipito = rowIndexOfPlayer;
+                    colIndexOfPipito = colIndexOfPlayer;
                     rowIndexOfPlayer += 1;
                     colIndexOfPlayer -= 1;
                 }
                 break;
             case NUMPAD3:
                 if (!(rowIndexOfPlayer == maze.getRows() - 1 || colIndexOfPlayer == maze.getColumns() - 1 || maze.getMaze()[rowIndexOfPlayer + 1][colIndexOfPlayer + 1] == 1)) {
+                    rowIndexOfPipito = rowIndexOfPlayer;
+                    colIndexOfPipito = colIndexOfPlayer;
                     rowIndexOfPlayer += 1;
                     colIndexOfPlayer += 1;
                 }
@@ -139,8 +138,8 @@ public class MyModel extends Observable implements IModel {
 
 
         Position[] toSend = new Position[2];
-        toSend[0] = new Position(rowIndexOfPlayer,colIndexOfPlayer);
-        toSend[1] = new Position(rowIndexOfPipito,colIndexOfPipito);
+        toSend[0] = new Position(rowIndexOfPlayer, colIndexOfPlayer);
+        toSend[1] = new Position(rowIndexOfPipito, colIndexOfPipito);
         setChanged();
         notifyObservers(toSend);
 
@@ -162,12 +161,11 @@ public class MyModel extends Observable implements IModel {
                         toServer.flush();
                         byte[] compressedMaze = (byte[]) fromServer.readObject();
                         InputStream is = new MyDecompressorInputStream(new ByteArrayInputStream(compressedMaze));
-                        byte[] decompressedMaze = new byte[row*column+30];
+                        byte[] decompressedMaze = new byte[row * column + 30];
                         is.read(decompressedMaze);
                         Maze maze = new Maze(decompressedMaze);
                         setMaze(maze);
                         setPlayerPos(maze.getStartPosition());
-
 
 
                     } catch (Exception e) {
@@ -190,8 +188,8 @@ public class MyModel extends Observable implements IModel {
         this.colIndexOfPipito = pos.getColumnIndex();
         this.rowIndexOfPipito = pos.getRowIndex();
         Position[] toSend = new Position[2];
-        toSend[0] = new Position(rowIndexOfPlayer,colIndexOfPlayer);
-        toSend[1] = new Position(rowIndexOfPipito,colIndexOfPipito);
+        toSend[0] = new Position(rowIndexOfPlayer, colIndexOfPlayer);
+        toSend[1] = new Position(rowIndexOfPipito, colIndexOfPipito);
         setChanged();
         notifyObservers(toSend);
     }
@@ -246,40 +244,58 @@ public class MyModel extends Observable implements IModel {
 
     @Override
     public void movePlayer(MouseEvent mouseEvent, double mousePosX, double mousePosY) {
-        if(maze!=null){
-            if(!mouseEvent.isControlDown()){
-                if(mouseEvent.getY()>mousePosY && (Math.abs(mouseEvent.getY() - mousePosY) > 15)){
-                    if (!(rowIndexOfPlayer == maze.getRows()-1 || maze.getMaze()[rowIndexOfPlayer+1][colIndexOfPlayer ] == 1))
+        if (maze != null) {
+            if (!mouseEvent.isControlDown()) {
+                if (mouseEvent.getY() > mousePosY && (Math.abs(mouseEvent.getY() - mousePosY) > 15)) {
+                    if (!(rowIndexOfPlayer == maze.getRows() - 1 || maze.getMaze()[rowIndexOfPlayer + 1][colIndexOfPlayer] == 1)) {
+                        rowIndexOfPipito = rowIndexOfPlayer;
+                        colIndexOfPipito = colIndexOfPlayer;
                         rowIndexOfPlayer += 1;
-                }
-                else if(mouseEvent.getY()<mousePosY && (Math.abs(mouseEvent.getY() - mousePosY) > 15)){
-                    if (!(rowIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer-1][colIndexOfPlayer ] == 1))
+                    }
+                } else if (mouseEvent.getY() < mousePosY && (Math.abs(mouseEvent.getY() - mousePosY) > 15)) {
+                    if (!(rowIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer - 1][colIndexOfPlayer] == 1)) {
+                        rowIndexOfPipito = rowIndexOfPlayer;
+                        colIndexOfPipito = colIndexOfPlayer;
                         rowIndexOfPlayer -= 1;
-                }
-                else if(mouseEvent.getX()>mousePosX){
-                    if (!(colIndexOfPlayer == maze.getColumns() - 1 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer + 1] == 1))
+                    }
+
+                } else if (mouseEvent.getX() > mousePosX) {
+                    if (!(colIndexOfPlayer == maze.getColumns() - 1 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer + 1] == 1)) {
+                        rowIndexOfPipito = rowIndexOfPlayer;
+                        colIndexOfPipito = colIndexOfPlayer;
                         colIndexOfPlayer += 1;
-                }
-                else if(mouseEvent.getX()<mousePosX ){
-                    if (!(colIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer - 1] == 1))
+                    }
+
+                } else if (mouseEvent.getX() < mousePosX) {
+                    if (!(colIndexOfPlayer == 0 || maze.getMaze()[rowIndexOfPlayer][colIndexOfPlayer - 1] == 1)) {
+                        rowIndexOfPipito = rowIndexOfPlayer;
+                        colIndexOfPipito = colIndexOfPlayer;
                         colIndexOfPlayer -= 1;
+                    }
                 }
 
             }
         }
+        Position[] toSend = new Position[2];
+        toSend[0] = new Position(rowIndexOfPlayer, colIndexOfPlayer);
+        toSend[1] = new Position(rowIndexOfPipito, colIndexOfPipito);
         setChanged();
-        notifyObservers(new Position(rowIndexOfPlayer,colIndexOfPlayer));
+        notifyObservers(toSend);
     }
 
     @Override
-    public void loadFile(Maze maze, Position playerPos) {
+    public void loadFile(Maze maze, Position playerPos, Position pipitopos) {
 
         this.sol = null;
-        this.maze=maze;
+        this.maze = maze;
         setChanged();
         notifyObservers(this.maze);
         setPlayerPos(playerPos);
         setChanged();
-        notifyObservers(playerPos);
+        Position[] toSend = new Position[2];
+        toSend[0] = playerPos;
+        toSend[1] =pipitopos;
+        setChanged();
+        notifyObservers(toSend);
     }
 }
