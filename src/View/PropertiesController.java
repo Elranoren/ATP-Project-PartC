@@ -47,9 +47,11 @@ public class PropertiesController implements Initializable {
 
     public void saveSettings(ActionEvent actionEvent) {
         try {
-            int threadNum=5;
+            int threadNum=10;
             try {
                 threadNum = Integer.parseInt(threadNumText.getText());
+                if(threadNum<=0)
+                    throw new Exception();
                 MyViewModel.setThreadsNumConfig(String.valueOf(threadNum));
                 MyViewModel.setGeneratingAlgorithmConfig(generateMazeGroup.getSelectedToggle().getUserData().toString());
                 MyViewModel.setSearchAlgorithmConfig(searchAlgorithmGroug.getSelectedToggle().getUserData().toString());
@@ -58,7 +60,7 @@ public class PropertiesController implements Initializable {
             catch (Exception e)
             {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Please enter a valid number");
+                alert.setContentText("Please enter a valid Therad number");
                 alert.show();
             }
 
