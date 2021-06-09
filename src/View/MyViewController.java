@@ -228,9 +228,10 @@ public class MyViewController implements Observer, IView, Initializable {
             ObjectOutputStream objectOutputStream = null;
             try {
                 objectOutputStream = new ObjectOutputStream(new FileOutputStream(saveFile));
-                Object[] gameObjects = new Object[2]; //maze & player position
+                Object[] gameObjects = new Object[3]; //maze & player position
                 gameObjects[0] = myViewModel.getMaze();
                 gameObjects[1] = new Position(myViewModel.getRowIndexOfPlayer(), myViewModel.getColIndexOfPlayer());
+                gameObjects[2] = new Position(myViewModel.getRowIndexOfPipito(), myViewModel.getColIndexOfPipito());
                 objectOutputStream.writeObject(gameObjects);
                 objectOutputStream.flush();
                 objectOutputStream.close();
@@ -256,8 +257,8 @@ public class MyViewController implements Observer, IView, Initializable {
                 Object[] inputStreamObj = (Object[]) objectInputStream.readObject();
                 Maze maze = (Maze) inputStreamObj[0];
                 Position playerPos = (Position) inputStreamObj[1];
-
-                myViewModel.loadFile(maze,playerPos);
+                Position pipitopos = (Position) inputStreamObj[2];
+                myViewModel.loadFile(maze,playerPos,pipitopos);
                 objectInputStream.close();
                 fileInputStream.close();
             }

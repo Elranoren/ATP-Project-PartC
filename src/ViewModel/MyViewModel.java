@@ -176,8 +176,8 @@ public class MyViewModel extends Observable implements Observer {
         model. movePlayer( mouseEvent,mousePosX, mousePosY);
     }
 
-    public void loadFile(Maze maze, Position playerPos) {
-        model.loadFile(maze,playerPos);
+    public void loadFile(Maze maze, Position playerPos, Position pipitopos) {
+        model.loadFile(maze,playerPos,pipitopos);
     }
 
     public int getRowIndexOfPipito() {

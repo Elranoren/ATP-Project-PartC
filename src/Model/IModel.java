@@ -48,5 +48,5 @@ public interface IModel {
 
     void movePlayer(MouseEvent mouseEvent, double mousePosX, double mousePosY);
 
-    void loadFile(Maze maze, Position playerPos);
+    void loadFile(Maze maze, Position playerPos, Position pipitopos);
 }
