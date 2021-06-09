@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -22,6 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -183,10 +185,31 @@ public class MyViewController implements Observer, IView, Initializable {
 
         if (arg instanceof Maze)
             mazeGenerated((Maze) arg);
-        else if (arg instanceof Position[])
+        else if (arg instanceof Position[]) {
+            if(((Position[])arg)[0].getRowIndex() == myViewModel.getMaze().getGoalPosition().getRowIndex() && ((Position[])arg)[0].getColumnIndex() == myViewModel.getMaze().getGoalPosition().getColumnIndex())
+                marcoMeetMother();
             playerMoved((Position[]) arg);
+        }
         else if (arg instanceof Solution)
             mazeSolved((Solution) arg);
+
+    }
+
+    private void marcoMeetMother() {
+        stopMarcoSong=true;
+        String fileName = "video/marcoMeetMother.mp4";
+        ClassLoader classLoader = getClass().getClassLoader();
+        Media media = new Media(new File(classLoader.getResource(fileName).getFile()).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        MediaView mediaView = new MediaView(mediaPlayer);
+        mediaPlayer.setAutoPlay(true);
+        Group root = new Group();
+        root.getChildren().add(mediaView);
+        Stage stage = new Stage();
+        Scene scene = new Scene(root,1200,650);
+        stage.setScene(scene);
+        stage.setTitle("Marco Meet Mother");
+        stage.show();
 
     }
 
