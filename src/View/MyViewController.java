@@ -119,7 +119,7 @@ public class MyViewController implements Observer, IView, Initializable {
                     Media song = new Media(this.getClass().getResource("/music/primeSong.mp3").toString());
                     this.marcoSong = new MediaPlayer(song);
                     marcoSong.play();
-                    Thread.sleep(156000);
+                    Thread.sleep(312000);
                 }
 
             }
