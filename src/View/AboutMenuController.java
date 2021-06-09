@@ -14,7 +14,7 @@ public class AboutMenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Image image = new Image(getClass().getResourceAsStream("/images/elranAndTamar.jpeg"));
+        Image image = new Image(getClass().getResourceAsStream("/images/elranAndTamar.jpg"));
         elranAndTamarImage.setImage(image);
     }
 }
