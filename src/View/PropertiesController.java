@@ -78,7 +78,7 @@ public class PropertiesController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeScene.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 600, 335));
             stage.setTitle("Game");
             Stage currentStage = (Stage) saveButton.getScene().getWindow();
             currentStage.close();

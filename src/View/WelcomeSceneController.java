@@ -47,7 +47,10 @@ public class WelcomeSceneController implements Initializable {
             myViewModel.addObserver(myViewController);
             onCloseAppAction(stage,myViewController); // close the application (the stage and the servers)
             stage.show();
-            Main.mainStage.close();
+            Stage welcomeS = (Stage) startButton.getScene().getWindow();
+            welcomeS.close();
+
+
         } catch(Exception e) {
             e.printStackTrace();
         }
