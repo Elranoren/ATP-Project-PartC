@@ -55,8 +55,8 @@ public class MyViewController implements Observer, IView, Initializable {
     StringProperty updatePlayerCol = new SimpleStringProperty();
     private boolean startDragwithctrl = false;
     private boolean startDrag;
-    private  double beforDragX = 0;
-    private  double beforDragY = 0;
+    private double beforDragX = 0;
+    private double beforDragY = 0;
     private MediaPlayer marcoSong;
     private Thread marcoThread;
     private boolean stopMarcoSong = false;
@@ -105,7 +105,7 @@ public class MyViewController implements Observer, IView, Initializable {
 
         this.myViewModel.generateMaze(rows, cols);
         menuItemSave.setDisable(false);
-        if(marcoThread!=null&&marcoThread.isAlive()){
+        if (marcoThread != null && marcoThread.isAlive()) {
             stopMarcoSong = true;
             marcoSong.stop();
         }
@@ -114,22 +114,13 @@ public class MyViewController implements Observer, IView, Initializable {
     }
 
     private void playMusic() {
-        this.stopMarcoSong = false;
-        marcoThread = new Thread(()->{
-            try{
-                while(!this.stopMarcoSong){
-                    Media song = new Media(this.getClass().getResource("/music/primeSong.mp3").toString());
-                    this.marcoSong = new MediaPlayer(song);
-                    marcoSong.play();
-                    Thread.sleep(312000);
-                }
+        Media song = new Media(this.getClass().getResource("/music/primeSong.mp3").toString());
+        this.marcoSong = new MediaPlayer(song);
+        marcoSong.play();
+    }
 
-            }
-            catch (Exception e ){
-                System.out.println(e);
-            }
-        });
-        marcoThread.start();
+    private void stopMusic() {
+        marcoSong.stop();
     }
 
     public void solveMaze(ActionEvent actionEvent) {
@@ -186,31 +177,29 @@ public class MyViewController implements Observer, IView, Initializable {
         if (arg instanceof Maze)
             mazeGenerated((Maze) arg);
         else if (arg instanceof Position[]) {
-            if(((Position[])arg)[0].getRowIndex() == myViewModel.getMaze().getGoalPosition().getRowIndex() && ((Position[])arg)[0].getColumnIndex() == myViewModel.getMaze().getGoalPosition().getColumnIndex())
+            if (((Position[]) arg)[0].getRowIndex() == myViewModel.getMaze().getGoalPosition().getRowIndex() && ((Position[]) arg)[0].getColumnIndex() == myViewModel.getMaze().getGoalPosition().getColumnIndex())
                 marcoMeetMother();
             playerMoved((Position[]) arg);
-        }
-        else if (arg instanceof Solution)
+        } else if (arg instanceof Solution)
             mazeSolved((Solution) arg);
 
     }
 
     private void marcoMeetMother() {
-        stopMarcoSong=true;
+        stopMusic();
         String fileName = "video/marcoMeetMother.mp4";
         ClassLoader classLoader = getClass().getClassLoader();
-        Media media= new Media(classLoader.getResource("video/marcoMeetMother.mp4").toExternalForm());
+        Media media = new Media(classLoader.getResource("video/marcoMeetMother.mp4").toExternalForm());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         MediaView mediaView = new MediaView(mediaPlayer);
         mediaPlayer.setAutoPlay(true);
         Group root = new Group();
         root.getChildren().add(mediaView);
         Stage stage = new Stage();
-        Scene scene = new Scene(root,1200,650);
+        Scene scene = new Scene(root, 1200, 650);
         stage.setScene(scene);
         stage.setTitle("Marco Meet Mother");
         stage.show();
-
     }
 
     private void mazeSolved(Solution s) {
@@ -281,12 +270,11 @@ public class MyViewController implements Observer, IView, Initializable {
                 Maze maze = (Maze) inputStreamObj[0];
                 Position playerPos = (Position) inputStreamObj[1];
                 Position pipitopos = (Position) inputStreamObj[2];
-                myViewModel.loadFile(maze,playerPos,pipitopos);
+                myViewModel.loadFile(maze, playerPos, pipitopos);
                 objectInputStream.close();
                 fileInputStream.close();
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -333,7 +321,7 @@ public class MyViewController implements Observer, IView, Initializable {
 
 
     public void dragDetected(MouseEvent mouseEvent) {
-        if(mouseEvent.isControlDown()){
+        if (mouseEvent.isControlDown()) {
             beforDragX = mouseEvent.getX();
             beforDragY = mouseEvent.getY();
             this.startDragwithctrl = true;
@@ -360,8 +348,8 @@ public class MyViewController implements Observer, IView, Initializable {
     }
 
     public void scroll(ScrollEvent scrollEvent) {
-        if(scrollEvent.isControlDown()){
-            if(scrollEvent.getDeltaY()>=0)
+        if (scrollEvent.isControlDown()) {
+            if (scrollEvent.getDeltaY() >= 0)
                 mazeDisplayer.zoomIn();
             else
                 mazeDisplayer.zoomOut();
@@ -385,7 +373,7 @@ public class MyViewController implements Observer, IView, Initializable {
             stage.show();
             Stage cStage = (Stage) generateButton.getScene().getWindow();
             cStage.close();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
