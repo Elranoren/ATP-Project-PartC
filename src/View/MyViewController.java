@@ -105,10 +105,10 @@ public class MyViewController implements Observer, IView, Initializable {
 
         this.myViewModel.generateMaze(rows, cols);
         menuItemSave.setDisable(false);
-        if (marcoThread != null && marcoThread.isAlive()) {
-            stopMarcoSong = true;
-            marcoSong.stop();
-        }
+//        if (marcoThread != null && marcoThread.isAlive()) {
+//            stopMarcoSong = true;
+//            marcoSong.stop();
+//        }
         playMusic();
 
     }
