@@ -21,7 +21,7 @@ import java.util.Observer;
 public class MyViewModel extends Observable implements Observer {
     private IModel model;
     private Solution sol;
-    //private Object solLock;
+    private Object solLock;
     private int colIndexOfPlayer;
     private int rowIndexOfPlayer;
     private StringProperty stringRowIndexOfPlayer;
@@ -55,6 +55,7 @@ public class MyViewModel extends Observable implements Observer {
 
     public MyViewModel(IModel model) {
         this.model = model;
+        this.solLock = new Object();
     }
 
     public static String getThreadsNumConfig() {
@@ -96,6 +97,7 @@ public class MyViewModel extends Observable implements Observer {
 
     private void mazeSolved(Solution s) {
         this.sol = s;
+        this.sol.getSolutionPath().remove(new MazeState(this.getMaze().getStartPosition(),null,null));
         setChanged();
         notifyObservers(sol);
     }
@@ -105,6 +107,17 @@ public class MyViewModel extends Observable implements Observer {
         this.rowIndexOfPipito = arg[1].getRowIndex();
         this.colIndexOfPlayer = arg[0].getColumnIndex();
         this.colIndexOfPipito = arg[1].getColumnIndex();
+        synchronized (solLock){
+            if(sol!=null)
+            {
+                if(sol.getSolutionPath().remove(new MazeState(arg[0],null,null)))
+                {
+                    setChanged();
+                    notifyObservers(sol);
+                }
+            }
+
+        }
 
     }
 
