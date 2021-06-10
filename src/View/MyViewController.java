@@ -199,7 +199,7 @@ public class MyViewController implements Observer, IView, Initializable {
         stopMarcoSong=true;
         String fileName = "video/marcoMeetMother.mp4";
         ClassLoader classLoader = getClass().getClassLoader();
-        Media media = new Media(new File(classLoader.getResource(fileName).getFile()).toURI().toString());
+        Media media= new Media(classLoader.getResource("video/marcoMeetMother.mp4").toExternalForm());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         MediaView mediaView = new MediaView(mediaPlayer);
         mediaPlayer.setAutoPlay(true);
