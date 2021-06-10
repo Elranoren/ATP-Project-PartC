@@ -3,7 +3,6 @@ package View;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.MazeState;
 import algorithms.search.Solution;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.canvas.Canvas;
@@ -13,10 +12,15 @@ import javafx.scene.paint.Color;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MazeDisplayer extends Canvas  {
+
     private int pipitoRow;
     private int pipitoCol;
+  //  private Image playerImage ;
+    private boolean changeImagePlayer=false;
 
     public int[][] getMaze() {
         return maze;
@@ -34,10 +38,12 @@ public class MazeDisplayer extends Canvas  {
     private int playerRow;
     private int playerCol;
     // wall and player images:
+    StringProperty imageFileNameFood = new SimpleStringProperty();
     StringProperty imageFileNamePipito = new SimpleStringProperty();
     StringProperty imageFileNameWall = new SimpleStringProperty();
-    StringProperty imageFileNamePlayer = new SimpleStringProperty();
+    StringProperty imageFileNamePlayer1 = new SimpleStringProperty();
     StringProperty imageFileNameseaDown = new SimpleStringProperty();
+    StringProperty imageFileNamePlayer2 = new SimpleStringProperty();
     private double cellHeight;
     private double cellWidth;
     private Object zoomLock;
@@ -121,6 +127,18 @@ public class MazeDisplayer extends Canvas  {
         this.imageFileNamePipito.set(imageFileNamePipito);
     }
 
+    public String getImageFileNameFood() {
+        return imageFileNameFood.get();
+    }
+
+    public StringProperty imageFileNameFoodProperty() {
+        return imageFileNameFood;
+    }
+
+    public void setImageFileNameFood(String imageFileNameFood) {
+        this.imageFileNameFood.set(imageFileNameFood);
+    }
+
     public MazeDisplayer() {
         this.cellHeight = 0;
         this.cellWidth = 0;
@@ -130,6 +148,9 @@ public class MazeDisplayer extends Canvas  {
         this.delta = 5;
         this.startY=0;
         this.startX=0;
+
+
+
     }
     public String getImageFileNameSea() {
         return imageFileNameSea.get();
@@ -236,16 +257,16 @@ public class MazeDisplayer extends Canvas  {
         this.imageFileNameWall.set(imageFileNameWall);
     }
 
-    public String getImageFileNamePlayer() {
-        return imageFileNamePlayer.get();
+    public String getImageFileNamePlayer1() {
+        return imageFileNamePlayer1.get();
     }
 
-    public String imageFileNamePlayerProperty() {
-        return imageFileNamePlayer.get();
+    public String imageFileNamePlayer1Property() {
+        return imageFileNamePlayer1.get();
     }
 
-    public void setImageFileNamePlayer(String imageFileNamePlayer) {
-        this.imageFileNamePlayer.set(imageFileNamePlayer);
+    public void setImageFileNamePlayer1(String imageFileNamePlayer1) {
+        this.imageFileNamePlayer1.set(imageFileNamePlayer1);
     }
     //   public void setImageFileNameSea(String imageFileNameSea) {
 //        this.imageFileNameSea.set(imageFileNameSea);
@@ -375,16 +396,41 @@ public class MazeDisplayer extends Canvas  {
         double y = getPlayerRow() * cellHeight+startY;
         graphicsContext.setFill(Color.GREEN);
 
-        Image playerImage = null;
+        final Image[] playerImage = {null};
         try {
-            playerImage = new Image(new FileInputStream(getImageFileNamePlayer()));
+            playerImage[0] = new Image(new FileInputStream(getImageFileNamePlayer1()));
         } catch (FileNotFoundException e) {
             System.out.println("There is no player image file");
         }
-        if(playerImage == null)
+//        Timer timer = new Timer();
+//
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                if(changeImagePlayer) {
+//                    try {
+//                        playerImage[0] = new Image(new FileInputStream(getImageFileNamePlayer1()));
+//                        changeImagePlayer=false;
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                else
+//                {
+//                    try {
+//                        playerImage[0] = new Image(new FileInputStream(getImageFileNamePlayer2()));
+//                        changeImagePlayer=true;
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }, 0, 1000);//wait 0 ms before doing the action and do it evry 1000ms (1second)
+
+        if(playerImage[0] == null)
             graphicsContext.fillRect(x, y, cellWidth, cellHeight);
         else
-            graphicsContext.drawImage(playerImage, x, y, cellWidth, cellHeight);
+            graphicsContext.drawImage(playerImage[0], x, y, cellWidth, cellHeight);
     }
 
     public void drawS(Solution s) {
@@ -394,6 +440,13 @@ public class MazeDisplayer extends Canvas  {
 
     private void drawSolution(GraphicsContext graphicsContext, double cellHeight, double cellWidth) {
         if(this.s!=null){
+            Image food = null;
+            try {
+                food = new Image(new FileInputStream(getImageFileNameFood()));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
             graphicsContext.setFill(Color.PINK);
             for (int i = 0; i < s.getSolutionPath().size(); i++) {
                 MazeState mazeState = (MazeState)s.getSolutionPath().get(i);
@@ -401,7 +454,11 @@ public class MazeDisplayer extends Canvas  {
                 int c = mazeState.getMazeP().getColumnIndex();
                 double x = c * cellWidth+startX;
                 double y = r * cellHeight+startY;
-                graphicsContext.fillRect(x, y, cellWidth, cellHeight);
+                //graphicsContext.fillRect(x, y, cellWidth, cellHeight);
+                if(food == null)
+                    graphicsContext.fillRect(x, y, cellWidth, cellHeight);
+                else
+                    graphicsContext.drawImage(food, x, y, cellWidth, cellHeight);
             }
 
         }
@@ -436,4 +493,15 @@ public class MazeDisplayer extends Canvas  {
         }
     }
 
+    public String getImageFileNamePlayer2() {
+        return imageFileNamePlayer2.get();
+    }
+
+    public StringProperty imageFileNamePlayer2Property() {
+        return imageFileNamePlayer2;
+    }
+
+    public void setImageFileNamePlayer2(String imageFileNamePlayer2) {
+        this.imageFileNamePlayer2.set(imageFileNamePlayer2);
+    }
 }

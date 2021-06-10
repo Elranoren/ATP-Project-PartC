@@ -91,7 +91,7 @@
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>
-                <MazeDisplayer fx:id="mazeDisplayer" height="400.0" imageFileNameSea="./resources/images/sea.jpg" imageFileNamePipito="./resources/images/pipito.jpg" imageFileNameseaDown="./resources/images/seaDown.jpg" imageFileNameMother="./resources/images/mother.jpg"  imageFileNamePlayer="./resources/images/playerMarco.jpg" imageFileNameWall="./resources/images/wall.jpg"  onKeyPressed="#keyPressed" width="400.0" />
+                <MazeDisplayer fx:id="mazeDisplayer" height="400.0" imageFileNameSea="./resources/images/sea.jpg" imageFileNamePipito="./resources/images/pipito.png" imageFileNameseaDown="./resources/images/seaDown.jpg" imageFileNameMother="./resources/images/mother.jpg" imageFileNamePlayer1="./resources/images/playerMarco.png" imageFileNameFood="./resources/images/marcoFood.png" imageFileNamePlayer2="./resources/images/playerMarcoLeft.png" imageFileNameWall="./resources/images/wall.jpg" onKeyPressed="#keyPressed" width="400.0" />
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
