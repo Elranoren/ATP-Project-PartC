@@ -377,4 +377,19 @@ public class MyViewController implements Observer, IView, Initializable {
             e.printStackTrace();
         }
     }
+
+    public void helpMenu(ActionEvent actionEvent) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Help.fxml"));
+            Parent root = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Help");
+            stage.show();
+           // Stage cStage = (Stage) generateButton.getScene().getWindow();
+            //cStage.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
