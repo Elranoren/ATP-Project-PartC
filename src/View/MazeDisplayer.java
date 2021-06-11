@@ -1,5 +1,6 @@
 package View;
 
+import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.MazeState;
 import algorithms.search.Solution;
@@ -22,23 +23,28 @@ public class MazeDisplayer extends Canvas  {
   //  private Image playerImage ;
 
 
-    public int[][] getMaze() {
+    public Maze getMaze() {
         return maze;
     }
 
-    public void setMaze(int[][] maze) {
+    public void setMaze(Maze maze) {
         this.maze = maze;
+        rightMovment=true;
+
+
     }
     private boolean changeSea = false;
     private boolean changeImagePlayer=false;
-    private int[][] maze;
+    private Maze maze;
     private Solution s;
     private Position startP;
     private Position endP;
-    private static boolean rightMovment;
+    public static boolean rightMovment;
     private int playerRow;
     private int playerCol;
     // wall and player images:
+    StringProperty ImageFileNamePlayerL1 =new SimpleStringProperty();
+    StringProperty ImageFileNamePlayerL2 =new SimpleStringProperty();
     StringProperty imageFileNameFood = new SimpleStringProperty();
     StringProperty imageFileNamePipito = new SimpleStringProperty();
     StringProperty imageFileNameWall = new SimpleStringProperty();
@@ -138,6 +144,30 @@ public class MazeDisplayer extends Canvas  {
 
     public void setImageFileNameFood(String imageFileNameFood) {
         this.imageFileNameFood.set(imageFileNameFood);
+    }
+
+    public String getImageFileNamePlayerL1() {
+        return ImageFileNamePlayerL1.get();
+    }
+
+    public StringProperty imageFileNamePlayerL1Property() {
+        return ImageFileNamePlayerL1;
+    }
+
+    public void setImageFileNamePlayerL1(String imageFileNamePlayerL1) {
+        this.ImageFileNamePlayerL1.set(imageFileNamePlayerL1);
+    }
+
+    public String getImageFileNamePlayerL2() {
+        return ImageFileNamePlayerL2.get();
+    }
+
+    public StringProperty imageFileNamePlayerL2Property() {
+        return ImageFileNamePlayerL2;
+    }
+
+    public void setImageFileNamePlayerL2(String imageFileNamePlayerL2) {
+        this.ImageFileNamePlayerL2.set(imageFileNamePlayerL2);
     }
 
     public MazeDisplayer() {
@@ -273,8 +303,8 @@ public class MazeDisplayer extends Canvas  {
 //        this.imageFileNameSea.set(imageFileNameSea);
 //    }
 
-    public void drawMaze(int[][] maze) {
-        this.maze = maze;
+    public void drawMaze(Maze maze) {
+        this.maze =maze ;
         this.canvasHeight = getHeight();
         this.canvasWidth = getWidth();
         draw();
@@ -282,8 +312,8 @@ public class MazeDisplayer extends Canvas  {
 
     private void draw() {
         if(maze != null){
-            int rows = maze.length;
-            int cols = maze[0].length;
+            int rows = maze.getMaze().length;
+            int cols = maze.getMaze()[0].length;
             synchronized (this.changeMazeSize){
                 synchronized (this.zoomLock){
                     this.cellHeight = (canvasHeight + zoomVal) / rows;
@@ -367,7 +397,7 @@ public class MazeDisplayer extends Canvas  {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                if(maze[i][j] == 1){
+                if(maze.getMaze()[i][j] == 1){
                     //if it is a wall:
                     double x = j * cellWidth+startX;
                     double y = i * cellHeight+startY;
@@ -399,17 +429,36 @@ public class MazeDisplayer extends Canvas  {
 
 
         Image playerImage = null;
+        if (rightMovment) {
         try {
-            if (changeImagePlayer) {
-                playerImage = new Image(new FileInputStream(getImageFileNamePlayer1()));
-                changeImagePlayer = false;
-            } else {
-                playerImage = new Image(new FileInputStream(getImageFileNamePlayer2()));
-                changeImagePlayer = true;
+
+                if (changeImagePlayer) {
+                    playerImage = new Image(new FileInputStream(getImageFileNamePlayer1()));
+                    changeImagePlayer = false;
+                } else {
+                    playerImage = new Image(new FileInputStream(getImageFileNamePlayer2()));
+                    changeImagePlayer = true;
+                }
+            }
+        catch(FileNotFoundException e){
+                System.out.println("There is no player image file");
             }
         }
-        catch (FileNotFoundException e) {
-            System.out.println("There is no player image file");
+        else
+        {
+            try {
+
+                if (changeImagePlayer) {
+                    playerImage = new Image(new FileInputStream(getImageFileNamePlayerL1()));
+                    changeImagePlayer = false;
+                } else {
+                    playerImage = new Image(new FileInputStream(getImageFileNamePlayerL2()));
+                    changeImagePlayer = true;
+                }
+            }
+            catch(FileNotFoundException e){
+                System.out.println("There is no player image file");
+            }
         }
 //        Timer timer = new Timer();
 //
@@ -482,7 +531,7 @@ public class MazeDisplayer extends Canvas  {
 
     public void zoomOut() {
         synchronized (this.zoomLock){
-            if(((canvasHeight+this.zoomVal)/this.maze.length>=1)&&(canvasWidth+this.zoomVal)/this.maze[0].length>=1)
+            if(((canvasHeight+this.zoomVal)/this.maze.getMaze().length>=1)&&(canvasWidth+this.zoomVal)/this.maze.getMaze()[0].length>=1)
                 zoomVal-=this.delta;
         }
         drawMaze(maze);
@@ -490,8 +539,8 @@ public class MazeDisplayer extends Canvas  {
 
     public void changeMazePosition(double Vx, double Vy) {
         if(maze != null) {
-            double addToX = (cellWidth * maze[0].length) / canvasWidth;
-            double addToY = (cellHeight * maze.length) / canvasHeight;
+            double addToX = (cellWidth * maze.getMaze()[0].length) / canvasWidth;
+            double addToY = (cellHeight * maze.getMaze().length) / canvasHeight;
             if (Vx < 0)
                 addToX = -addToX;
             if (Vy < 0)

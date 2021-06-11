@@ -215,7 +215,7 @@ public class MyViewController implements Observer, IView, Initializable {
     private void mazeGenerated(Maze arg) {
         mazeDisplayer.setStartP(arg.getStartPosition());
         mazeDisplayer.setEndP(arg.getGoalPosition());
-        mazeDisplayer.drawMaze(arg.getMaze());
+        mazeDisplayer.drawMaze(arg);
         mazeDisplayer.setDelta(5);
         mazeDisplayer.setStartX(0);
         mazeDisplayer.setStartY(0);
