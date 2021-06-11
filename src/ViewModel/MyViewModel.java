@@ -86,8 +86,13 @@ public class MyViewModel extends Observable implements Observer {
     public void update(Observable o, Object arg) {
         if(arg instanceof Maze)
             mazeGenerated((Maze)arg);
-        else if(arg instanceof Position[])
+        else if(arg instanceof Position[]) {
+            if(((Position[]) arg)[0].getColumnIndex() < this.getColIndexOfPlayer())
+                MazeDisplayer.rightMovment = false;
+            else if(((Position[]) arg)[0].getColumnIndex() > this.getColIndexOfPlayer())
+                MazeDisplayer.rightMovment = true;
             playerMoved((Position[]) arg);
+        }
         else if(arg instanceof Solution)
             mazeSolved((Solution) arg);
 
