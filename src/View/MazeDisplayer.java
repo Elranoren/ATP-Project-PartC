@@ -397,22 +397,20 @@ public class MazeDisplayer extends Canvas  {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
+                double x = j * cellWidth+startX;
+                double y = i * cellHeight+startY;
+                if(seaImage == null)
+                    graphicsContext.fillRect(x, y, cellWidth, cellHeight);
+                else
+                    graphicsContext.drawImage(seaImage, x, y, cellWidth, cellHeight);
                 if(maze.getMaze()[i][j] == 1){
                     //if it is a wall:
-                    double x = j * cellWidth+startX;
-                    double y = i * cellHeight+startY;
+                    x = j * cellWidth+startX;
+                    y = i * cellHeight+startY;
                     if(wallImage == null)
                         graphicsContext.fillRect(x, y, cellWidth, cellHeight);
                     else
                         graphicsContext.drawImage(wallImage, x, y, cellWidth, cellHeight);
-                }
-                else{
-                    double x = j * cellWidth+startX;
-                    double y = i * cellHeight+startY;
-                    if(seaImage == null)
-                        graphicsContext.fillRect(x, y, cellWidth, cellHeight);
-                    else
-                        graphicsContext.drawImage(seaImage, x, y, cellWidth, cellHeight);
                 }
             }
         }

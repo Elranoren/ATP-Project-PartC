@@ -95,7 +95,7 @@
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>
-                <MazeDisplayer fx:id="mazeDisplayer" height="400.0" imageFileNameSea="./resources/images/sea.jpg" imageFileNamePipito="./resources/images/pipito.png" imageFileNameseaDown="./resources/images/seaDown.jpg" imageFileNameMother="./resources/images/mother.jpg" imageFileNamePlayer1="./resources/images/playerMarco.png"  ImageFileNamePlayerL1="./resources/images/playerMarcoL.png" ImageFileNamePlayerL2="./resources/images/playerMarcoL2.png" imageFileNameFood="./resources/images/marcoFood.png" imageFileNamePlayer2="./resources/images/playerMarco2.png" imageFileNameWall="./resources/images/wall.jpg" onKeyPressed="#keyPressed" width="400.0" />
+                <MazeDisplayer fx:id="mazeDisplayer" height="550.0" imageFileNameSea="./resources/images/sea.jpg" imageFileNamePipito="./resources/images/pipito.png" imageFileNameseaDown="./resources/images/seaDown.jpg" imageFileNameMother="./resources/images/mother.png" imageFileNamePlayer1="./resources/images/playerMarco.png"  ImageFileNamePlayerL1="./resources/images/playerMarcoL.png" ImageFileNamePlayerL2="./resources/images/playerMarcoL2.png" imageFileNameFood="./resources/images/marcoFood.png" imageFileNamePlayer2="./resources/images/playerMarco2.png" imageFileNameWall="./resources/images/wall.png" onKeyPressed="#keyPressed" width="700.0" />
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
