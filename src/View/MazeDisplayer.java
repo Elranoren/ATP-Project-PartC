@@ -20,7 +20,7 @@ public class MazeDisplayer extends Canvas  {
     private int pipitoRow;
     private int pipitoCol;
   //  private Image playerImage ;
-    private boolean changeImagePlayer=false;
+
 
     public int[][] getMaze() {
         return maze;
@@ -30,6 +30,7 @@ public class MazeDisplayer extends Canvas  {
         this.maze = maze;
     }
     private boolean changeSea = false;
+    private boolean changeImagePlayer=false;
     private int[][] maze;
     private Solution s;
     private Position startP;
@@ -396,10 +397,18 @@ public class MazeDisplayer extends Canvas  {
         double y = getPlayerRow() * cellHeight+startY;
         graphicsContext.setFill(Color.GREEN);
 
-        final Image[] playerImage = {null};
+
+        Image playerImage = null;
         try {
-            playerImage[0] = new Image(new FileInputStream(getImageFileNamePlayer1()));
-        } catch (FileNotFoundException e) {
+            if (changeImagePlayer) {
+                playerImage = new Image(new FileInputStream(getImageFileNamePlayer1()));
+                changeImagePlayer = false;
+            } else {
+                playerImage = new Image(new FileInputStream(getImageFileNamePlayer2()));
+                changeImagePlayer = true;
+            }
+        }
+        catch (FileNotFoundException e) {
             System.out.println("There is no player image file");
         }
 //        Timer timer = new Timer();
@@ -427,10 +436,10 @@ public class MazeDisplayer extends Canvas  {
 //            }
 //        }, 0, 1000);//wait 0 ms before doing the action and do it evry 1000ms (1second)
 
-        if(playerImage[0] == null)
+        if(playerImage == null)
             graphicsContext.fillRect(x, y, cellWidth, cellHeight);
         else
-            graphicsContext.drawImage(playerImage[0], x, y, cellWidth, cellHeight);
+            graphicsContext.drawImage(playerImage, x, y, cellWidth, cellHeight);
     }
 
     public void drawS(Solution s) {
