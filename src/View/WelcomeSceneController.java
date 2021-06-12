@@ -35,7 +35,7 @@ public class WelcomeSceneController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MyView.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root,900,600));
             stage.setTitle("Game");
             MyModel myModel = new MyModel();
             myModel.startServer();
