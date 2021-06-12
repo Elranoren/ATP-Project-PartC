@@ -1,5 +1,6 @@
 package View;
 
+import Model.MyModel;
 import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
@@ -11,6 +12,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -30,6 +32,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.*;
 import java.net.URL;
@@ -64,6 +67,7 @@ public class MyViewController implements Observer, IView, Initializable {
     private MediaPlayer marcoSong;
     private Thread marcoThread;
     private boolean stopMarcoSong = false;
+    private boolean startMusic = false;
 
     public String getUpdatePlayerRow() {
         return updatePlayerRow.get();
@@ -97,22 +101,6 @@ public class MyViewController implements Observer, IView, Initializable {
         mazeDisplayer.widthProperty().bind(myBorderPane.widthProperty().divide(1.1).add(-170));
 
     }
-    public void setMazeSize(Scene scene)
-    {
-        scene.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-                mazeDisplayer.drawMaze(mazeDisplayer.getMaze());
-            }
-        });
-        scene.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-                mazeDisplayer.drawMaze(mazeDisplayer.getMaze());
-
-            }
-        });
-    }
 
     public void generateMaze(ActionEvent actionEvent) {
         mazeDisplayer.setS(null);
@@ -133,21 +121,23 @@ public class MyViewController implements Observer, IView, Initializable {
 
         this.myViewModel.generateMaze(rows, cols);
         menuItemSave.setDisable(false);
-        if (marcoThread != null && marcoThread.isAlive()) {
-            stopMarcoSong = true;
-            marcoSong.stop();
-        }
+//        if (marcoThread != null && marcoThread.isAlive()) {
+//            stopMarcoSong = true;
+//            marcoSong.stop();
+//        }
         playMusic();
 
     }
 
     private void playMusic() {
+        this.startMusic = true;
         Media song = new Media(this.getClass().getResource("/music/primeSong.mp3").toString());
         this.marcoSong = new MediaPlayer(song);
         marcoSong.play();
     }
 
     private void stopMusic() {
+        this.stopMarcoSong = true;
         marcoSong.stop();
     }
 
@@ -390,14 +380,28 @@ public class MyViewController implements Observer, IView, Initializable {
         myViewModel.stopServers();
         System.exit(0);
     }
-
+    private void onCloseAppAction(Stage stage, PropertiesController propertiesController) {
+        if(this.stopMarcoSong)
+            stopMusic();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent windowEvent) {
+                propertiesController.openMainScene();
+            }
+        });
+    }
     public void propertiesMenu(ActionEvent actionEvent) {
         try {
+            if(!this.stopMarcoSong && this.startMusic )
+                this.stopMusic();
+            MyModel myModel = new MyModel();
+            myModel.stopServer();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Properties.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Settings");
+            PropertiesController propertiesControllerController = fxmlLoader.getController();
+            onCloseAppAction(stage,propertiesControllerController);
             stage.show();
             Stage cStage = (Stage) generateButton.getScene().getWindow();
             cStage.close();
@@ -405,7 +409,22 @@ public class MyViewController implements Observer, IView, Initializable {
             e.printStackTrace();
         }
     }
+    public void setMazeSize(Scene scene)
+    {
+        scene.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+                mazeDisplayer.drawMaze(mazeDisplayer.getMaze());
+            }
+        });
+        scene.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+                mazeDisplayer.drawMaze(mazeDisplayer.getMaze());
 
+            }
+        });
+    }
     public void helpMenu(ActionEvent actionEvent) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Help.fxml"));

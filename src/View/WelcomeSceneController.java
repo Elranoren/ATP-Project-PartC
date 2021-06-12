@@ -19,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -35,7 +36,7 @@ public class WelcomeSceneController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MyView.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
-            Scene scene =new Scene(root,900,600);
+            Scene scene = new Scene(root,900,600);
             stage.setScene(scene);
             stage.setTitle("Game");
             MyModel myModel = new MyModel();
@@ -47,7 +48,7 @@ public class WelcomeSceneController implements Initializable {
             myModel.addObserver(myViewModel);
             myViewModel.addObserver(myViewController);
             myViewController.setMazeSize(scene);
-            onCloseAppAction(stage,myViewController); // close the application (the stage and the servers)
+            onCloseAppAction(stage,myViewController);// close the application (the stage and the servers)
             stage.show();
             Stage welcomeS = (Stage) startButton.getScene().getWindow();
             welcomeS.close();
@@ -90,6 +91,15 @@ public class WelcomeSceneController implements Initializable {
         });
     }
 
+    private void onCloseAppAction(Stage stage, PropertiesController propertiesController) {
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent windowEvent) {
+
+                propertiesController.openMainScene();
+            }
+        });
+    }
+
     public void setSizeOfScene(Scene scene) {
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -113,8 +123,6 @@ public class WelcomeSceneController implements Initializable {
 
     }
 
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         startButton.prefHeightProperty().bind(myPane.heightProperty().divide(10));
@@ -136,6 +144,8 @@ public class WelcomeSceneController implements Initializable {
 
     public void openSettingsView(ActionEvent actionEvent) {
         try {
+            MyModel myModel = new MyModel();
+            myModel.stopServer();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Properties.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
@@ -147,6 +157,7 @@ public class WelcomeSceneController implements Initializable {
 
 
             stage.setTitle("Settings");
+            onCloseAppAction(stage,propertiesControllerController);
             stage.show();
             Stage cStage = (Stage) startButton.getScene().getWindow();
             cStage.close();
