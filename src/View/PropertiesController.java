@@ -71,7 +71,7 @@ public class PropertiesController implements Initializable {
         }
     }
 
-    private void openMainScene()
+    public void openMainScene()
     {
 
         try {
