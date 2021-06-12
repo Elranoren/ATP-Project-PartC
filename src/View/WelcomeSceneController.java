@@ -19,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -45,7 +46,7 @@ public class WelcomeSceneController implements Initializable {
             myViewController.setViewModel(myViewModel);
             myModel.addObserver(myViewModel);
             myViewModel.addObserver(myViewController);
-            onCloseAppAction(stage,myViewController); // close the application (the stage and the servers)
+            onCloseAppAction(stage,myViewController);// close the application (the stage and the servers)
             stage.show();
             Stage welcomeS = (Stage) startButton.getScene().getWindow();
             welcomeS.close();
@@ -84,6 +85,15 @@ public class WelcomeSceneController implements Initializable {
                    myViewController.exitMenu(null);
                    System.exit(0);
                 }
+            }
+        });
+    }
+
+    private void onCloseAppAction(Stage stage, PropertiesController propertiesController) {
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent windowEvent) {
+
+                propertiesController.openMainScene();
             }
         });
     }
@@ -132,6 +142,8 @@ public class WelcomeSceneController implements Initializable {
 
     public void openSettingsView(ActionEvent actionEvent) {
         try {
+            MyModel myModel = new MyModel();
+            myModel.stopServer();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Properties.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
@@ -143,6 +155,7 @@ public class WelcomeSceneController implements Initializable {
 
 
             stage.setTitle("Settings");
+            onCloseAppAction(stage,propertiesControllerController);
             stage.show();
             Stage cStage = (Stage) startButton.getScene().getWindow();
             cStage.close();
