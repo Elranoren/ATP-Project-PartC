@@ -72,21 +72,15 @@
                                 <MenuItem fx:id="menuProperties" onAction="#propertiesMenu" mnemonicParsing="false" text="Properties" />
                             </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="About">
+                        <Menu mnemonicParsing="false" text="More Options">
                             <items>
+                                <MenuItem fx:id="menuExit" onAction="#exitMenu" mnemonicParsing="false"  text="Exit" />
+                                <MenuItem fx:id="menuHelp" onAction="#helpMenu" mnemonicParsing="false"  text="Help" />
                                 <MenuItem fx:id="menuAbout" onAction="#aboutMenu" mnemonicParsing="false"  text="About" />
                             </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="Exit" >
-                            <items>
-                                <MenuItem fx:id="menuExit" onAction="#exitMenu" mnemonicParsing="false"  text="Exit" />
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Help" >
-                            <items>
-                                <MenuItem fx:id="menuHelp" onAction="#helpMenu" mnemonicParsing="false"  text="Help" />
-                            </items>
-                        </Menu>
+
+
                     </menus>
                 </MenuBar>
             </children>
