@@ -7,18 +7,22 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class PropertiesController implements Initializable {
@@ -81,12 +85,28 @@ public class PropertiesController implements Initializable {
             stage.setScene(new Scene(root, 600, 335));
             stage.setTitle("Game");
             Stage currentStage = (Stage) saveButton.getScene().getWindow();
+            WelcomeSceneController welcomeSceneController = fxmlLoader.getController();
+            onCloseAppAction(stage, welcomeSceneController);
             currentStage.close();
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+    private void onCloseAppAction(Stage stage, WelcomeSceneController welcomeSceneController) {
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent windowEvent) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setContentText("Are you sure you want to exit the app?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() != ButtonType.OK)
+                    windowEvent.consume();
+                else {
+                    System.exit(0);
+                }
+            }
+        });
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

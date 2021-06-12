@@ -30,6 +30,7 @@ public class MyModel extends Observable implements IModel {
     private Maze maze;
     private Server generateMazeServer;
     private Server solveMazeServer;
+    private static boolean serverStart = false;
 
     public MyModel() {
         this.generateMazeServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
@@ -233,8 +234,12 @@ public class MyModel extends Observable implements IModel {
 
 
     public void startServer() {
-        this.generateMazeServer.start();
-        this.solveMazeServer.start();
+        if(serverStart==false){
+            this.generateMazeServer.start();
+            this.solveMazeServer.start();
+            serverStart = true;
+        }
+
     }
 
     public void stopServer() {
