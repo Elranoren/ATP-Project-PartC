@@ -35,7 +35,8 @@ public class WelcomeSceneController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MyView.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
-            stage.setScene(new Scene(root,900,600));
+            Scene scene =new Scene(root,900,600);
+            stage.setScene(scene);
             stage.setTitle("Game");
             MyModel myModel = new MyModel();
             myModel.startServer();
@@ -45,6 +46,7 @@ public class WelcomeSceneController implements Initializable {
             myViewController.setViewModel(myViewModel);
             myModel.addObserver(myViewModel);
             myViewModel.addObserver(myViewController);
+            myViewController.setMazeSize(scene);
             onCloseAppAction(stage,myViewController); // close the application (the stage and the servers)
             stage.show();
             Stage welcomeS = (Stage) startButton.getScene().getWindow();
@@ -110,6 +112,8 @@ public class WelcomeSceneController implements Initializable {
         });
 
     }
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
