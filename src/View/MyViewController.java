@@ -9,6 +9,8 @@ import algorithms.mazeGenerators.SimpleMazeGenerator;
 import algorithms.search.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +30,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -54,6 +57,7 @@ public class MyViewController implements Observer, IView, Initializable {
     public javafx.scene.control.MenuItem menuItemLoad;
     public javafx.scene.control.MenuItem menuAbout;
     public javafx.scene.control.Button generateButton;
+    public javafx.scene.layout.BorderPane myBorderPane;
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
     private boolean startDragwithctrl = false;
@@ -88,6 +92,14 @@ public class MyViewController implements Observer, IView, Initializable {
             MyViewModel.setThreadsNumConfig("10");
         playerRow.textProperty().bind(updatePlayerRow);
         playerCol.textProperty().bind(updatePlayerCol);
+        double screenW= Screen.getPrimary().getVisualBounds().getWidth();
+        double screemH = Screen.getPrimary().getVisualBounds().getHeight();
+        myBorderPane.setPrefHeight(screemH);
+        myBorderPane.setPrefWidth(screenW);
+
+        mazeDisplayer.heightProperty().bind(myBorderPane.heightProperty().divide(1.1).add(-20));
+        mazeDisplayer.widthProperty().bind(myBorderPane.widthProperty().divide(1.1).add(-170));
+
     }
 
     public void generateMaze(ActionEvent actionEvent) {
@@ -397,7 +409,22 @@ public class MyViewController implements Observer, IView, Initializable {
             e.printStackTrace();
         }
     }
+    public void setMazeSize(Scene scene)
+    {
+        scene.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+                mazeDisplayer.drawMaze(mazeDisplayer.getMaze());
+            }
+        });
+        scene.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+                mazeDisplayer.drawMaze(mazeDisplayer.getMaze());
 
+            }
+        });
+    }
     public void helpMenu(ActionEvent actionEvent) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Help.fxml"));

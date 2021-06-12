@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import View.*?>
-<BorderPane onMouseClicked="#mouseClicked" prefHeight="408.0" prefWidth="594.0" stylesheets="@MainStyle.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="View.MyViewController" onScroll="#scroll" onDragDetected="#dragDetected" onMouseDragged="#mouseDragged" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased">
+<BorderPane fx:id="myBorderPane" onMouseClicked="#mouseClicked" prefHeight="408.0" prefWidth="594.0" stylesheets="@MainStyle.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="View.MyViewController" onScroll="#scroll" onDragDetected="#dragDetected" onMouseDragged="#mouseDragged" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased">
     <left>
         <VBox prefHeight="200.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
@@ -73,14 +73,14 @@
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="About">
-                        <items>
-                            <MenuItem fx:id="menuAbout" onAction="#aboutMenu" mnemonicParsing="false"  text="About" />
-                        </items>
+                            <items>
+                                <MenuItem fx:id="menuAbout" onAction="#aboutMenu" mnemonicParsing="false"  text="About" />
+                            </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Exit" >
-                        <items>
-                            <MenuItem fx:id="menuExit" onAction="#exitMenu" mnemonicParsing="false"  text="Exit" />
-                        </items>
+                            <items>
+                                <MenuItem fx:id="menuExit" onAction="#exitMenu" mnemonicParsing="false"  text="Exit" />
+                            </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help" >
                             <items>
@@ -95,7 +95,7 @@
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>
-                <MazeDisplayer fx:id="mazeDisplayer" height="550.0" imageFileNameSea="./resources/images/sea.jpg" imageFileNamePipito="./resources/images/pipito.png" imageFileNameseaDown="./resources/images/seaDown.jpg" imageFileNameMother="./resources/images/mother.png" imageFileNamePlayer1="./resources/images/playerMarco.png"  ImageFileNamePlayerL1="./resources/images/playerMarcoL.png" ImageFileNamePlayerL2="./resources/images/playerMarcoL2.png" imageFileNameFood="./resources/images/marcoFood.png" imageFileNamePlayer2="./resources/images/playerMarco2.png" imageFileNameWall="./resources/images/wall.png" onKeyPressed="#keyPressed" width="700.0" />
+                <MazeDisplayer fx:id="mazeDisplayer" height="550.0" imageFileNameSea="./resources/images/sea.jpg" imageFileNamePipito="./resources/images/pipito.png" imageFileNameseaDown="./resources/images/seaDown.jpg" imageFileNameMother="./resources/images/mother.png" imageFileNamePlayer1="./resources/images/playerMarco.png"  ImageFileNamePlayerL1="./resources/images/playerMarcoL.png" ImageFileNamePlayerL2="./resources/images/playerMarcoL2.png" imageFileNameFood="./resources/images/marcoFood.png" imageFileNamePlayer2="./resources/images/playerMarco2.png" imageFileNameWall="./resources/images/wall.png" onKeyPressed="#keyPressed" width="550.0" />
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
