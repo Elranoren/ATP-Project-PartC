@@ -1,14 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="View.HelpController"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.HelpController">
+   <children>
+      <Label layoutX="14.0" layoutY="11.0" prefHeight="29.0" prefWidth="60.0" text="Help :">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="41.0" text="Create New Maze :">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="15.0" layoutY="75.0" prefHeight="17.0" prefWidth="572.0" text="1. Enter your numbers of rows and columns, and then press on &quot; Generate Maze &quot; button " />
+      <Label layoutX="16.0" layoutY="93.0" prefHeight="17.0" prefWidth="337.0" text="2. In the menu bar : choose &quot;File&quot; -&gt;&quot;New&quot;" />
+      <Label layoutX="15.0" layoutY="58.0" prefHeight="17.0" prefWidth="572.0" text="For creating a new maze, choose one of the two options below :" />
+      <Label layoutX="15.0" layoutY="133.0" prefHeight="17.0" prefWidth="572.0" text="Click on &quot;Solve Maze&quot; button (only after generating a maze) and the game will show you the solution path." />
+      <Label layoutX="16.0" layoutY="113.0" text="Solve Maze :">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="16.0" layoutY="150.0" text="Player Movement :">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="16.0" layoutY="185.0" prefHeight="17.0" prefWidth="572.0" text="1. Mouse movement : click on the screen with the mpuse and drag the mouse to direction." />
+      <Label layoutX="16.0" layoutY="168.0" prefHeight="17.0" prefWidth="572.0" text="For move marco , choose one of the two options below :" />
+      <Label layoutX="16.0" layoutY="202.0" prefHeight="17.0" prefWidth="572.0" text="2. Keyboard movement : Play with NUMPAD or with the regular arrow keys." />
+      <Label layoutX="17.0" layoutY="220.0" prefHeight="17.0" prefWidth="545.0" text="** You can only move on the sea, all the way to marco's mother, be careful from the rocks." />
+      <Label layoutX="19.0" layoutY="259.0" text="Menu bar:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="18.0" layoutY="294.0" prefHeight="17.0" prefWidth="572.0" text="2. &quot;File&quot; -&gt; &quot;Save&quot; : save the game to your computer ( the maze, marco and kofifo position will be saved)" />
+      <Label layoutX="18.0" layoutY="277.0" prefHeight="17.0" prefWidth="572.0" text="1. &quot;File&quot; -&gt; &quot;New&quot; : generating a new maze" />
+      <Label layoutX="18.0" layoutY="311.0" prefHeight="17.0" prefWidth="572.0" text="3. &quot;File&quot; -&gt; &quot;Load&quot; : loading a mazeGame file to the pane" />
+      <Label layoutX="17.0" layoutY="327.0" prefHeight="17.0" prefWidth="545.0" text="4. &quot;Options&quot; -&gt; &quot;Properties&quot; : changing searching and generating algorithms as you preferred, " />
+      <Label layoutX="17.0" layoutY="235.0" prefHeight="17.0" prefWidth="545.0" text="** Dont worry , you are not alone! Kofifo is behind you all the way to mommy! ." />
+      <Label layoutX="36.0" layoutY="341.0" prefHeight="17.0" prefWidth="545.0" text="and changing the thread num" />
+      <Label layoutX="18.0" layoutY="357.0" prefHeight="17.0" prefWidth="572.0" text="5. &quot;More Options&quot; -&gt; &quot;Exit&quot; : exit the game" />
+      <Label layoutX="19.0" layoutY="374.0" prefHeight="17.0" prefWidth="572.0" text="6. &quot;More Options&quot; -&gt; &quot;About&quot; : read on us :)" />
+   </children>
 </AnchorPane>

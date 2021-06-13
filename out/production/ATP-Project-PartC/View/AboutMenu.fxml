@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AboutMenuController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AboutMenuController">
    <children>
-      <ImageView fx:id="elranAndTamarImage" fitHeight="310.0" fitWidth="329.0" layoutX="119.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="elranAndTamarImage" fitHeight="171.0" fitWidth="217.0" layoutX="190.0" layoutY="226.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="14.0" layoutY="7.0" prefHeight="25.0" prefWidth="108.0" text="About Us :">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Label>
+      <TextArea editable="false" layoutX="14.0" layoutY="32.0" prefHeight="65.0" prefWidth="569.0" text="The game &quot; 3000 leagues in search of mother &quot; was developed by Elran Oren and Tamar Tzuberi.&#10;Elran Oren : 25 years old, from Netanya.&#10;Tamar Tzuberi : 25 years old, from Rishon Le Zion." />
+      <Label layoutX="14.0" layoutY="100.0" prefHeight="28.0" prefWidth="139.0" text="About Game:">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Label>
+      <TextArea editable="false" layoutX="15.0" layoutY="126.0" prefHeight="96.0" prefWidth="569.0" text="The algorithms that we used for generate a new maze are:&#10;- MyGenerate :  implemention of &quot;Randomized Prim's algorithm&quot;.&#10;- Simple : algorithm that we created.&#10;The algorithms that we used for solving a maze are:&#10;Breadth First Search , Depth First Search , Best First Search" />
    </children>
 </AnchorPane>
