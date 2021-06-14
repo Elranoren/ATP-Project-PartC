@@ -66,8 +66,7 @@ public class MyViewController implements Observer, IView, Initializable {
     private double beforDragY = 0;
     private MediaPlayer marcoSong;
     private Thread marcoThread;
-    private boolean stopMarcoSong = false;
-    private boolean startMusic = false;
+    private volatile boolean startMusic = false;
 
     public String getUpdatePlayerRow() {
         return updatePlayerRow.get();
@@ -103,6 +102,8 @@ public class MyViewController implements Observer, IView, Initializable {
     }
 
     public void generateMaze(ActionEvent actionEvent) {
+        if(this.startMusic)
+            this.stopMusic();
         mazeDisplayer.setS(null);
         int rows = -1;
         int cols = -1;
@@ -137,7 +138,7 @@ public class MyViewController implements Observer, IView, Initializable {
     }
 
     private void stopMusic() {
-        this.stopMarcoSong = true;
+        this.startMusic = false;
         marcoSong.stop();
     }
 
@@ -381,7 +382,7 @@ public class MyViewController implements Observer, IView, Initializable {
         System.exit(0);
     }
     private void onCloseAppAction(Stage stage, PropertiesController propertiesController) {
-        if(this.stopMarcoSong)
+        if(this.startMusic)
             stopMusic();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent windowEvent) {
@@ -391,7 +392,7 @@ public class MyViewController implements Observer, IView, Initializable {
     }
     public void propertiesMenu(ActionEvent actionEvent) {
         try {
-            if(!this.stopMarcoSong && this.startMusic )
+            if(this.startMusic)
                 this.stopMusic();
             MyModel myModel = new MyModel();
             myModel.stopServer();

@@ -195,11 +195,7 @@ public class MyModel extends Observable implements IModel {
         notifyObservers(toSend);
     }
 
-    private void setMaze(Maze maze) {
-        this.maze = maze;
-        setChanged();
-        notifyObservers(maze);
-    }
+
 
     @Override
     public void solveMaze() {
@@ -242,10 +238,16 @@ public class MyModel extends Observable implements IModel {
 
     }
 
+    private void setStart(){
+        if(maze.getMaze()[maze.getStartPosition().getRowIndex()][maze.getStartPosition().getColumnIndex()]==1)
+            maze.getMaze()[maze.getStartPosition().getRowIndex()][maze.getStartPosition().getColumnIndex()]=0;
+    }
+
     public void stopServer() {
         this.generateMazeServer.stop();
         this.solveMazeServer.stop();
     }
+
 
     @Override
     public void movePlayer(MouseEvent mouseEvent, double mousePosX, double mousePosY) {
@@ -303,4 +305,12 @@ public class MyModel extends Observable implements IModel {
         setChanged();
         notifyObservers(toSend);
     }
+    private void setMaze(Maze maze) {
+        this.maze = maze;
+        setStart();
+        setChanged();
+        notifyObservers(maze);
+    }
+
+
 }
