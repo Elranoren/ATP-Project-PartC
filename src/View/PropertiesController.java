@@ -1,6 +1,7 @@
 package View;
 
 import ViewModel.*;
+import org.apache.logging.log4j.LogManager;
 import algorithms.mazeGenerators.IMazeGenerator;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -36,6 +37,7 @@ public class PropertiesController implements Initializable {
     public javafx.scene.control.RadioButton BEST;
     public javafx.scene.control.RadioButton myGenerate;
     public javafx.scene.control.RadioButton simpleGenerate;
+    public javafx.scene.control.RadioButton empty;
     public javafx.scene.control.TextField threadNumText;
     private ToggleGroup searchAlgorithmGroug;
     private ToggleGroup generateMazeGroup;
@@ -79,15 +81,17 @@ public class PropertiesController implements Initializable {
     {
 
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeScene.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../View/WelcomeScene.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
-            stage.setScene(new Scene(root, 600, 335));
+            Scene scene = new Scene(root, 600, 335);
+            stage.setScene(scene);
             stage.setTitle("Game");
             Stage currentStage = (Stage) saveButton.getScene().getWindow();
             WelcomeSceneController welcomeSceneController = fxmlLoader.getController();
             onCloseAppAction(stage, welcomeSceneController);
             currentStage.close();
+            welcomeSceneController.setSizeOfScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -118,6 +122,8 @@ public class PropertiesController implements Initializable {
         BEST.prefWidthProperty().bind(propPane.widthProperty().divide(3));
         simpleGenerate.prefHeightProperty().bind(propPane.heightProperty().divide(10));
         simpleGenerate.prefWidthProperty().bind(propPane.widthProperty().divide(3));
+        empty.prefHeightProperty().bind(propPane.heightProperty().divide(10));
+        empty.prefWidthProperty().bind(propPane.widthProperty().divide(3));
         myGenerate.prefHeightProperty().bind(propPane.heightProperty().divide(10));
         myGenerate.prefWidthProperty().bind(propPane.widthProperty().divide(3));
         saveButton.prefHeightProperty().bind(propPane.heightProperty().divide(10));
@@ -150,6 +156,8 @@ public class PropertiesController implements Initializable {
         myGenerate.setUserData("MyMazeGenerator");
         simpleGenerate.setToggleGroup(generateMazeGroup);
         simpleGenerate.setUserData("SimpleMazeGenerator");
+        empty.setToggleGroup(generateMazeGroup);
+        empty.setUserData("EmptyMazeGenerator");
         if(!firstIn) {
             MyViewModel.setThreadsNumConfig(String.valueOf(10));
             MyViewModel.setGeneratingAlgorithmConfig("MyMazeGenerator");
@@ -172,7 +180,8 @@ public class PropertiesController implements Initializable {
                 DFS.setLayoutX(propPane.getWidth()/3.5);
                 BEST.setLayoutX(propPane.getWidth()/2);
                 myGenerate.setLayoutX(propPane.getWidth()/10);
-                simpleGenerate.setLayoutX(propPane.getWidth()/2);
+                simpleGenerate.setLayoutX(propPane.getWidth()/3.5);
+                empty.setLayoutX(propPane.getWidth()/2);
                 generateLabel.setLayoutX(propPane.getWidth()/10);
                 threadNumLabel.setLayoutX(propPane.getWidth()/10);
                 threadNumText.setLayoutX(propPane.getWidth()/10);
@@ -191,6 +200,7 @@ public class PropertiesController implements Initializable {
                 BEST.setLayoutY(propPane.getHeight()/4);
                 myGenerate.setLayoutY(propPane.getHeight()/3);
                 simpleGenerate.setLayoutY(propPane.getHeight()/3);
+                empty.setLayoutY(propPane.getHeight()/3);
                 searchLabel.setLayoutY(propPane.getHeight()/5.5);
                 generateLabel.setLayoutY(propPane.getHeight()/3.5);
                 threadNumLabel.setLayoutY(propPane.getHeight()/2.5);
@@ -214,6 +224,8 @@ public class PropertiesController implements Initializable {
             myGenerate.setSelected(true);
         else if(configGenerate.equals("SimpleMazeGenerator"))
             simpleGenerate.setSelected(true);
+        else if(configGenerate.equals("EmptyMazeGenerator"))
+            empty.setSelected(true);
         threadNumText.setText(MyViewModel.getThreadsNumConfig());
 
     }

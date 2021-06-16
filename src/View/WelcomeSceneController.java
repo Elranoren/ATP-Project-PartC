@@ -1,7 +1,7 @@
 package View;
 
-import Model.MyModel;
-import ViewModel.MyViewModel;
+import Model.*;
+import ViewModel.*;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
@@ -18,8 +18,9 @@ import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -29,11 +30,10 @@ public class WelcomeSceneController implements Initializable {
     public  javafx.scene.control.Button settingsButton;
     public  javafx.scene.image.ImageView marcoImage;
     public  javafx.scene.layout.AnchorPane myPane;
-
     private DoubleProperty textSize = new SimpleDoubleProperty();
     public  void openMyView(ActionEvent actionEvent) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MyView.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../View/MyView.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             Scene scene = new Scene(root,900,600);
@@ -42,7 +42,7 @@ public class WelcomeSceneController implements Initializable {
             MyModel myModel = new MyModel();
             myModel.startServer();
             MyViewModel myViewModel = new MyViewModel(myModel);
-            MyViewController myViewController = fxmlLoader.getController();
+            MyViewController myViewController =(MyViewController) fxmlLoader.getController();
             /////////
             myViewController.setViewModel(myViewModel);
             myModel.addObserver(myViewModel);
@@ -146,7 +146,7 @@ public class WelcomeSceneController implements Initializable {
         try {
             MyModel myModel = new MyModel();
             myModel.stopServer();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Properties.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../View/Properties.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
 

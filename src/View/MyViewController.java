@@ -33,7 +33,7 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-
+import org.apache.logging.log4j.LogManager;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -300,7 +300,7 @@ public class MyViewController implements Observer, IView, Initializable {
 
     public void aboutMenu(ActionEvent actionEvent) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AboutMenu.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../View/AboutMenu.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -396,13 +396,15 @@ public class MyViewController implements Observer, IView, Initializable {
                 this.stopMusic();
             MyModel myModel = new MyModel();
             myModel.stopServer();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Properties.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../View/Properties.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root,600,400);
+            stage.setScene(scene);
             stage.setTitle("Settings");
             PropertiesController propertiesControllerController = fxmlLoader.getController();
             onCloseAppAction(stage,propertiesControllerController);
+            propertiesControllerController.setSizeOfScene(scene);
             stage.show();
             Stage cStage = (Stage) generateButton.getScene().getWindow();
             cStage.close();
@@ -428,7 +430,7 @@ public class MyViewController implements Observer, IView, Initializable {
     }
     public void helpMenu(ActionEvent actionEvent) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Help.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../View/Help.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));

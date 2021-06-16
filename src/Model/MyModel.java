@@ -15,6 +15,9 @@ import javafx.beans.InvalidationListener;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 import java.io.*;
 import java.net.InetAddress;
@@ -31,6 +34,7 @@ public class MyModel extends Observable implements IModel {
     private Server generateMazeServer;
     private Server solveMazeServer;
     private static boolean serverStart = false;
+    private final Logger logger = LogManager.getLogger("MyModel");
 
     public MyModel() {
         this.generateMazeServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
@@ -170,13 +174,23 @@ public class MyModel extends Observable implements IModel {
 
 
                     } catch (Exception e) {
+                        logger.error("Exception",e);
                         e.printStackTrace();
                     }
+
+                    try {
+                        logger.info("client excepted : " + InetAddress.getLocalHost());
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    }
+                    logger.info("server port : 5400");
+                    logger.info("Maze size: rows: "+maze.getRows()+" columns: "+maze.getColumns() );
 
                 }
             });
             client.communicateWithServer();
         } catch (UnknownHostException e) {
+            logger.error("UnknownHostException",e);
             e.printStackTrace();
         }
         //this.sol = null;
@@ -216,12 +230,22 @@ public class MyModel extends Observable implements IModel {
                         setChanged();
                         notifyObservers(sol);
                     } catch (Exception e) {
+                        logger.error("Exception",e);
+                        e.printStackTrace();
+                    }
+                    try {
+                        logger.info("client excepted : " + InetAddress.getLocalHost());
+                        logger.info("server port : 5401");
+                        logger.info("Maze solving algorithm: "+ MyViewModel.getSearchAlgorithmConfig());
+                        logger.info("solving path: "+ sol.getSolutionPath());
+                    } catch (UnknownHostException e) {
                         e.printStackTrace();
                     }
                 }
             });
             client.communicateWithServer();
         } catch (UnknownHostException e) {
+            logger.error("UnknownHostException",e);
             e.printStackTrace();
         }
 
@@ -230,22 +254,19 @@ public class MyModel extends Observable implements IModel {
 
 
     public void startServer() {
-        if(serverStart==false){
+        if(!serverStart){
             this.generateMazeServer.start();
             this.solveMazeServer.start();
             serverStart = true;
+            logger.info("starting servers");
         }
 
-    }
-
-    private void setStart(){
-        if(maze.getMaze()[maze.getStartPosition().getRowIndex()][maze.getStartPosition().getColumnIndex()]==1)
-            maze.getMaze()[maze.getStartPosition().getRowIndex()][maze.getStartPosition().getColumnIndex()]=0;
     }
 
     public void stopServer() {
         this.generateMazeServer.stop();
         this.solveMazeServer.stop();
+        logger.info("stop servers");
     }
 
 
@@ -304,12 +325,13 @@ public class MyModel extends Observable implements IModel {
         toSend[1] =pipitopos;
         setChanged();
         notifyObservers(toSend);
+        logger.info("Load maze succeeded");
     }
     private void setMaze(Maze maze) {
         this.maze = maze;
-        setStart();
         setChanged();
         notifyObservers(maze);
+
     }
 
 

@@ -1,0 +1,106 @@
+16.06.2021 12:50:27.164 INFO  MyModel - starting servers
+16.06.2021 12:50:35.523 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 12:50:35.523 INFO  MyModel - server port : 5400
+16.06.2021 12:50:35.523 INFO  MyModel - Maze size: rows: 5 columns: 5
+16.06.2021 12:50:38.653 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 12:50:38.653 INFO  MyModel - server port : 5401
+16.06.2021 12:50:38.654 INFO  MyModel - Maze solving algorithm: BreadthFirstSearch
+16.06.2021 12:50:38.654 INFO  MyModel - solving path: [{0,3}, {0,2}, {1,1}, {2,1}, {3,1}, {4,1}]
+16.06.2021 12:50:45.537 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 12:50:45.537 INFO  MyModel - server port : 5401
+16.06.2021 12:50:45.538 INFO  MyModel - Maze solving algorithm: BreadthFirstSearch
+16.06.2021 12:50:45.538 INFO  MyModel - solving path: [{0,3}, {0,2}, {1,1}, {2,1}, {3,1}, {4,1}]
+16.06.2021 12:50:46.982 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 12:50:46.982 INFO  MyModel - server port : 5401
+16.06.2021 12:50:46.982 INFO  MyModel - Maze solving algorithm: BreadthFirstSearch
+16.06.2021 12:50:46.983 INFO  MyModel - solving path: [{0,3}, {0,2}, {1,1}, {2,1}, {3,1}, {4,1}]
+16.06.2021 12:50:48.600 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 12:50:48.601 INFO  MyModel - server port : 5400
+16.06.2021 12:50:48.601 INFO  MyModel - Maze size: rows: 5 columns: 5
+16.06.2021 12:50:49.810 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 12:50:49.810 INFO  MyModel - server port : 5400
+16.06.2021 12:50:49.810 INFO  MyModel - Maze size: rows: 5 columns: 5
+16.06.2021 12:50:50.988 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 12:50:50.988 INFO  MyModel - server port : 5400
+16.06.2021 12:50:50.988 INFO  MyModel - Maze size: rows: 5 columns: 5
+16.06.2021 12:50:51.987 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 12:50:51.987 INFO  MyModel - server port : 5400
+16.06.2021 12:50:51.988 INFO  MyModel - Maze size: rows: 5 columns: 5
+16.06.2021 12:50:53.287 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 12:50:53.287 INFO  MyModel - server port : 5401
+16.06.2021 12:50:53.287 INFO  MyModel - Maze solving algorithm: BreadthFirstSearch
+16.06.2021 12:50:53.288 INFO  MyModel - solving path: [{2,1}, {1,1}, {0,2}, {0,3}]
+16.06.2021 12:50:56.499 INFO  MyModel - stop servers
+16.06.2021 13:07:44.348 INFO  MyModel - starting servers
+16.06.2021 13:07:51.283 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:07:51.283 INFO  MyModel - server port : 5400
+16.06.2021 13:07:51.284 INFO  MyModel - Maze size: rows: 5 columns: 5
+16.06.2021 13:07:55.362 INFO  MyModel - stop servers
+16.06.2021 13:08:11.721 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:08:11.721 INFO  MyModel - server port : 5400
+16.06.2021 13:08:11.722 INFO  MyModel - Maze size: rows: 3 columns: 3
+16.06.2021 13:08:13.895 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:08:13.895 INFO  MyModel - server port : 5400
+16.06.2021 13:08:13.895 INFO  MyModel - Maze size: rows: 3 columns: 3
+16.06.2021 13:08:14.574 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:08:14.574 INFO  MyModel - server port : 5400
+16.06.2021 13:08:14.574 INFO  MyModel - Maze size: rows: 3 columns: 3
+16.06.2021 13:08:15.267 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:08:15.267 INFO  MyModel - server port : 5400
+16.06.2021 13:08:15.268 INFO  MyModel - Maze size: rows: 3 columns: 3
+16.06.2021 13:08:15.900 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:08:15.901 INFO  MyModel - server port : 5400
+16.06.2021 13:08:15.901 INFO  MyModel - Maze size: rows: 3 columns: 3
+16.06.2021 13:08:16.504 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:08:16.505 INFO  MyModel - server port : 5400
+16.06.2021 13:08:16.505 INFO  MyModel - Maze size: rows: 3 columns: 3
+16.06.2021 13:08:17.164 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:08:17.165 INFO  MyModel - server port : 5400
+16.06.2021 13:08:17.165 INFO  MyModel - Maze size: rows: 3 columns: 3
+16.06.2021 13:08:17.829 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:08:17.829 INFO  MyModel - server port : 5400
+16.06.2021 13:08:17.830 INFO  MyModel - Maze size: rows: 3 columns: 3
+16.06.2021 13:08:18.454 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:08:18.455 INFO  MyModel - server port : 5400
+16.06.2021 13:08:18.455 INFO  MyModel - Maze size: rows: 3 columns: 3
+16.06.2021 13:08:19.140 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:08:19.140 INFO  MyModel - server port : 5400
+16.06.2021 13:08:19.141 INFO  MyModel - Maze size: rows: 3 columns: 3
+16.06.2021 13:08:19.784 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:08:19.784 INFO  MyModel - server port : 5400
+16.06.2021 13:08:19.785 INFO  MyModel - Maze size: rows: 3 columns: 3
+16.06.2021 13:08:20.429 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:08:20.430 INFO  MyModel - server port : 5400
+16.06.2021 13:08:20.430 INFO  MyModel - Maze size: rows: 3 columns: 3
+16.06.2021 13:08:21.082 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:08:21.082 INFO  MyModel - server port : 5400
+16.06.2021 13:08:21.083 INFO  MyModel - Maze size: rows: 3 columns: 3
+16.06.2021 13:08:24.746 INFO  MyModel - stop servers
+16.06.2021 13:17:52.280 INFO  MyModel - stop servers
+16.06.2021 13:18:56.475 INFO  MyModel - stop servers
+16.06.2021 13:19:13.910 INFO  MyModel - starting servers
+16.06.2021 13:19:18.607 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:19:18.608 INFO  MyModel - server port : 5400
+16.06.2021 13:19:18.609 INFO  MyModel - Maze size: rows: 10 columns: 10
+16.06.2021 13:19:20.017 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:19:20.017 INFO  MyModel - server port : 5400
+16.06.2021 13:19:20.017 INFO  MyModel - Maze size: rows: 10 columns: 10
+16.06.2021 13:19:21.137 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:19:21.137 INFO  MyModel - server port : 5400
+16.06.2021 13:19:21.138 INFO  MyModel - Maze size: rows: 10 columns: 10
+16.06.2021 13:19:35.256 INFO  MyModel - stop servers
+16.06.2021 13:21:53.810 INFO  MyModel - starting servers
+16.06.2021 13:22:00.513 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:22:00.514 INFO  MyModel - server port : 5400
+16.06.2021 13:22:00.515 INFO  MyModel - Maze size: rows: 20 columns: 20
+16.06.2021 13:22:02.480 INFO  MyModel - stop servers
+16.06.2021 13:22:38.465 INFO  MyModel - stop servers
+16.06.2021 13:26:09.206 INFO  MyModel - starting servers
+16.06.2021 13:26:19.010 INFO  MyModel - client excepted : Elran-Computer/192.168.1.12
+16.06.2021 13:26:19.011 INFO  MyModel - server port : 5400
+16.06.2021 13:26:19.011 INFO  MyModel - Maze size: rows: 5 columns: 5
+16.06.2021 13:26:27.487 INFO  MyModel - stop servers
+16.06.2021 13:26:43.119 INFO  MyModel - stop servers
+16.06.2021 13:28:59.696 INFO  MyModel - stop servers
+16.06.2021 13:30:32.718 INFO  MyModel - stop servers
+16.06.2021 13:34:04.475 INFO  MyModel - stop servers

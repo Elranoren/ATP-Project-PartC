@@ -1,9 +1,5 @@
 package View;
 
-import Model.IModel;
-import Model.MyModel;
-import Server.Configurations;
-import ViewModel.MyViewModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,7 +12,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         this.mainStage = primaryStage;
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("WelcomeScene.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../View/welcomeScene.fxml"));
         Parent root = fxmlLoader.load();
 
         Scene scene = new Scene(root, 600, 335);
@@ -24,7 +20,7 @@ public class Main extends Application {
         mainStage.setScene(scene);
         mainStage.show();
         /////////////
-        WelcomeSceneController view = fxmlLoader.getController();
+        WelcomeSceneController view = (WelcomeSceneController) fxmlLoader.getController();
         view.setSizeOfScene(scene);
 
         /*

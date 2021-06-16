@@ -19,5 +19,6 @@
       <TextField fx:id="threadNumText" layoutX="27.0" layoutY="226.0" />
       <Label fx:id="searchLabel" layoutX="36.0" layoutY="53.0" text="Choose Searching Algorithm" />
       <Button fx:id="cancelButton" layoutX="384.0" layoutY="335.0" mnemonicParsing="false" onAction="#cancelSettings" prefHeight="35.0" prefWidth="80.0" text="Cancel" />
+      <RadioButton fx:id="empty" layoutX="337.0" layoutY="160.0" mnemonicParsing="false" text="Empty" />
    </children>
 </AnchorPane>

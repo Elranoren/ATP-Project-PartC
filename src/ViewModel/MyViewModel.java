@@ -1,10 +1,9 @@
 package ViewModel;
-
-import Model.IModel;
-import Model.MovementDirection;
-import Model.MyModel;
+import Model.*;
+import Model.*;
+import Model.*;
 import Server.Configurations;
-import View.MazeDisplayer;
+import View.*;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.AState;

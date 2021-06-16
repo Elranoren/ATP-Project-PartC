@@ -10,7 +10,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-
+import org.apache.logging.log4j.LogManager;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Timer;
@@ -61,7 +61,6 @@ public class MazeDisplayer extends Canvas  {
     private Object changeMazeSize;
     private double startY;
     private double startX;
-
     public double getZoomVal() {
         return zoomVal;
     }
