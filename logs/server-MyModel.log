@@ -136,3 +136,7 @@
 17.06.2021 16:06:52.194 INFO  MyModel - stop servers
 17.06.2021 16:08:44.074 INFO  MyModel - stop servers
 17.06.2021 16:09:29.570 INFO  MyModel - stop servers
+17.06.2021 16:30:52.757 INFO  MyModel - starting servers
+17.06.2021 16:31:03.294 INFO  MyModel - client excepted : DESKTOP-J2JTSSE/10.100.102.11
+17.06.2021 16:31:03.295 INFO  MyModel - server port : 5400
+17.06.2021 16:31:03.295 INFO  MyModel - Maze size: rows: 20 columns: 20
