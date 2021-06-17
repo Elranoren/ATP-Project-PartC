@@ -1,6 +1,9 @@
 package View;
 
 import ViewModel.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.*;
 import org.apache.logging.log4j.LogManager;
 import algorithms.mazeGenerators.IMazeGenerator;
 import javafx.beans.property.DoubleProperty;
@@ -13,10 +16,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -32,23 +31,27 @@ public class PropertiesController implements Initializable {
     public javafx.scene.control.Label searchLabel;
     public javafx.scene.control.Button saveButton;
     public javafx.scene.control.Button cancelButton;
-    public javafx.scene.control.RadioButton BFS;
-    public javafx.scene.control.RadioButton DFS;
-    public javafx.scene.control.RadioButton BEST;
+
     public javafx.scene.control.RadioButton myGenerate;
     public javafx.scene.control.RadioButton simpleGenerate;
     public javafx.scene.control.RadioButton empty;
     public javafx.scene.control.TextField threadNumText;
-    private ToggleGroup searchAlgorithmGroug;
+
     private ToggleGroup generateMazeGroup;
     private static boolean firstIn=false;
     public  javafx.scene.layout.AnchorPane propPane;
     private DoubleProperty tSize1 = new SimpleDoubleProperty();
     private DoubleProperty tSize2 = new SimpleDoubleProperty();
 
+    public javafx.scene.control.ChoiceBox searchingAlgorithm;
+    public javafx.scene.control.ChoiceBox mazeGenerator;
+
+
+
     public PropertiesController() {
-        this.searchAlgorithmGroug = new ToggleGroup();
-        this.generateMazeGroup = new ToggleGroup();
+
+
+
     }
 
     public void saveSettings(ActionEvent actionEvent) {
@@ -59,8 +62,9 @@ public class PropertiesController implements Initializable {
                 if(threadNum<=0)
                     throw new Exception();
                 MyViewModel.setThreadsNumConfig(String.valueOf(threadNum));
-                MyViewModel.setGeneratingAlgorithmConfig(generateMazeGroup.getSelectedToggle().getUserData().toString());
-                MyViewModel.setSearchAlgorithmConfig(searchAlgorithmGroug.getSelectedToggle().getUserData().toString());
+
+                MyViewModel.setGeneratingAlgorithmConfig(mazeGenerator.getSelectionModel().getSelectedItem().toString());
+                MyViewModel.setSearchAlgorithmConfig(searchingAlgorithm.getSelectionModel().getSelectedItem().toString());
                 openMainScene();
             }
             catch (Exception e)
@@ -114,18 +118,18 @@ public class PropertiesController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        BFS.prefHeightProperty().bind(propPane.heightProperty().divide(10));
-        BFS.prefWidthProperty().bind(propPane.widthProperty().divide(3));
-        DFS.prefHeightProperty().bind(propPane.heightProperty().divide(10));
-        DFS.prefWidthProperty().bind(propPane.widthProperty().divide(3));
-        BEST.prefHeightProperty().bind(propPane.heightProperty().divide(10));
-        BEST.prefWidthProperty().bind(propPane.widthProperty().divide(3));
-        simpleGenerate.prefHeightProperty().bind(propPane.heightProperty().divide(10));
-        simpleGenerate.prefWidthProperty().bind(propPane.widthProperty().divide(3));
-        empty.prefHeightProperty().bind(propPane.heightProperty().divide(10));
-        empty.prefWidthProperty().bind(propPane.widthProperty().divide(3));
-        myGenerate.prefHeightProperty().bind(propPane.heightProperty().divide(10));
-        myGenerate.prefWidthProperty().bind(propPane.widthProperty().divide(3));
+        this.searchingAlgorithm.setValue("searchAlgo");
+        this.mazeGenerator.setValue("generateAlgo");
+
+        ObservableList<String> searchingAlgoOpt =FXCollections.observableArrayList("BreadthFirstSearch","DepthFirstSearch","BestFirstSearch");
+        ObservableList<String> generateAlgoOpt =FXCollections.observableArrayList("MyMazeGenerator","SimpleMazeGenerator","EmptyMazeGenerator");
+        searchingAlgorithm.setItems(searchingAlgoOpt);
+        mazeGenerator.setItems(generateAlgoOpt);
+        this.searchingAlgorithm.prefHeightProperty().bind(propPane.heightProperty().divide(10));
+        this.searchingAlgorithm.prefWidthProperty().bind(propPane.widthProperty().divide(3));
+        this.mazeGenerator.prefHeightProperty().bind(propPane.heightProperty().divide(10));
+        this.mazeGenerator.prefWidthProperty().bind(propPane.widthProperty().divide(3));
+
         saveButton.prefHeightProperty().bind(propPane.heightProperty().divide(10));
         saveButton.prefWidthProperty().bind(propPane.widthProperty().divide(3));
         cancelButton.prefHeightProperty().bind(propPane.heightProperty().divide(10));
@@ -138,26 +142,21 @@ public class PropertiesController implements Initializable {
         searchLabel.prefWidthProperty().bind(propPane.widthProperty().divide(3));
         threadNumText.prefHeightProperty().bind(propPane.heightProperty().divide(10));
         threadNumText.prefWidthProperty().bind(propPane.widthProperty().divide(3));
-        myGenerate.prefHeightProperty().bind(simpleGenerate.prefHeightProperty());
-        myGenerate.prefWidthProperty().bind(simpleGenerate.prefWidthProperty());
+        this.searchingAlgorithm.prefHeightProperty().bind(searchLabel.prefHeightProperty().divide(2));
+        this.mazeGenerator.prefHeightProperty().bind(generateLabel.prefHeightProperty().divide(2));
         tSize1.bind(saveButton.heightProperty().divide(2.5));
 
        // tSize2.bind(cancelButton.heightProperty().divide(4));
         saveButton.prefHeightProperty().bind(cancelButton.heightProperty());
         saveButton.prefWidthProperty().bind(cancelButton.widthProperty());
-        BFS.setToggleGroup(searchAlgorithmGroug);
-        BFS.setUserData("BreadthFirstSearch");
-        BEST.setToggleGroup(searchAlgorithmGroug);
-        BEST.setUserData("BestFirstSearch");
-        DFS.setToggleGroup(searchAlgorithmGroug);
-        DFS.setUserData("DepthFirstSearch");
+//        BFS.setToggleGroup(searchAlgorithmGroug);
+//        BFS.setUserData("BreadthFirstSearch");
+//        BEST.setToggleGroup(searchAlgorithmGroug);
+//        BEST.setUserData("BestFirstSearch");
+//        DFS.setToggleGroup(searchAlgorithmGroug);
+//        DFS.setUserData("DepthFirstSearch");
 
-        myGenerate.setToggleGroup(generateMazeGroup);
-        myGenerate.setUserData("MyMazeGenerator");
-        simpleGenerate.setToggleGroup(generateMazeGroup);
-        simpleGenerate.setUserData("SimpleMazeGenerator");
-        empty.setToggleGroup(generateMazeGroup);
-        empty.setUserData("EmptyMazeGenerator");
+
         if(!firstIn) {
             MyViewModel.setThreadsNumConfig(String.valueOf(10));
             MyViewModel.setGeneratingAlgorithmConfig("MyMazeGenerator");
@@ -176,16 +175,14 @@ public class PropertiesController implements Initializable {
                 saveButton.setFont(new Font(saveButton.getFont().getName(),tSize1.doubleValue()));
                 cancelButton.setLayoutX(propPane.getWidth()/2);
                 cancelButton.setFont(new Font(cancelButton.getFont().getName(),tSize1.doubleValue()));
-                BFS.setLayoutX(propPane.getWidth()/10);
-                DFS.setLayoutX(propPane.getWidth()/3.5);
-                BEST.setLayoutX(propPane.getWidth()/2);
-                myGenerate.setLayoutX(propPane.getWidth()/10);
-                simpleGenerate.setLayoutX(propPane.getWidth()/3.5);
-                empty.setLayoutX(propPane.getWidth()/2);
+//
+
                 generateLabel.setLayoutX(propPane.getWidth()/10);
                 threadNumLabel.setLayoutX(propPane.getWidth()/10);
                 threadNumText.setLayoutX(propPane.getWidth()/10);
                 searchLabel.setLayoutX(propPane.getWidth()/10);
+                searchingAlgorithm.setLayoutX(propPane.getWidth()/10);
+                mazeGenerator.setLayoutX(propPane.getWidth()/10);
             }
         });
         scene.heightProperty().addListener(new ChangeListener<Number>() {
@@ -195,16 +192,14 @@ public class PropertiesController implements Initializable {
                 saveButton.setFont(new Font(saveButton.getFont().getName(),tSize1.doubleValue()));
                 cancelButton.setLayoutY(propPane.getHeight()/1.5);
                 cancelButton.setFont(new Font(cancelButton.getFont().getName(),tSize1.doubleValue()));
-                BFS.setLayoutY(propPane.getHeight()/4);
-                DFS.setLayoutY(propPane.getHeight()/4);
-                BEST.setLayoutY(propPane.getHeight()/4);
-                myGenerate.setLayoutY(propPane.getHeight()/3);
-                simpleGenerate.setLayoutY(propPane.getHeight()/3);
-                empty.setLayoutY(propPane.getHeight()/3);
-                searchLabel.setLayoutY(propPane.getHeight()/5.5);
-                generateLabel.setLayoutY(propPane.getHeight()/3.5);
+
+
+                searchLabel.setLayoutY(propPane.getHeight()/30);
+                generateLabel.setLayoutY(propPane.getHeight()/4);
                 threadNumLabel.setLayoutY(propPane.getHeight()/2.5);
                 threadNumText.setLayoutY(propPane.getHeight()/2);
+                searchingAlgorithm.setLayoutY(propPane.getHeight()/9);
+                mazeGenerator.setLayoutY(propPane.getHeight()/3);
             }
         });
 
@@ -214,18 +209,21 @@ public class PropertiesController implements Initializable {
 
         String configSearch = MyViewModel.getSearchAlgorithmConfig();
         String configGenerate = MyViewModel.getGeneratingAlgorithmConfig();
-        if (configSearch.equals("BreadthFirstSearch"))
-            BFS.setSelected(true);
-        else if (configSearch.equals("BestFirstSearch"))
-            BEST.setSelected(true);
-        else if (configSearch.equals("DepthFirstSearch"))
-            DFS.setSelected(true);
+        if (configSearch.equals("BreadthFirstSearch")) {
+            searchingAlgorithm.getSelectionModel().select(0);
+        } else if (configSearch.equals("BestFirstSearch")) {
+            searchingAlgorithm.getSelectionModel().select(2);
+
+        }
+        else if (configSearch.equals("DepthFirstSearch")) {
+            searchingAlgorithm.getSelectionModel().select(1);
+        }
         if(configGenerate.equals("MyMazeGenerator"))
-            myGenerate.setSelected(true);
+            mazeGenerator.getSelectionModel().select(0);
         else if(configGenerate.equals("SimpleMazeGenerator"))
-            simpleGenerate.setSelected(true);
+            mazeGenerator.getSelectionModel().select(1);
         else if(configGenerate.equals("EmptyMazeGenerator"))
-            empty.setSelected(true);
+            mazeGenerator.getSelectionModel().select(2);
         threadNumText.setText(MyViewModel.getThreadsNumConfig());
 
     }
