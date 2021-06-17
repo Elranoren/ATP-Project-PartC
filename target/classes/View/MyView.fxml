@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -13,12 +14,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import View.*?>
-<BorderPane fx:id="myBorderPane" onMouseClicked="#mouseClicked" prefHeight="408.0" prefWidth="594.0" stylesheets="@MainStyle.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="View.MyViewController" onScroll="#scroll" onDragDetected="#dragDetected" onMouseDragged="#mouseDragged" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased">
+
+<?import View.MazeDisplayer?>
+<BorderPane fx:id="myBorderPane" onDragDetected="#dragDetected" onMouseClicked="#mouseClicked" onMouseDragged="#mouseDragged" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" onScroll="#scroll" prefHeight="408.0" prefWidth="594.0" stylesheets="@MainStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
     <left>
         <VBox prefHeight="200.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
-                <GridPane prefWidth="168.0">
+                <GridPane prefWidth="164.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -30,6 +32,8 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <Label text="Maze rows:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                     <Label text="Maze columns:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
@@ -41,6 +45,9 @@
                     <Label text="Player Col = " GridPane.rowIndex="5" />
                     <Label fx:id="playerRow" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     <Label fx:id="playerCol" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+               <Label text="Music :" GridPane.rowIndex="6" />
+               <Button fx:id="buttonON"  onAction="#buttonONClick" mnemonicParsing="false" prefHeight="23.0" prefWidth="81.0" text="ON" GridPane.rowIndex="7" />
+               <Button fx:id="buttonOFF" onAction="#buttonOFFClick" mnemonicParsing="false" prefHeight="23.0" prefWidth="81.0" text="OFF" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                 </GridPane>
             </children>
             <padding>
@@ -63,20 +70,20 @@
                         <Menu mnemonicParsing="false" text="File">
                             <items>
                                 <MenuItem fx:id="menuItemNew" mnemonicParsing="false" onAction="#generateMaze" text="New" />
-                                <MenuItem fx:id="menuItemSave" mnemonicParsing="false" onAction="#saveFile" disable="true" text="Save" />
+                                <MenuItem fx:id="menuItemSave" disable="true" mnemonicParsing="false" onAction="#saveFile" text="Save" />
                                 <MenuItem fx:id="menuItemLoad" mnemonicParsing="false" onAction="#loadFile" text="Load" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Options">
                             <items>
-                                <MenuItem fx:id="menuProperties" onAction="#propertiesMenu" mnemonicParsing="false" text="Properties" />
+                                <MenuItem fx:id="menuProperties" mnemonicParsing="false" onAction="#propertiesMenu" text="Properties" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="More Options">
                             <items>
-                                <MenuItem fx:id="menuExit" onAction="#exitMenu" mnemonicParsing="false"  text="Exit" />
-                                <MenuItem fx:id="menuHelp" onAction="#helpMenu" mnemonicParsing="false"  text="Help" />
-                                <MenuItem fx:id="menuAbout" onAction="#aboutMenu" mnemonicParsing="false"  text="About" />
+                                <MenuItem fx:id="menuExit" mnemonicParsing="false" onAction="#exitMenu" text="Exit" />
+                                <MenuItem fx:id="menuHelp" mnemonicParsing="false" onAction="#helpMenu" text="Help" />
+                                <MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#aboutMenu" text="About" />
                             </items>
                         </Menu>
 
@@ -89,7 +96,7 @@
     <center>
         <Pane BorderPane.alignment="CENTER">
             <children>
-                <MazeDisplayer fx:id="mazeDisplayer" height="550.0" imageFileNameSea="./resources/images/sea.jpg" imageFileNamePipito="./resources/images/pipito.png" imageFileNameseaDown="./resources/images/seaDown.jpg" imageFileNameMother="./resources/images/mother.png" imageFileNamePlayer1="./resources/images/playerMarco.png"  ImageFileNamePlayerL1="./resources/images/playerMarcoL.png" ImageFileNamePlayerL2="./resources/images/playerMarcoL2.png" imageFileNameFood="./resources/images/marcoFood.png" imageFileNamePlayer2="./resources/images/playerMarco2.png" imageFileNameWall="./resources/images/wall.png" onKeyPressed="#keyPressed" width="550.0" />
+                <MazeDisplayer fx:id="mazeDisplayer" ImageFileNamePlayerL1="./resources/images/playerMarcoL.png" ImageFileNamePlayerL2="./resources/images/playerMarcoL2.png" height="550.0" imageFileNameFood="./resources/images/marcoFood.png" imageFileNameMother="./resources/images/mother.png" imageFileNamePipito="./resources/images/pipito.png" imageFileNamePlayer1="./resources/images/playerMarco.png" imageFileNamePlayer2="./resources/images/playerMarco2.png" imageFileNameSea="./resources/images/sea.jpg" imageFileNameWall="./resources/images/wall.png" imageFileNameseaDown="./resources/images/seaDown.jpg" onKeyPressed="#keyPressed" width="550.0" />
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

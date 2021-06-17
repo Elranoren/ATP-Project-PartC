@@ -58,6 +58,8 @@ public class MyViewController implements Observer, IView, Initializable {
     public javafx.scene.control.MenuItem menuAbout;
     public javafx.scene.control.Button generateButton;
     public javafx.scene.layout.BorderPane myBorderPane;
+    public javafx.scene.control.Button buttonON;
+    public javafx.scene.control.Button buttonOFF;
     StringProperty updatePlayerRow = new SimpleStringProperty();
     StringProperty updatePlayerCol = new SimpleStringProperty();
     private boolean startDragwithctrl = false;
@@ -441,5 +443,13 @@ public class MyViewController implements Observer, IView, Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void buttonONClick(ActionEvent actionEvent) {
+        playMusic();
+    }
+
+    public void buttonOFFClick(ActionEvent actionEvent) {
+        stopMusic();
     }
 }
