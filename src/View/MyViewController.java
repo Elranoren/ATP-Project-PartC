@@ -284,6 +284,7 @@ public class MyViewController implements Observer, IView, Initializable {
             fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Maze files (.maze)", ".maze"));
             File loadFile = fc.showOpenDialog(null);
             if (loadFile != null) {
+                mazeDisplayer.setS(null);
                 File loadF = new File(loadFile.getPath());
                 FileInputStream fileInputStream = new FileInputStream(loadF);
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
